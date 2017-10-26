@@ -2,6 +2,8 @@ import {ContentType} from './content-type'
 import {KunaiError, ParseError} from '../error'
 import {CPPCode} from '../parser/cpp'
 
+import {Logger} from '../logger'
+
 
 let Marked = require('marked')
 const MarkedOpts = {
@@ -15,6 +17,11 @@ class GHSource {
     url = new URL(url)
 
     this.log = log.make_context(this.constructor.name)
+
+    this.code_id = 0
+    this.metas = new Map
+    this.codes = new Map
+
     this.log.info(`got source: ${url}`, url)
 
     if (url.protocol != 'https:') {
@@ -91,22 +98,44 @@ class GHSource {
     }
   }
 
+  get_code(id) {
+    if (!this.codes.has(id)) {
+      throw new KunaiError(`code (#${id}) not found`)
+    }
+    return this.codes.get(id)
+  }
+
   process(tokens) {
     this.is_first_list = true
+    this.is_inside_example = false
     this.single_bufs = []
-    this.metas = new Map
-    this.codes = []
 
-    for (const token of tokens) {
-      this.process_single(token)
+    const old_level = this.log.opts.ctx.level
+    this.log.opts.ctx.level = Logger.Level.info
+
+    try {
+      for (const token of tokens) {
+        this.process_single(token)
+      }
+
+    } finally {
+      this.log.opts.ctx.level = old_level
     }
   }
 
   process_single(token) {
     this.log.debug(`processing token <${token.get('type')}>`, token)
 
-
     switch (token.get('type')) {
+      case 'heading': {
+        if (token.get('text').trim().match(/例|Example|Sample|サンプル/i)) {
+          this.is_inside_example = true
+        } else {
+          this.is_inside_example = false
+        }
+        break
+      }
+
       case 'list_item_start': {
         this.single_bufs.push('')
         break
@@ -146,17 +175,27 @@ class GHSource {
         const lang = token.get('lang')
         const code = token.get('text')
 
+        this.log.info(`found a code section (#${++this.code_id}`)
+
+        if (!this.is_inside_example) {
+          this.log.info('got a code outside the example section, skipping...', lang, code)
+          break
+        }
+
         if (lang === 'cpp') {
           this.log.info(`got C++ code (${this.codes.length + 1})`, code)
 
           const headers = [this.metas.get('header')]
-          this.codes.push(new CPPCode(
-            this.log,
-            code,
-            {
-              headers: headers,
-            },
-          ))
+          this.codes.set(
+            this.code_id,
+            new CPPCode(
+              this.log,
+              code,
+              {
+                headers: headers,
+              },
+            )
+          )
 
         } else {
           this.log.warn(`got code for unknown language '${lang}', skipping...`, code)

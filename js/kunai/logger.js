@@ -66,7 +66,7 @@ class Logger {
   }
 
   static default_level() {
-    return this.Level.info
+    return this.Level.debug
   }
 
   static defaultOptions = {
@@ -137,10 +137,10 @@ class Logger {
 
   need_log(level) {
     if (level.intensity === Logger.Level.debug.intensity) {
-      return process.env.NODE_ENV === 'development'
-    } else {
-      return level.intensity >= this.opts.ctx.level.intensity
+      if (process.env.NODE_ENV !== 'development') return false
     }
+
+    return level.intensity >= this.opts.ctx.level.intensity
   }
 }
 

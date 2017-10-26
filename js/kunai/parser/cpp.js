@@ -23,12 +23,17 @@ class CPPCode {
       for (const h of hints.headers) {
         if (!this.headers.includes(h)) {
           this.log.warn(`already found header '${h}' in meta tag, but it was not written in this code snippet`)
+          this.prepend_header(h)
           this.headers.push(h)
         }
       }
     }
 
     this.log.info('parse ok', this)
+  }
+
+  prepend_header(h) {
+    this.buf = `#include <${h}>\n` + this.buf
   }
 }
 

@@ -2,9 +2,11 @@ import {KunaiError, NetworkError} from './error'
 import * as Net from './net'
 
 
-const Key = {
+const PageKey = {
   main: Symbol.for('main'),
   article: Symbol.for('article'),
+  articleBody: Symbol.for('articleBody'),
+  codes: Symbol.for('codes'),
 }
 
 class SourceError extends KunaiError {
@@ -15,10 +17,10 @@ class SourceError extends KunaiError {
 
 
 class PageData {
-
-  constructor(log) {
+  constructor(log, onLoad) {
     this.log = log.make_context('PageData')
     this.raw = new Map
+    this.onLoad = onLoad
 
     this.log.info('parsing html...')
 
@@ -42,18 +44,30 @@ class PageData {
   }
 
   load() {
-    this.raw_set(Key.main, null, 'main[role="main"]')
-    this.raw_set(Key.article, Key.main, 'div[itemtype="http://schema.org/Article"]')
+    this.raw_set(PageKey.main, null, 'main[role="main"]')
+    this.raw_set(PageKey.article, PageKey.main, 'div[itemtype="http://schema.org/Article"]')
+    this.raw_set(PageKey.articleBody, PageKey.article, 'div[itemprop="articleBody"]')
+    this.raw_set(PageKey.codes, PageKey.articleBody, '.codehilite')
 
     {
-      const a = this.raw_get(Key.article).find('.edit-button .edit')
+      const a = this.raw_get(PageKey.article).find('.edit-button .edit')
       if (!a) {
         throw new SourceError('could not fetch GitHub source URL')
       }
 
-      this.source = new Net.GHSource(this.log, new URL(a.attr('href')), (data) => {
-
+      this.source = new Net.GHSource(this.log, new URL(a.attr('href')), () => {
+        this.onLoad()
       })
+    }
+
+    {
+      let id = 0
+      for (let code_r of this.raw_get(PageKey.codes)) {
+        ++id
+        let code = $(code_r)
+        console.log(id, code)
+        code.attr('data-kunai-code-id', id)
+      }
     }
   }
 
@@ -72,6 +86,6 @@ class PageData {
   }
 }
 
-export {PageData}
+export {PageKey, PageData}
 
 

@@ -1,6 +1,163 @@
-$theme-color: #306E82;
+@import './font-awesome';
+
+$cl-shuri: #306E82;
+$cl-theme: #87ceeb;
+$cl-white: #FEFEFE;
+$cl-blue: #25649f;
+
+$bg-bg-gray: #fafbfc;
+
+$cl-ui-black: #24292e;
+$bg-ui-gray: #eff3f6;
+$bd-ui-gray: rgba(27, 31, 35, 0.2);
+$grad-ui-gray: linear-gradient(-180deg, #fafbfc 0%, #eff3f6 90%);
+
+$cl-black: #24292e;
+$cl-over-gray: rgba(255,255,255,0.75);
+
+$sh-inv: 0 1px 0 #444;
+
+
+@mixin box-reset {
+  box-sizing: content-box;
+}
 
 body.kunai {
+  .fa {
+    @include box-reset;
 
-}
+    &:before, &:after {
+      @include box-reset;
+    }
+  }
+
+  button {
+    outline: none;
+    font-size: 1.1em;
+    padding: 0;
+    color: #FFF;
+    background: none;
+
+    // text-shadow: 0 -1px 0 rgba(255, 255, 255, 0.8);
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.5);
+
+    // color: $cl-ui-black;
+    // background-color: $bg-ui-gray;
+    // background-image: $grad-ui-gray;
+    // border: 1px solid $bd-ui-gray;
+
+    &:hover {
+      // background: darken($bg-ui-gray, 5%);
+      // border: 1px solid darken($bd-ui-gray, 5%);
+    }
+  }
+
+  .wand:not(.hidden) + .codehilite {
+    pre {
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+
+      border-top: none;
+    }
+  }
+
+  .wand {
+    display: flex;
+    // background: lighten($cl-shuri, 50%);
+    background: lighten($cl-shuri, 25%);
+    border-radius: 2px 2px 0 0;
+
+    &.hidden {
+      display: hidden;
+    }
+
+    &.enabled .play button {
+      background: $cl-shuri;
+    }
+
+    ul.tools {
+      display: flex;
+      align-items: flex-start;
+      list-style-type: none;
+      margin: 0;
+      padding: .25em .35em;
+      @include box-reset;
+
+      li.tool {
+        position: relative;
+
+        button {
+          $size: 30px;
+
+          display: flex;
+          position: relative;
+          justify-content: center;
+          box-sizing: border-box;
+          padding-top: 3px;
+          width: $size;
+          height: $size;
+
+          font-family: sans-serif;
+          border: none;
+          font-size: 1.2em;
+          // transition: .1s ease-out;
+
+          &:hover {
+            background: $cl-shuri;
+          }
+
+          .tooltip {
+            position: absolute;
+            visibility: hidden;
+            display: block;
+            top: 100%;
+            left: 1em;
+            cursor: text;
+
+            background: #222;
+            color: #EFEFEF;
+
+            margin-top: .5em;
+
+            opacity: 0;
+            background: $cl-black;
+            border-radius: 4px;
+
+            &:after {
+              position: relative;
+              display: inline-block;
+              white-space: nowrap;
+              padding: .2em .4em;
+              text-align: left;
+
+              @include box-reset;
+            }
+          } // .tooltip
+
+          &:hover .tooltip {
+            opacity: 1;
+            visibility: visible;
+          }
+        } // button
+
+        &.play {
+          .tooltip {
+            &:after {
+              content: 'Run on Wandbox';
+            }
+          }
+        }
+
+      } // .tool
+    } // .tools
+  } // .wand
+
+  .codehilite {
+    display: block;
+  }
+
+  .wand.enabled + .codehilite {
+    display: none;
+  }
+} // body.kunai
 
