@@ -28,7 +28,7 @@ Docker をインストール済みなら:
 <!DOCTYPE html>
 <html>
   <head>
-    <title>CRSearch - sample setup</title>
+    <title>Kunai - sample setup</title>
     <link href="css/font-awesome.css" rel="stylesheet">
     <link href="css/kunai.css" rel="stylesheet">
 
