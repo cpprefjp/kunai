@@ -323,7 +323,7 @@ main[role="main"] {
                 border-bottom-width: 2px;
               }
               .treespan {
-                background: #fddfb3;
+                background: lighten(#fddfb3, 10%);
                 border: 1px solid #faa937;
                 color: #000;
               }
@@ -339,6 +339,10 @@ main[role="main"] {
           @extend .fa-plus;
         }
 
+        // jsがオフの時は無条件でツリーを展開
+        //   ……しようと思ったけど最速で処理しても
+        //       操作性が著しく悪化したので却下
+        // body.js & > ul {
         > ul {
           display: none;
         }

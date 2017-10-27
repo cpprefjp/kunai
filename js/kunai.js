@@ -10,6 +10,9 @@ class Kunai {
   }
 
   constructor(opts = {}) {
+    // fastest
+    $('body').addClass('js').removeClass('no-js')
+
     this.opts = Object.assign({}, Kunai.defaultOptions, opts)
     this.log = new Logger('Kunai', this.opts)
 

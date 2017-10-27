@@ -4,8 +4,6 @@ class Compat {
 
     this.log.info('loading...')
 
-    $('body').removeClass('no-js').addClass('js')
-
     // fake
     window.tree_onclick = function(e) {
       // do nothing
