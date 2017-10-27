@@ -1,10 +1,11 @@
 @import './variables';
 @import '../font-awesome';
 
+html {
+  font-size: 14px;
+}
 
 body {
-  font-size: 14px;
-
   .navbar-brand {
     line-height: 32px;
     padding: 0.5em 15px;
@@ -49,104 +50,107 @@ body {
   }
    */
 
-code {
-  color: #000000;
-}
-a code {
-  color: #428bca;
-}
-
-.content-body {
-  > h1:first-child {
-    margin-top: 0px;
+  code {
+    color: #000000;
   }
-  h2 {
-    border-left: solid 8px skyblue;
-    padding-left: 5px;
-    border-bottom: solid 2px skyblue;
+  a code {
+    color: #428bca;
   }
-}
 
-.edit {
-  border-radius: 4px;
-  border: 1px solid #999;
-  margin: 5px;
-  padding: 3px;
-}
-
-.history {
-  border-radius: 4px;
-  border: 1px solid #999;
-  margin: 5px;
-  padding: 3px;
-}
-
-.content-header {
-  display: flex;
-  padding: 0 1em 0 0;
-  margin-bottom: 5px;
-  background: #f5f5f5;
-  border-radius: 4px;
-  align-items: center;
-}
-
-ol.breadcrumb {
-  flex-grow: 1;
-  margin-bottom: 0;
-  background: none;
-  border-radius: 0;
-}
-.footer {
-  text-align: center;
-}
-.footer.navbar {
-  min-height: 0;
-  margin-top: 20px;
-  margin-bottom: 0px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-}
-.identifier-type {
-  float: left;
-}
-.header {
-  float: right;
-  text-align: right;
-}
-h1 {
-  &.namespace {
-    font-size: 14px;
+  .content-body {
+    > h1:first-child {
+      margin-top: 0px;
+    }
+    h2 {
+      border-left: solid 8px skyblue;
+      padding-left: 5px;
+      border-bottom: solid 2px skyblue;
+    }
   }
-  &.class {
+
+  .edit {
+    border-radius: 4px;
+    border: 1px solid #999;
+    margin: 5px;
+    padding: 3px;
   }
-  &.cpp {
-    font-size: 14px;
+
+  .history {
+    border-radius: 4px;
+    border: 1px solid #999;
+    margin: 5px;
+    padding: 3px;
   }
-} // h1
 
-pre .err {
-  border: none;
-}
-.syntax pre .err {
-  border: none;
-}
+  .content-header {
+    display: flex;
+    padding: 0 1em 0 0;
+    margin-bottom: 5px;
+    background: #f5f5f5;
+    border-radius: 4px;
+    align-items: center;
+  }
+
+  ol.breadcrumb {
+    flex-grow: 1;
+    margin-bottom: 0;
+    background: none;
+    border-radius: 0;
+  }
+  .footer {
+    text-align: center;
+  }
+  .footer.navbar {
+    min-height: 0;
+    margin-top: 20px;
+    margin-bottom: 0px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  .identifier-type {
+    float: left;
+  }
+  .header {
+    float: right;
+    text-align: right;
+  }
+
+  div[itemtype="http://schema.org/Article"] {
+    h1[itemprop="name"] {
+      .namespace {
+        font-size: 1rem;
+      }
+      .class {
+      }
+      .cpp {
+        font-size: 1rem;
+      }
+    } // h1
+
+    pre .err {
+      border: none;
+    }
+    .syntax pre .err {
+      border: none;
+    }
+  } // Article
 
 
-.fa {
-  @include box-reset;
-
-  &:before, &:after {
+  .fa {
     @include box-reset;
+
+    &:before, &:after {
+      @include box-reset;
+    }
   }
-}
 
-button {
-  outline: none;
-}
+  button {
+    outline: none;
+  }
 
-.crsearch {
-  width: 260px;
-}
+  .crsearch {
+    width: 260px;
+  }
 } // body
 
 
@@ -155,8 +159,8 @@ main[role="main"] {
     $cl-border: #999;
     $tree-grid: 1px solid $cl-border;
     $bg-tree: #fbfbfb;
-    $plus-size: 2.3rem;
-    $indent: 3rem;
+    $plus-size: 1.6rem;
+    $indent: 2rem;
 
     display: flex;
     flex-direction: column;
@@ -182,8 +186,8 @@ main[role="main"] {
       padding: 0 .25em;
 
       border-radius: 3px;
-      color: #333;
-      border: 1px solid #AAA;
+      color: #666;
+      border: 1px solid #BBB;
 
       margin-left: .4rem;
       margin-right: .1rem;
@@ -194,7 +198,9 @@ main[role="main"] {
 
       &.text-warning {
         &, & a {
-          color: #8a6d3b;
+          $color: #8a6d3b;
+          color: $color;
+          border-color: $color;
         }
 
         &:before {
@@ -212,6 +218,7 @@ main[role="main"] {
     // }
 
     .cpp-sidebar {
+      $cl-base: #757575;
       @extend .badge;
 
       a {
@@ -219,9 +226,27 @@ main[role="main"] {
         color: inherit;
       }
 
+      &.cpp11 {
+        &, & a {
+          color: $cl-base;
+        }
+      }
+
+      &.cpp14, &.cpp17 {
+        &, & a {
+          $color: darken($cl-base, 35%);
+          color: $color;
+          border-color: $color;
+        }
+      }
+
       &.cpp20 {
         &, & a {
           font-weight: bold;
+
+          $color: darken($cl-base, 35%);
+          color: $color;
+          border-color: $color;
         }
       }
     }
@@ -239,7 +264,7 @@ main[role="main"] {
 
       flex-shrink: 1;
 
-      font-size: 1.6rem;
+      font-size: 1.1rem;
       line-height: $plus-size;
 
       margin-right: .4rem;
@@ -313,7 +338,7 @@ main[role="main"] {
       position: relative;
 
       &:not(:first-child) {
-        padding-top: .5rem;
+        padding-top: .3rem;
       }
 
       &:before, &:after {
