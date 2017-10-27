@@ -158,11 +158,6 @@ main[role="main"] {
     $plus-size: 2.3rem;
     $indent: 3rem;
 
-    // hack
-    // 元のHTMLがおかしくて、要素にテキストが生で入っていて対応できないので、ずれてない方をずらして辻褄を合わせる
-    $legacy-hack-001: .2rem;
-
-
     display: flex;
     flex-direction: column;
 
@@ -176,8 +171,39 @@ main[role="main"] {
     overflow-x: scroll;
     padding: 3px;
 
+    .badge {
+      font-size: .8em;
+      display: inline-block;
+      flex-shrink: 1;
+      padding: 0 .25em;
+
+      border-radius: 3px;
+      color: #333;
+      border: 1px solid #AAA;
+
+      margin-left: .4rem;
+      margin-right: .1rem;
+
+      &:last-child {
+        margin-right: 0;
+      }
+
+      &.text-warning {
+        color: #8a6d3b;
+      }
+    }
+
+    // 何かしらのバッジっぽいのは多分これに全部引っかかる
+    // li > a + span {
+      // margin-left: .3rem;
+    // }
+
     .cpp-sidebar {
-      font-size: 10px;
+      @extend .badge;
+
+      &.cpp20 {
+        font-weight: bold;
+      }
     }
 
     .treespan {
@@ -204,9 +230,6 @@ main[role="main"] {
       // padding: .2rem;
 
       text-decoration: none;
-
-      // hack ここ
-      margin-top: -$legacy-hack-001;
     }
 
     a {
@@ -244,6 +267,7 @@ main[role="main"] {
       }
     }
     > ul {
+      padding-top: .5rem;
       padding-left: 0px;
 
       &:before, &:after {
@@ -261,12 +285,16 @@ main[role="main"] {
 
     li {
       flex-wrap: wrap;
-      align-items: flex-start;
+      align-items: center;
 
       list-style-type: none;
       margin: 0;
-      padding: .5rem 0 0 .2rem;
+      padding: 0 0 0 .2rem;
       position: relative;
+
+      &:not(:first-child) {
+        padding-top: .5rem;
+      }
 
       &:before, &:after {
         position: absolute;
