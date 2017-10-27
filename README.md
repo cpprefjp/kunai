@@ -43,7 +43,7 @@ https://github.com/cpprefjp/site_generator/blob/fef73565384008fb47d23f09b6db10f6
 
 ### Compat (v1)
 
-互換性モジュール ([css/kunai/compat.scss](css/kunai/compat.scss))
+互換性モジュール ([css/kunai/compat.scss](css/kunai/compat.scss), [js/kunai/compat.js](js/kunai/compat.js))
 
 - [x] 現行の __cpprefjp/site_generator__ のCSSと同じ表示
 - [x] *Bootstrap* v3 を自前で読む
