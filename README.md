@@ -143,7 +143,7 @@ Docker をインストール済みなら:
 
 ## ドキュメント
 
-- [Wiki](https://github.com/cpprefjp/kunai/wiki)
+- [Wiki](https://github.com/saki7/kunai/wiki)
 
 ## ライセンス
 
