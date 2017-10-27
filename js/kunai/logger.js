@@ -12,6 +12,10 @@ class LoggerStyle {
     }).join(';')
   }
 
+  toString() {
+    return this.join()
+  }
+
   clone(assigner) {
     return new LoggerStyle(Object.assign({}, this.kv, assigner))
   }
@@ -19,7 +23,7 @@ class LoggerStyle {
 
 class LoggerOption {
   constructor(hashy) {
-    this.data = hashy
+    this.data = Object.assign({}, hashy)
   }
 }
 
@@ -73,8 +77,11 @@ class Logger {
 
   static PartStyle = {
     message: new Logger.Style({'font-weight': 'bold', 'text-decoration': 'underline', 'color': '#aaa'}),
-    message_body: new Logger.Style({'font-weight': 'normal', 'text-decoration': 'none', 'color': '#222'}),
+    message_body: new Logger.Style({'font-family': 'monospace', 'font-weight': 'normal', 'text-decoration': 'none', 'color': '#222'}),
     backtrace: new Logger.Style({'font-weight': 'bold', 'text-decoration': 'underline', 'color': '#aaa'}),
+    icon: new Logger.Style({
+      'font-family': 'sans-serif',
+    })
   }
 
   static default_level() {
@@ -100,7 +107,7 @@ class Logger {
       if (!(opts instanceof Logger.Option)) {
         throw new KunaiError(`unrecognized option type; did you mean: ['option1', 'option2', ...]`)
       }
-      Object.assign(this.opts.data, opts.data)
+      this.opts.data = Object.assign(this.opts.data, opts.data)
     }
   }
 
@@ -108,8 +115,8 @@ class Logger {
     return this.orig_ctx
   }
 
-  make_context(name) {
-    let l = new Logger(this.orig_ctx.concat(name), this.opts)
+  make_context(name, opts) {
+    let l = new Logger(this.orig_ctx.concat(name), Object.assign(new Logger.Option(this.opts.data), opts))
     l.orig_ctx = Object.assign([], this.orig_ctx)
     return l
   }
@@ -131,7 +138,26 @@ class Logger {
     if (this.need_log(level)) {
       const master_output = level.intensity >= Logger.Level.error.intensity ? console.group : console.groupCollapsed
 
-      master_output(`%c${level.icon} %c${level.label}%c [%c${this.ctx.join('::')}%c] %c${arg1}`, level.style.clone({'text-decoration': 'none'}).join(), level.style.join(), '', this.opts.data.ctx.style.join(), '', Logger.PartStyle.message_body.join())
+      const icon_fmt = this.opts.data.icon ? `%c${this.opts.data.icon.text}  ` : '%c'
+      const icon_style = this.opts.data.icon ? Logger.PartStyle.icon.clone({color: this.opts.data.icon.color}).join() : ''
+
+
+      master_output(
+        `%c${level.icon} %c${level.label}%c ` +
+        `[%c${this.ctx.join('::')}%c] ` +
+        `${icon_fmt}%c` +
+        `${arg1}`,
+
+        level.style.clone(
+          {'text-decoration': 'none'}
+        ).join(),
+        level.style.join(),
+        '',
+        this.opts.data.ctx.style.join(),
+        '',
+        icon_style,
+        Logger.PartStyle.message_body.join()
+      )
 
       // console.group(`%ccount`, Logger.PartStyle.message.join())
       // console.count()

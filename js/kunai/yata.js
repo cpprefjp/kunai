@@ -1,3 +1,4 @@
+import {Logger} from './logger'
 import * as Mirror from './mirror'
 import {KunaiError} from './error'
 
@@ -5,18 +6,30 @@ import {default as CodeMirror} from 'codemirror'
 import * as js from 'codemirror/mode/clike/clike'
 
 
+const ToolID = {
+  play: Symbol.for('play'),
+  compile: Symbol.for('compile'),
+  theme: Symbol.for('theme'),
+}
+
+
 class Yata {
+  static ToolID = ToolID
+
   static Style = {
     Marker: {
       color: '#ff2727',
     },
   }
 
-  constructor(log, code, opts = {}) {
+  constructor(log, wand, code, opts = {}) {
+    this.wand = wand
     this.code = code
 
-    this.log = log.make_context(`${this.constructor.name} ${this.code.id}`)
+    this.log = log.make_context(`${this.constructor.name} ${this.code.id}`, new Logger.Option({icon: {text: '\u{1F426}', color: '#222'}}))
     this.opts = Object.assign({}, Mirror.DefaultOptions, opts)
+
+    this.tools = new Map
 
     this.themes = new Map
     this.currentTheme = Mirror.DefaultOptions.theme
@@ -51,6 +64,7 @@ class Yata {
       let tb = $('<ul />').addClass('tools left')
       {
         let li = tool.clone().addClass('play')
+        this.tools.set(ToolID.play, li)
         let btn = btn_proto.clone().prop('disabled', false)
 
         $('<i>').addClass('fa fa-fw fa-magic').appendTo(btn)
@@ -61,6 +75,7 @@ class Yata {
       }
       {
         let li = tool.clone().addClass('compile')
+        this.tools.set(ToolID.compile, li)
         let btn = btn_proto.clone()
 
         $('<i>').addClass('fa fa-fw fa-play').appendTo(btn)
@@ -77,6 +92,8 @@ class Yata {
 
       {
         let li = tool.clone().addClass('theme')
+        this.tools.set(ToolID.theme, li)
+
         let btn = $('<div>').addClass('not-a-button')
         $('<i>').addClass('fa fa-fw fa-adjust').appendTo(btn)
         tooltip.clone().appendTo(btn)
@@ -195,8 +212,24 @@ class Yata {
     console.time(JSON.stringify({compile: run_id}))
 
     this.log.info(`onCompile`, e)
+    this.tools.get(ToolID.compile).addClass('compiling')
+    sleep(3)
+
+    this.onCompileSuccess(e) // FIXME
 
     console.timeEnd(JSON.stringify({compile: run_id}))
+  }
+
+  async onCompileSuccess(e) {
+    return this.onCompilePost(e)
+  }
+
+  async onCompileFailure(e) {
+    return this.onCompilePost(e)
+  }
+
+  async onCompilePost(e) {
+    this.tools.get(ToolID.compile).removeClass('compiling')
   }
 
   onThemeChange(e) {

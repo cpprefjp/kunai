@@ -1,6 +1,5 @@
+import {Logger} from './logger'
 import {NetworkError} from './error'
-import {CPPCode} from './parser/cpp'
-
 
 class APIError extends NetworkError {
   constructor() {
@@ -79,12 +78,30 @@ class Wand {
   ])
 
   constructor(log, opts = new Map) {
-    this.log = log.make_context(this.constructor.name)
+    this.log = log.make_context(`${this.constructor.name}`, new Logger.Option({icon: {text: '\u{1F32D}', color: '#CCAA14'}}))
     this.opts = Object.assign(new Map, Wand.defaults, opts)
+
+    this.log.info('ready')
   }
 
   compile(code, onSuccess, onFailure) {
-    return API.compile(this.opts, code, onSuccess, onFailure)
+    const id = `#${Date.now()}`
+    console.time(id)
+    this.log.info(`compiling: ${id}`, code)
+
+    return API.compile(
+      this.opts, code,
+      (e) => {
+        console.timeEnd(id)
+        this.log.info(`success: ${id}`, e)
+        return onSuccess(e)
+      },
+      (e) => {
+        console.timeEnd(id)
+        this.log.error(`failed: ${id}`, e)
+        return onFailure(e)
+      }
+    )
   }
 }
 

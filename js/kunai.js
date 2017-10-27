@@ -4,6 +4,7 @@ import {Compat} from './kunai/compat'
 import * as UI from './kunai/ui'
 
 import {Meta} from './kunai/meta'
+import {Wand} from './kunai/wand'
 // import * as Code from './kunai/code'
 import * as Mirror from './kunai/mirror'
 import {Yata} from './kunai/yata'
@@ -19,10 +20,17 @@ class Kunai {
     $('body').addClass('js').removeClass('no-js')
 
     this.opts = Object.assign({}, Kunai.defaultOptions, opts)
-    this.log = new Logger('Kunai', new Logger.Option(this.opts))
+    this.log = new Logger(
+      'Kunai',
+      new Logger.Option(Object.assign({}, this.opts, {
+        icon: {text: '\u{1F5E1}', color: '#2244AA'}
+      }))
+    )
 
     this.compat = new Compat(this.log)
     this.initUI()
+
+    this.wand = new Wand(this.log)
 
     this.yatas = new Map
   }
@@ -56,7 +64,7 @@ class Kunai {
       elem.addClass('kunai-code')
     }
 
-    this.yatas.set(id, new Yata(this.log, this.meta.getCode(id)))
+    this.yatas.set(id, new Yata(this.log, this.wand, this.meta.getCode(id)))
 
     // whitelist
     {

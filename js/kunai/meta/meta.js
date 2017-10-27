@@ -17,7 +17,7 @@ class Meta {
   static PageKey = PageKey
 
   constructor(log, config, onCodeFound) {
-    this.log = log.make_context(this.constructor.name)
+    this.log = log.make_context(`${this.constructor.name}`, new Logger.Option({icon: {text: '\u{262F}', color: '#AAA'}}))
     this.config = config
     this.onCodeFound = onCodeFound
     this.last_key = 0

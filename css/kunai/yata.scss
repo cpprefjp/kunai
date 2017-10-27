@@ -152,6 +152,19 @@ body.kunai {
             .tooltip:after {
               content: 'Compiling...';
             }
+
+            button {
+              color: #ffff1d;
+
+              &:hover, &:disabled {
+                background-color: inherit;
+              }
+
+              .fa {
+                @extend .fa-cog;
+                @extend .fa-spin;
+              }
+            }
           }
         }
         &.theme .tooltip:after {
