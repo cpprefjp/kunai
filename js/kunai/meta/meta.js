@@ -103,7 +103,7 @@ class Meta {
   }
 
   parse(content_type, data) {
-    this.log.info(`parsing markdown file ${this.filename}`)
+    this.log.info(`parsing markdown file '${this.filename}'`)
 
     this.parse_impl(content_type, data)
     this.log.info('parse success')

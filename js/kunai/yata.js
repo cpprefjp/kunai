@@ -52,7 +52,7 @@ class Yata {
     elem.addClass('hidden') // hide by default
     this.code.id.serializeInDOM(elem)
 
-    this.log.info(`creating Yata toolbar for code snippet #${this.code.id}`, elem)
+    this.log.info(`creating Yata toolbar for code snippet ${this.code.id}`, elem)
     let tools_all = $('<div>').addClass('tools-all')
     const tooltip = $('<div class="tooltip-wrapper"><div class="tooltip"></div></div>')
     const tool = $('<li>').addClass('tool')
@@ -208,27 +208,33 @@ class Yata {
   }
 
   onCompile(e) {
-    const run_id = Date.now()
-    console.time(JSON.stringify({compile: run_id}))
-
-    this.log.info(`onCompile`, e)
+    this.log.debug(`onCompile`, e)
     this.tools.get(ToolID.compile).addClass('compiling')
-    sleep(3)
 
-    this.onCompileSuccess(e) // FIXME
+    // save to textarea
+    this.cm.save()
 
-    console.timeEnd(JSON.stringify({compile: run_id}))
+    this.wand.compile(
+      this.cm.getTextArea().value,
+      this.onCompileSuccess.bind(this), this.onCompileFailure.bind(this)
+    )
   }
 
-  async onCompileSuccess(e) {
-    return this.onCompilePost(e)
+  async onCompileSuccess(ret, extra) {
+    this.onCompilePostPre(true, ret, extra)
+    return this.onCompilePostPost(ret, extra)
   }
 
-  async onCompileFailure(e) {
-    return this.onCompilePost(e)
+  async onCompileFailure(e, extra) {
+    this.onCompilePostPre(false, e, extra)
+    return this.onCompilePostPost(e, extra)
   }
 
-  async onCompilePost(e) {
+  onCompilePostPre(isSuccess, e, extra) {
+    // this.log.info(`${isSuccess ? 'success' : 'failed'}: ${extra.id}`)
+  }
+
+  async onCompilePostPost(e, extra) {
     this.tools.get(ToolID.compile).removeClass('compiling')
   }
 
