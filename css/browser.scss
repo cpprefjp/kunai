@@ -5,3 +5,23 @@
   // background: #f8f8f8;
 // }
 
+body.kunai {
+  nav[role="navigation"] {
+    .navbar-header {
+      .navbar-brand {
+        .title {
+          &:after {
+            content: "[kunai-testing]";
+            font-weight: bold;
+            background: #F02436;
+            color: #FFF;
+            padding: .2em .4em;
+            margin-left: 1em;
+          }
+        }
+      }
+    }
+  }
+}
+
+
