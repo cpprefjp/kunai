@@ -121,7 +121,7 @@ Docker をインストール済みなら:
     <script type="text/javascript"><!--
       document.addEventListener('DOMContentLoaded', function() {
         var kn = new Kunai;
-        kn.start();
+        kn.cpprefjp(); // or kn.boostjp();
       });
     --></script>
   </head>
