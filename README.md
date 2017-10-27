@@ -41,22 +41,24 @@ https://github.com/cpprefjp/site_generator/blob/fef73565384008fb47d23f09b6db10f6
 
 ## コンポーネント
 
-### Compat (v1)
+### Compat
 
 互換性モジュール ([css/kunai/compat.scss](css/kunai/compat.scss), [js/kunai/compat.js](js/kunai/compat.js))
 
-- [x] 現行の __cpprefjp/site_generator__ のCSSと同じ表示
+- [x] 現行の __cpprefjp/site_generator__ のCSSとほぼ同じ表示
 - [x] *Bootstrap* v3 を自前で読む
 - [x] *Bootstrap* v3 と干渉しない
 - [x] *Glyphicon* (*Bootstrap* v4 で deprecate) -> *FontAwesome* に移行
 - [x] *jQuery* を自前で読む
 
 
-### Compat (v2)
+### Ext
 
-将来版
+Compatに上乗せするUX改善スタイル
 
+- [x] C++バッジ（ツリービューその他）
 - [ ] *Bootstrap* -> v4
+
 
 
 ### Kunai (core, v1)
