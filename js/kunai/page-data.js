@@ -66,7 +66,7 @@ class PageData {
       for (let code_r of this.raw_get(PageKey.codes)) {
         ++id
         let code = $(code_r)
-        code.attr('data-kunai-code-id', id)
+        code.attr('data-kunai-yata-id', id)
       }
     }
   }

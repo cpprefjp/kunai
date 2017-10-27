@@ -176,7 +176,7 @@ class GHSource {
         const lang = token.get('lang')
         const code = token.get('text')
 
-        this.log.info(`found a code section (#${++this.code_id}`)
+        this.log.info(`found a code section (#${++this.code_id})`)
 
         if (!this.is_inside_example) {
           this.log.info('got a code outside the example section, skipping...', lang, code)
@@ -184,7 +184,7 @@ class GHSource {
         }
 
         if (lang === 'cpp') {
-          this.log.info(`got C++ code (${this.codes.length + 1})`, code)
+          this.log.info(`got C++ code (${this.codes.size + 1})`, code)
 
           const headers = [this.metas.get('header')]
           this.codes.set(

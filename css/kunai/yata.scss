@@ -21,16 +21,30 @@ body.kunai {
       display: none;
     }
 
-    &:not(.enabled) {
+    // &:not(.enabled) {
+      // .tool:not(.play) button, .not-a-button {
+    .tool button:disabled {
+      $disabled: #DDD;
+      background: $disabled;
+      cursor: not-allowed;
+    }
+
+    &.enabled {
       button, .not-a-button {
+        // default colors
         background: none;
       }
     }
+
+    &:not(.enabled) .play button {
+      background: none;
+    }
+
     &.enabled .play button {
       background: $cl-shuri;
     }
 
-    .tools-l-r {
+    .tools-all {
       display: flex;
       width: 100%;
       justify-content: space-between;
@@ -121,7 +135,7 @@ body.kunai {
         button {
           padding-top: 2px;
 
-          &:hover {
+          &:not(:disabled):hover {
             background: $cl-shuri;
           }
         } // button
@@ -141,6 +155,10 @@ body.kunai {
               text-align: left;
             }
           }
+        }
+
+        &:not(:last-child) {
+          margin-right: .4em;
         }
       } // .tool
     } // .tools

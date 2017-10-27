@@ -30,7 +30,7 @@ class Yata {
       )
     })
 
-    // this.resizer = $('<div>').addClass('yata-resizer').attr('data-kunai-yata-for', this.id)
+    // this.resizer = $('<div>').addClass('yata-resizer').attr('data-kunai-yata-id', this.id)
 
     // this.resizer.on('mouseup', this.onResize.bind(this))
     // this.resizer.on('mousedown', this.onResize.bind(this))
@@ -84,7 +84,7 @@ class Yata {
   }
 
   findRaw() {
-    return $(`.mirror[data-kunai-yata-for="${this.id}"] + .CodeMirror`)
+    return $(`.mirror[data-kunai-yata-id="${this.id}"] + .CodeMirror`)
   }
 }
 

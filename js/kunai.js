@@ -39,38 +39,50 @@ class Kunai {
 
     this.pd = new PageData(this.log, () => {
       let codes = this.pd.raw_get(PageKey.codes)
+      let kunai_id = -1
       for (let c_raw of codes) {
-        let kunai_id = 0
+        ++kunai_id
 
         let c = $(c_raw)
-        const id = parseInt(c.attr('data-kunai-code-id'))
+        const id = parseInt(c.attr('data-kunai-yata-id'))
         c.addClass('kunai-code')
 
         let yata = $(`<div />`)
         yata.addClass('yata')
         yata.addClass('hidden') // hide by default
-        yata.attr('data-kunai-yata-for', id)
+        yata.attr('data-kunai-yata-id', id)
 
         this.log.info(`creating Yata toolbar for code snippet #${id}`, yata)
-        let tools_l_r = $('<div>').addClass('tools-l-r')
+        let tools_all = $('<div>').addClass('tools-all')
         const tooltip = $('<div class="tooltip-wrapper"><div class="tooltip"></div></div>')
         const tool = $('<li>').addClass('tool')
+        let btn_proto = $(`<button>`).attr('data-kunai-yata-id', kunai_id).prop('disabled', true)
+        tooltip.clone().appendTo(btn_proto)
+
 
         {
           let tb = $('<ul />').addClass('tools left')
           {
             let li = tool.clone().addClass('play')
-
-            let btn = $(`<button />`).attr('data-kunai-id', kunai_id++)
-            tooltip.clone().appendTo(btn)
+            let btn = btn_proto.clone().prop('disabled', false)
 
             $('<i>').addClass('fa fa-fw fa-magic').appendTo(btn)
 
-            btn.on('click', this.onToolClick.bind(this))
+            btn.on('click', this.onEnable.bind(this))
             btn.appendTo(li)
             li.appendTo(tb)
           }
-          tb.appendTo(tools_l_r)
+          {
+            let li = tool.clone().addClass('compile')
+            let btn = btn_proto.clone()
+
+            $('<i>').addClass('fa fa-fw fa-play').appendTo(btn)
+
+            btn.on('click', this.onCompile.bind(this))
+            btn.appendTo(li)
+            li.appendTo(tb)
+          }
+          tb.appendTo(tools_all)
         }
 
         {
@@ -97,10 +109,10 @@ class Kunai {
             li.appendTo(tb)
           }
 
-          tb.appendTo(tools_l_r)
+          tb.appendTo(tools_all)
         }
 
-        tools_l_r.appendTo(yata)
+        tools_all.appendTo(yata)
         c.before(yata)
       } // each code
 
@@ -127,8 +139,17 @@ class Kunai {
     }
   }
 
+  onCompile(e) {
+    const run_id = Date.now()
+    console.time(JSON.stringify({compile: run_id}))
+
+    this.log.info(`onCompile`, e)
+
+    console.timeEnd(JSON.stringify({compile: run_id}))
+  }
+
   onThemeChange(e) {
-    const id = parseInt($(e.target).closest('.yata').attr('data-kunai-yata-for'))
+    const id = parseInt($(e.target).closest('.yata').attr('data-kunai-yata-id'))
     const theme_id = e.target.value
     this.log.info(`#${id} onThemeChange (--> '${theme_id}')`, e)
 
@@ -140,57 +161,80 @@ class Kunai {
     }
   }
 
-  onToolClick(e) {
+  onEnable(e) {
     let btn = $(e.target).closest('button')
-    const id = btn.attr('data-kunai-id')
-    this.log.debug(`onToolClick id=${id}`, e, btn.get(0))
+    const id = btn.attr('data-kunai-yata-id')
+    this.log.debug(`onEnable id=${id}`, e, btn.get(0))
 
-    if (id === '0') {
-      let yata = btn.closest('.yata')
-      const code_id = parseInt(yata.attr('data-kunai-yata-for'))
-      let orig_code = $(yata.nextAll(`.codehilite[data-kunai-code-id="${code_id}"]`).get(0))
+    let yata = btn.closest('.yata')
+    const code_id = parseInt(yata.attr('data-kunai-yata-id'))
+    let orig_code = $(yata.nextAll(`.codehilite[data-kunai-yata-id="${code_id}"]`).get(0))
 
-      if (yata.hasClass('enabled')) {
-        this.log.info(`disabling Yata mode for code #${code_id}`, orig_code)
+    if (yata.hasClass('enabled')) {
+      this.log.debug(`disabling Yata mode for code #${code_id}`, orig_code)
 
-        {
-          let mirror = orig_code.next('.mirror')
-          if (mirror) {
-            mirror.removeClass('enabled')
-          }
+      {
+        let mirror = orig_code.next('.mirror')
+        if (mirror.length) {
+          mirror.removeClass('enabled')
         }
-        yata.removeClass('enabled')
-        return
       }
 
-      yata.addClass('enabled')
-      this.log.info(`enabling Yata mode for code #${code_id}`, orig_code)
+      // disable all tools, except for the 'Enable' button
+      {
+        let tools = yata.find('.tools-all .tool')
+        for (let tool_r of tools) {
+          let tool = $(tool_r)
+          if (tool.hasClass('play')) {
+            continue
+          }
+          tool.find('button').prop('disabled', true)
+        }
+      }
 
-      let mirror = null
-      mirror = orig_code.next('.mirror')
-      if (!mirror.length) {
-        this.log.info('Yata buffer not found, creating...')
-        mirror = $('<textarea>').addClass('mirror')
-        mirror.attr('data-kunai-yata-for', code_id)
-
-        // the code
-        mirror.text(this.pd.source.get_code(code_id).buf)
-
-        orig_code.after(mirror)
-        this.log.info(`enabling Yata #${code_id}`, mirror)
-        this.yatas.set(
-          code_id,
-          new Mirror.Yata(
-            this.log,
-            code_id,
-            mirror.get(0), {
-              theme: this.currentTheme
-            }
-          )
-        )
-      } // if mirror
-      mirror.addClass('enabled')
+      yata.removeClass('enabled')
+      return
     }
+
+    yata.addClass('enabled')
+    this.log.info(`enabling Yata mode for code #${code_id}`, orig_code)
+
+    // remove all 'disabled' props
+    {
+      let tools = yata.find('.tools-all .tool')
+      for (let tool_r of tools) {
+        let tool = $(tool_r)
+        let btn = tool.find('button')
+        if (btn.length) {
+          btn.prop('disabled', false)
+        }
+      }
+    }
+
+    let mirror = null
+    mirror = orig_code.next('.mirror')
+    if (!mirror.length) {
+      this.log.info('Yata buffer not found, creating...')
+      mirror = $('<textarea>').addClass('mirror')
+      mirror.attr('data-kunai-yata-id', code_id)
+
+      // the code
+      mirror.text(this.pd.source.get_code(code_id).buf)
+
+      orig_code.after(mirror)
+      this.log.info(`enabling Yata #${code_id}`, mirror)
+      this.yatas.set(
+        code_id,
+        new Mirror.Yata(
+          this.log,
+          code_id,
+          mirror.get(0), {
+            theme: this.currentTheme
+          }
+        )
+      )
+    } // if mirror
+    mirror.addClass('enabled')
   }
 }
 
