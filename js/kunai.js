@@ -1,5 +1,7 @@
 import {Logger} from './kunai/logger'
 import {Compat} from './kunai/compat'
+import * as UI from './kunai/ui'
+
 import {PageKey, PageData} from './kunai/page-data'
 import * as Mirror from './kunai/mirror'
 
@@ -17,6 +19,7 @@ class Kunai {
     this.log = new Logger('Kunai', this.opts)
 
     this.compat = new Compat(this.log)
+    this.initUI()
 
     this.themes = new Map
     this.currentTheme = Mirror.DefaultOptions.theme
@@ -99,6 +102,12 @@ class Kunai {
         }
       }
     })
+  }
+
+  async initUI() {
+    this.ui = {
+      treeview: new UI.Treeview(this.log),
+    }
   }
 
   async loadTheme(id) {

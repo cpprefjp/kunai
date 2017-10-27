@@ -172,8 +172,12 @@ main[role="main"] {
     padding: 3px;
 
     .badge {
+      display: flex;
+      align-content: center;
+      justify-content: center;
+      align-items: center;
+
       font-size: .8em;
-      display: inline-block;
       flex-shrink: 1;
       padding: 0 .25em;
 
@@ -189,7 +193,16 @@ main[role="main"] {
       }
 
       &.text-warning {
-        color: #8a6d3b;
+        &, & a {
+          color: #8a6d3b;
+        }
+
+        &:before {
+          @extend .fa;
+          @extend .fa-warning;
+
+          margin-right: .2em;
+        }
       }
     }
 
@@ -201,8 +214,15 @@ main[role="main"] {
     .cpp-sidebar {
       @extend .badge;
 
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+
       &.cpp20 {
-        font-weight: bold;
+        &, & a {
+          font-weight: bold;
+        }
       }
     }
 
