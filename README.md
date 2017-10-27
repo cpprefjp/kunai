@@ -1,6 +1,6 @@
 # kunai
 
-[cpprefjp](https://cpprefjp.github.io/) と [boostjp](https://boostjp.github.io/) のJavaScriptフロントエンド
+[cpprefjp](https://cpprefjp.github.io/) と [boostjp](https://boostjp.github.io/) のフロントエンド、強化版
 
 - [x] cpprefjp
 - [ ] boostjp （対応予定）
