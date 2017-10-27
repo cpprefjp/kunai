@@ -13,6 +13,7 @@
 - C++のことを調べて知って試すフローをcpprefjp上で完結可能にする
 - cpprefjp/site の記事のソース改変ゼロ
 - cpprefjp/site_generator の現行アセットを全て ES2017+ / PostCSS 化
+- JavaScriptが無効になっていてもコンテンツ自体は完全に閲覧できる
 
 
 ## site_generator の todo (v1)
