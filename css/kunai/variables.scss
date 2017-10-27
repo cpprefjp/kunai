@@ -1,0 +1,23 @@
+$cl-shuri: #306E82;
+$cl-theme: #87ceeb;
+$cl-white: #FEFEFE;
+$cl-blue: #25649f;
+
+$bg-bg-gray: #fafbfc;
+
+$cl-ui-black: #24292e;
+$bg-ui-gray: #eff3f6;
+$bd-ui-gray: rgba(27, 31, 35, 0.2);
+$grad-ui-gray: linear-gradient(-180deg, #fafbfc 0%, #eff3f6 90%);
+
+$cl-black: #24292e;
+$cl-over-gray: rgba(255,255,255,0.75);
+
+$sh-inv: 0 1px 0 #444;
+
+
+@mixin box-reset {
+  box-sizing: content-box;
+}
+
+

@@ -64,7 +64,8 @@ class GHSource {
         if (e instanceof KunaiError) {
           this.log.error(e.reason, ...e.args)
         } else {
-          this.log.error(e.name, e.message)
+          // this.log.error(e.name, e.message)
+          throw e
         }
 
       } finally {

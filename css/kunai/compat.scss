@@ -1,0 +1,14 @@
+body.kunai {
+  .fa {
+    @include box-reset;
+
+    &:before, &:after {
+      @include box-reset;
+    }
+  }
+
+  button {
+    outline: none;
+  }
+} // body.kunai
+

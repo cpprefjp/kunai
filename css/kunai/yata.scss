@@ -1,0 +1,159 @@
+@import './variables';
+
+
+body.kunai {
+  .yata:not(.hidden) + .codehilite {
+    pre {
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+
+      border-top: none;
+    }
+  }
+
+  .yata {
+    display: flex;
+    // background: lighten($cl-shuri, 50%);
+    background: lighten($cl-shuri, 25%);
+    border-radius: 2px 2px 0 0;
+
+    &.hidden {
+      display: none;
+    }
+
+    &.enabled .play button {
+      background: $cl-shuri;
+    }
+
+    ul.tools {
+      display: flex;
+      align-items: flex-start;
+      list-style-type: none;
+      margin: 0;
+      padding: .25em .35em;
+      @include box-reset;
+
+      li.tool {
+        position: relative;
+        display: flex;
+        align-items: center;
+
+        select {
+          border: 1px solid $bd-ui-gray;
+          background: $bg-ui-gray;
+          height: 1.6em;
+          font-size: .9em;
+
+          option {
+            &:checked {
+              font-weight: bold;
+            }
+          }
+        }
+
+        button, .not-a-button {
+          $size: 30px;
+          display: flex;
+          position: relative;
+          justify-content: center;
+          align-items: center;
+          box-sizing: border-box;
+
+          width: $size;
+          height: $size;
+
+          font-family: sans-serif;
+          border: none;
+          font-size: 1.2em;
+          // transition: .1s ease-out;
+
+          padding: 0;
+          color: #FFF;
+          background: none;
+          text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.5);
+
+          .tooltip {
+            position: absolute;
+            visibility: hidden;
+            display: block;
+            top: 100%;
+            left: 1em;
+            cursor: text;
+
+            background: #222;
+            color: #EFEFEF;
+
+            margin-top: .5em;
+
+            opacity: 0;
+            background: $cl-black;
+            border-radius: 4px;
+
+            &:after {
+              position: relative;
+              display: inline-block;
+              white-space: nowrap;
+              padding: .2em .4em;
+              text-align: left;
+
+              @include box-reset;
+            }
+          } // .tooltip
+
+          &:hover .tooltip {
+            opacity: 1;
+            visibility: visible;
+          }
+        }
+
+        button {
+          padding-top: 2px;
+
+          &:hover {
+            background: $cl-shuri;
+          }
+        } // button
+
+        &.play .tooltip:after {
+          content: 'Run on Wandbox';
+        }
+        &.theme .tooltip:after {
+          content: 'Theme';
+        }
+
+      } // .tool
+    } // .tools
+  } // .yata
+
+  .codehilite {
+    display: block;
+  }
+
+  .yata.enabled + .codehilite {
+    display: none;
+  }
+
+  .mirror {
+    display: none;
+
+    &.enabled {
+      display: block;
+    }
+  }
+
+
+  .mirror:not(.enabled) + .CodeMirror {
+    display: none;
+  }
+
+  .cm-s-solarized.CodeMirror {
+    box-shadow: none;
+  }
+
+  .CodeMirror {
+    .CodeMirror-line {
+      padding: 0 4px 0 12px;
+    }
+  }
+}
+

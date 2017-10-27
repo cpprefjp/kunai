@@ -13,6 +13,11 @@ function isExternal(module) {
   return context.indexOf('node_modules') !== -1;
 }
 
+const codemirror_themes = require('./js/kunai/mirror/theme').reduce(function(map, e) {
+  map[e] = './' + e + '.css';
+  return map;
+}, {});
+
 module.exports = {
   js: {
     context: path.resolve(__dirname, 'js'),
@@ -25,6 +30,17 @@ module.exports = {
     },
     module: {
       rules: [
+        {
+          test: /\.css$/,
+          use: [
+            {
+              loader: 'style-loader',
+            },
+            {
+              loader: 'css-loader',
+            },
+          ],
+        },
         {
           test: /\.js$/,
           use: [
@@ -56,11 +72,46 @@ module.exports = {
       }),
     ],
   },
+  codemirror_themes: {
+    context: path.resolve(__dirname, 'node_modules', 'codemirror', 'theme'),
+    entry: codemirror_themes,
+    output: {
+      path: path.resolve(__dirname, 'dist', 'cm-themes'),
+      filename: '[name].css',
+    },
+    module: {
+      rules: [
+        {
+          test: /\.css$/,
+          use: ExtractTextPlugin.extract({
+            fallback: 'style-loader',
+            use: [
+              {
+                loader: 'css-loader',
+                options: {
+                  minimize: true,
+                  // sourceMap: true,
+                }
+              },
+            ],
+          }),
+        },
+      ],
+    },
+    plugins: [
+      new ExtractTextPlugin({
+        filename: '../css/cm-themes/[name].css',
+        disable: false,
+        allChunks: true,
+      }),
+    ]
+  },
   css: {
     context: path.resolve(__dirname, 'css'),
     entry: {
       kunai: './kunai.scss',
       'font-awesome': './font-awesome.scss',
+      'codemirror': './codemirror.scss',
     },
     output: {
       path: path.resolve(__dirname, 'dist'),
