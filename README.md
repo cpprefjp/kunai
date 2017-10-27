@@ -24,7 +24,7 @@
 
 互換性モジュール ([css/kunai/compat.scss](css/kunai/compat.scss))
 
-- [x] 現行の `cpprefjp/site_generator` のCSSを尊重する
+- [ ] 現行の `cpprefjp/site_generator` のCSSを置換した場合に同じ表示にする
 - [x] Bootstrap v3 と干渉しない
 - [x] アイコン類はなるべく FontAwesome を使う
 
