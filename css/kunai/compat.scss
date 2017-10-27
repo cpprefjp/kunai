@@ -310,11 +310,17 @@ main[role="main"] {
 
             &:before {
               border-left-color: $hi-color;
+              border-left-width: 2px;
+            }
+
+            li:last-child:after {
+              border-left-width: 2px;
             }
 
             > li {
               &:before {
                 border-bottom-color: $hi-color;
+                border-bottom-width: 2px;
               }
               .treespan {
                 background: #fddfb3;
