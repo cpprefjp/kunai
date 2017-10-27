@@ -12,13 +12,13 @@ function makeLangLink(key) {
 
 class Treeview {
   constructor(log) {
-    this.log = log.make_context(this.constructor.name)
+    this.log = log.make_context(['UI', this.constructor.name])
 
     this.log.info('initialzing...')
 
     const main = $('main[role="main"]')
 
-    // FIXME: idにしないとこれヤバい
+    // FIXME: make this search html id. this is a disaster
     let raw = main.find('.tree')
     if (!raw.length) {
       this.log.error(`tree view DOM element not found (.tree)`)

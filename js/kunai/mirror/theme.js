@@ -49,5 +49,6 @@ const Theme = [
   'zenburn',
 ]
 
+// NB: this is intended obsolete export for Webpack metadata
 module.exports = Theme
 

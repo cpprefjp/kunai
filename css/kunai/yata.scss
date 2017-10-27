@@ -141,7 +141,18 @@ body.kunai {
         } // button
 
         &.play .tooltip:after {
-          content: 'Run on Wandbox';
+          content: 'Try Code';
+        }
+        &.compile {
+          .tooltip:after {
+            content: 'Compile';
+          }
+
+          &.compiling {
+            .tooltip:after {
+              content: 'Compiling...';
+            }
+          }
         }
         &.theme .tooltip:after {
           content: 'Theme';

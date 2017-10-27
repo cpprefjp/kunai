@@ -2,7 +2,7 @@ class Compat {
   constructor(log) {
     this.log = log.make_context(this.constructor.name)
 
-    this.log.info('loading...')
+    this.log.info('applying...')
 
     // fake
     window.tree_onclick = function(e) {
@@ -14,7 +14,7 @@ class Compat {
     // real...
     $('.treespan').on('click', this.onTreeClick.bind(this))
 
-    this.log.info('loaded.')
+    this.log.info('applied.')
   } // constructor
 
   onTreeClick(e) {

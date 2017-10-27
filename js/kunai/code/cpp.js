@@ -1,6 +1,10 @@
-class CPPCode {
-  constructor(log, buf, hints) {
-    this.log = log.make_context(this.constructor.name)
+import {ID} from './id'
+
+
+class CPP {
+  constructor(log, id, buf, hints) {
+    this.id = id
+    this.log = log.make_context(`${this.constructor.name} #${this.id.key}`)
     this.buf = buf
     this.parse(hints)
   }
@@ -37,5 +41,5 @@ class CPPCode {
   }
 }
 
-export {CPPCode}
+export {CPP}
 

@@ -1,4 +1,7 @@
-class LogStyle {
+import {KunaiError} from './error'
+
+
+class LoggerStyle {
   constructor(kv) {
     this.kv = kv
   }
@@ -10,16 +13,25 @@ class LogStyle {
   }
 
   clone(assigner) {
-    return new LogStyle(Object.assign({}, this.kv, assigner))
+    return new LoggerStyle(Object.assign({}, this.kv, assigner))
+  }
+}
+
+class LoggerOption {
+  constructor(hashy) {
+    this.data = hashy
   }
 }
 
 class Logger {
+  static Option = LoggerOption
+  static Style = LoggerStyle
+
   static Level = {
     debug: {
       intensity: -1, label: 'DEBUG',
       out: console.debug,
-      style: new LogStyle({
+      style: new Logger.Style({
         'font-family': 'sans-serif',
         'font-weight': 'bold',
         'text-decoration': 'underline',
@@ -31,7 +43,7 @@ class Logger {
     info: {
       intensity: 0, label: 'INFO ',
       out: console.info,
-      style: new LogStyle({
+      style: new Logger.Style({
         'font-family': 'sans-serif',
         'color': 'gray',
       }),
@@ -40,7 +52,7 @@ class Logger {
     warn: {
       intensity: 1, label: 'WARN ',
       out: console.warn,
-      style: new LogStyle({
+      style: new Logger.Style({
         'font-family': 'sans-serif',
         'font-weight': 'bold',
         'color': '#ff8c00',
@@ -50,7 +62,7 @@ class Logger {
     error: {
       intensity: 2, label: 'ERROR',
       out: console.error,
-      style: new LogStyle({
+      style: new Logger.Style({
         'font-family': 'sans-serif',
         'font-weight': 'bold',
         'color': '#dc143c',
@@ -60,29 +72,36 @@ class Logger {
   } // Level
 
   static PartStyle = {
-    message: new LogStyle({'font-weight': 'bold', 'text-decoration': 'underline', 'color': '#aaa'}),
-    message_body: new LogStyle({'font-weight': 'normal', 'text-decoration': 'none', 'color': '#222'}),
-    backtrace: new LogStyle({'font-weight': 'bold', 'text-decoration': 'underline', 'color': '#aaa'}),
+    message: new Logger.Style({'font-weight': 'bold', 'text-decoration': 'underline', 'color': '#aaa'}),
+    message_body: new Logger.Style({'font-weight': 'normal', 'text-decoration': 'none', 'color': '#222'}),
+    backtrace: new Logger.Style({'font-weight': 'bold', 'text-decoration': 'underline', 'color': '#aaa'}),
   }
 
   static default_level() {
     return this.Level.debug
   }
 
-  static defaultOptions = {
+  static defaultOptions = new Logger.Option({
     ctx: {
       level: Logger.default_level(),
-      style: new LogStyle({
+      style: new Logger.Style({
         'font-weight': 'bold',
         'color': '#222222',
       }),
     },
-  }
+  })
 
-  constructor(ctx, opts = {}) {
+  constructor(ctx, opts) {
     this.orig_ctx = [].concat(ctx)
     this.ctx = [].concat(ctx)
-    this.opts = Object.assign(Logger.defaultOptions, opts)
+
+    this.opts = new Logger.Option(Logger.defaultOptions.data)
+    if (opts) {
+      if (!(opts instanceof Logger.Option)) {
+        throw new KunaiError(`unrecognized option type; did you mean: ['option1', 'option2', ...]`)
+      }
+      Object.assign(this.opts.data, opts.data)
+    }
   }
 
   original_context() {
@@ -112,7 +131,7 @@ class Logger {
     if (this.need_log(level)) {
       const master_output = level.intensity >= Logger.Level.error.intensity ? console.group : console.groupCollapsed
 
-      master_output(`%c${level.icon} %c${level.label}%c [%c${this.ctx.join('::')}%c] %c${arg1}`, level.style.clone({'text-decoration': 'none'}).join(), level.style.join(), '', this.opts.ctx.style.join(), '', Logger.PartStyle.message_body.join())
+      master_output(`%c${level.icon} %c${level.label}%c [%c${this.ctx.join('::')}%c] %c${arg1}`, level.style.clone({'text-decoration': 'none'}).join(), level.style.join(), '', this.opts.data.ctx.style.join(), '', Logger.PartStyle.message_body.join())
 
       // console.group(`%ccount`, Logger.PartStyle.message.join())
       // console.count()
@@ -140,7 +159,7 @@ class Logger {
       if (process.env.NODE_ENV !== 'development') return false
     }
 
-    return level.intensity >= this.opts.ctx.level.intensity
+    return level.intensity >= this.opts.data.ctx.level.intensity
   }
 }
 

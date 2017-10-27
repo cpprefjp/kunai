@@ -1,9 +1,12 @@
+import {KunaiError} from './kunai/error'
 import {Logger} from './kunai/logger'
 import {Compat} from './kunai/compat'
 import * as UI from './kunai/ui'
 
-import {PageKey, PageData} from './kunai/page-data'
+import {Meta} from './kunai/meta'
+// import * as Code from './kunai/code'
 import * as Mirror from './kunai/mirror'
+import {Yata} from './kunai/yata'
 
 
 class Kunai {
@@ -16,225 +19,58 @@ class Kunai {
     $('body').addClass('js').removeClass('no-js')
 
     this.opts = Object.assign({}, Kunai.defaultOptions, opts)
-    this.log = new Logger('Kunai', this.opts)
+    this.log = new Logger('Kunai', new Logger.Option(this.opts))
 
     this.compat = new Compat(this.log)
     this.initUI()
 
-    this.themes = new Map
-    this.currentTheme = Mirror.DefaultOptions.theme
     this.yatas = new Map
-
-    this.loadTheme(this.currentTheme)
   }
 
-  start() {
-    this.log.info('loading...')
-    this.start_impl()
-    this.log.info('loaded.')
+  cpprefjp() {
+    this.load_impl(['cpprefjp', 'site'])
   }
 
-  start_impl() {
+  boostjp() {
+    this.load_impl(['boostjp', 'site'])
+  }
+
+  load_impl(config) {
+    const desc = config.join('/')
+    this.log.info(`loading (${desc})`)
     $('body').addClass('kunai')
+    this.meta = new Meta(this.log, config, this.onCodeFound.bind(this))
+    this.log.info(`loaded (${desc})`)
+  }
 
-    this.pd = new PageData(this.log, () => {
-      let codes = this.pd.raw_get(PageKey.codes)
-      let kunai_id = -1
-      for (let c_raw of codes) {
-        ++kunai_id
+  async onCodeFound(id) {
+    // assign surrogate key
+    id.serializeInDOM(this.meta.getDOM(Meta.PageKey.codes).get(id.key))
 
-        let c = $(c_raw)
-        const id = parseInt(c.attr('data-kunai-yata-id'))
-        c.addClass('kunai-code')
-
-        let yata = $(`<div />`)
-        yata.addClass('yata')
-        yata.addClass('hidden') // hide by default
-        yata.attr('data-kunai-yata-id', id)
-
-        this.log.info(`creating Yata toolbar for code snippet #${id}`, yata)
-        let tools_all = $('<div>').addClass('tools-all')
-        const tooltip = $('<div class="tooltip-wrapper"><div class="tooltip"></div></div>')
-        const tool = $('<li>').addClass('tool')
-        let btn_proto = $(`<button>`).attr('data-kunai-yata-id', kunai_id).prop('disabled', true)
-        tooltip.clone().appendTo(btn_proto)
-
-
-        {
-          let tb = $('<ul />').addClass('tools left')
-          {
-            let li = tool.clone().addClass('play')
-            let btn = btn_proto.clone().prop('disabled', false)
-
-            $('<i>').addClass('fa fa-fw fa-magic').appendTo(btn)
-
-            btn.on('click', this.onEnable.bind(this))
-            btn.appendTo(li)
-            li.appendTo(tb)
-          }
-          {
-            let li = tool.clone().addClass('compile')
-            let btn = btn_proto.clone()
-
-            $('<i>').addClass('fa fa-fw fa-play').appendTo(btn)
-
-            btn.on('click', this.onCompile.bind(this))
-            btn.appendTo(li)
-            li.appendTo(tb)
-          }
-          tb.appendTo(tools_all)
-        }
-
-        {
-          let tb = $('<ul />').addClass('tools right')
-
-          {
-            let li = tool.clone().addClass('theme')
-            let btn = $('<div>').addClass('not-a-button')
-            $('<i>').addClass('fa fa-fw fa-adjust').appendTo(btn)
-            tooltip.clone().appendTo(btn)
-            btn.appendTo(li)
-
-            let sel = $('<select>')
-
-            for (const theme of Mirror.Theme) {
-              $('<option>').val(theme).text(theme).appendTo(sel)
-            }
-
-            // i.e. default theme
-            sel.val(this.currentTheme)
-
-            sel.on('change', this.onThemeChange.bind(this))
-            sel.appendTo(li)
-            li.appendTo(tb)
-          }
-
-          tb.appendTo(tools_all)
-        }
-
-        tools_all.appendTo(yata)
-        c.before(yata)
-      } // each code
-
-      // whitelist
-      {
-        let example = this.pd.raw_get(PageKey.articleBody).children('h2:contains("例") ~ .yata').get(0)
-        if (example) {
-          $(example).removeClass('hidden')
-        }
+    {
+      let elem = this.meta.getDOM(Meta.PageKey.codes, id)
+      if (!elem.length) {
+        throw new KunaiError(`[BUG] the original DOM element for code ${id} not found`, elem)
       }
-    })
+
+      elem.addClass('kunai-code')
+    }
+
+    this.yatas.set(id, new Yata(this.log, this.meta.getCode(id)))
+
+    // whitelist
+    {
+      let example = this.meta.getDOM(Meta.PageKey.articleBody).children('h2:contains("例") ~ .yata')
+      if (example.length) {
+        example.removeClass('hidden')
+      }
+    }
   }
 
   async initUI() {
     this.ui = {
       treeview: new UI.Treeview(this.log),
     }
-  }
-
-  async loadTheme(id) {
-    if (!this.themes.has(id)) {
-      this.log.info(`initial theme load for '${id}'`)
-      this.themes.set(id, require(`codemirror/theme/${id}.css`))
-    }
-  }
-
-  onCompile(e) {
-    const run_id = Date.now()
-    console.time(JSON.stringify({compile: run_id}))
-
-    this.log.info(`onCompile`, e)
-
-    console.timeEnd(JSON.stringify({compile: run_id}))
-  }
-
-  onThemeChange(e) {
-    const id = parseInt($(e.target).closest('.yata').attr('data-kunai-yata-id'))
-    const theme_id = e.target.value
-    this.log.info(`#${id} onThemeChange (--> '${theme_id}')`, e)
-
-    this.loadTheme(theme_id)
-    this.currentTheme = theme_id
-
-    if (this.yatas.has(id)) {
-      this.yatas.get(id).onThemeChange(theme_id)
-    }
-  }
-
-  onEnable(e) {
-    let btn = $(e.target).closest('button')
-    const id = btn.attr('data-kunai-yata-id')
-    this.log.debug(`onEnable id=${id}`, e, btn.get(0))
-
-    let yata = btn.closest('.yata')
-    const code_id = parseInt(yata.attr('data-kunai-yata-id'))
-    let orig_code = $(yata.nextAll(`.codehilite[data-kunai-yata-id="${code_id}"]`).get(0))
-
-    if (yata.hasClass('enabled')) {
-      this.log.debug(`disabling Yata mode for code #${code_id}`, orig_code)
-
-      {
-        let mirror = orig_code.next('.mirror')
-        if (mirror.length) {
-          mirror.removeClass('enabled')
-        }
-      }
-
-      // disable all tools, except for the 'Enable' button
-      {
-        let tools = yata.find('.tools-all .tool')
-        for (let tool_r of tools) {
-          let tool = $(tool_r)
-          if (tool.hasClass('play')) {
-            continue
-          }
-          tool.find('button').prop('disabled', true)
-        }
-      }
-
-      yata.removeClass('enabled')
-      return
-    }
-
-    yata.addClass('enabled')
-    this.log.info(`enabling Yata mode for code #${code_id}`, orig_code)
-
-    // remove all 'disabled' props
-    {
-      let tools = yata.find('.tools-all .tool')
-      for (let tool_r of tools) {
-        let tool = $(tool_r)
-        let btn = tool.find('button')
-        if (btn.length) {
-          btn.prop('disabled', false)
-        }
-      }
-    }
-
-    let mirror = null
-    mirror = orig_code.next('.mirror')
-    if (!mirror.length) {
-      this.log.info('Yata buffer not found, creating...')
-      mirror = $('<textarea>').addClass('mirror')
-      mirror.attr('data-kunai-yata-id', code_id)
-
-      // the code
-      mirror.text(this.pd.source.get_code(code_id).buf)
-
-      orig_code.after(mirror)
-      this.log.info(`enabling Yata #${code_id}`, mirror)
-      this.yatas.set(
-        code_id,
-        new Mirror.Yata(
-          this.log,
-          code_id,
-          mirror.get(0), {
-            theme: this.currentTheme
-          }
-        )
-      )
-    } // if mirror
-    mirror.addClass('enabled')
   }
 }
 
