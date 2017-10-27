@@ -43,7 +43,7 @@ https://github.com/cpprefjp/site_generator/blob/fef73565384008fb47d23f09b6db10f6
 
 ### Compat
 
-互換性モジュール ([css/kunai/compat.scss](css/kunai/compat.scss), [js/kunai/compat.js](js/kunai/compat.js))
+互換性モジュール ([kunai/compat.scss](css/kunai/compat.scss), [kunai/compat.js](js/kunai/compat.js))
 
 - [x] 現行の __cpprefjp/site_generator__ のCSSとほぼ同じ表示
 - [x] *Bootstrap* v3 を自前で読む
@@ -54,7 +54,7 @@ https://github.com/cpprefjp/site_generator/blob/fef73565384008fb47d23f09b6db10f6
 
 ### Ext
 
-Compatに上乗せするUX改善スタイル
+Compatに上乗せするUX改善アセット ([kunai/ext.scss](css/kunai/ext.scss))
 
 - [x] C++バッジ（ツリービューその他）
 - [ ] *Bootstrap* -> v4
