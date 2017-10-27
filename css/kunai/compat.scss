@@ -96,6 +96,10 @@ body {
     margin-bottom: 0;
     background: none;
     border-radius: 0;
+
+    li:first-child {
+      font-size: 1.2em;
+    }
   }
   .footer {
     text-align: center;
@@ -126,6 +130,10 @@ body {
         font-size: 1rem;
       }
     } // h1
+
+    pre {
+      background: #f0f0f0;
+    }
 
     pre .err {
       border: none;
@@ -175,7 +183,7 @@ main[role="main"] {
     overflow-x: scroll;
     padding: 3px;
 
-    .badge {
+    .badge-cpp {
       display: flex;
       align-content: center;
       justify-content: center;
@@ -192,23 +200,69 @@ main[role="main"] {
       margin-left: .4rem;
       margin-right: .1rem;
 
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+
       &:last-child {
         margin-right: 0;
       }
 
+      &.text-warning, &.text-danger {
+        &:before {
+          @extend .fa;
+          margin-right: .2em;
+        }
+      }
+
       &.text-warning {
+        @extend .fa-warning;
+
         &, & a {
+          font-weight: normal;
+          $color: #ff9900;
+          color: $color;
+          border-color: $color;
+        }
+      }
+      &.text-danger {
+        @extend .fa-ban;
+
+        &, & a {
+          font-weight: bold;
           $color: #8a6d3b;
           color: $color;
           border-color: $color;
         }
+      }
+    }
 
-        &:before {
-          @extend .fa;
-          @extend .fa-warning;
+    $cl-badge-base: #757575;
+    .badge-cpp11 {
+      @extend .badge-cpp;
+      &, & a {
+        color: $cl-badge-base;
+      }
+    }
 
-          margin-right: .2em;
-        }
+    .badge-cpp14, .badge-cpp17 {
+      @extend .badge-cpp;
+      &, & a {
+        $color: darken($cl-badge-base, 35%);
+        color: $color;
+        border-color: $color;
+      }
+    }
+
+    .badge-cpp20 {
+      @extend .badge-cpp;
+      &, & a {
+        font-weight: bold;
+
+        $color: darken($cl-badge-base, 35%);
+        color: $color;
+        border-color: $color;
       }
     }
 
@@ -218,36 +272,17 @@ main[role="main"] {
     // }
 
     .cpp-sidebar {
-      $cl-base: #757575;
-      @extend .badge;
-
-      a {
-        text-decoration: none;
-        color: inherit;
+      &.cpp11, &.cpp11deprecated, &.cpp11removed {
+        @extend .badge-cpp11;
       }
-
-      &.cpp11 {
-        &, & a {
-          color: $cl-base;
-        }
+      &.cpp14, &.cpp14deprecated, &.cpp14removed {
+        @extend .badge-cpp14;
       }
-
-      &.cpp14, &.cpp17 {
-        &, & a {
-          $color: darken($cl-base, 35%);
-          color: $color;
-          border-color: $color;
-        }
+      &.cpp17, &.cpp17deprecated, &.cpp17removed {
+        @extend .badge-cpp17;
       }
-
-      &.cpp20 {
-        &, & a {
-          font-weight: bold;
-
-          $color: darken($cl-base, 35%);
-          color: $color;
-          border-color: $color;
-        }
+      &.cpp20, &.cpp20deprecated, &.cpp20removed {
+        @extend .badge-cpp20;
       }
     }
 
