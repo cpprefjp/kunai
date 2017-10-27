@@ -24,22 +24,22 @@
 
 互換性モジュール ([css/kunai/compat.scss](css/kunai/compat.scss))
 
-- [ ] 現行の `cpprefjp/site_generator` のCSSを置換した場合に同じ表示にする
-- [x] Bootstrap v3 と干渉しない
-- [x] アイコン類はなるべく FontAwesome を使う
+- [ ] 現行の __cpprefjp/site_generator__ のCSSを置換した場合に同じ表示にする
+- [x] *Bootstrap* v3 と干渉しない
+- [x] アイコン類はなるべく *FontAwesome* を使う
 
 
 ### Compat (v2)
 
 将来版
 
-- [ ] Bootstrap -> v4
-- [ ] Glyphicon が Bootstrap v4 で deprecate -> FontAwesomeに完全移行
+- [ ] *Bootstrap* -> v4
+- [ ] *Glyphicon* が *Bootstrap* v4 で deprecate -> *FontAwesome* に完全移行
 
 
 ### Kunai (core, v1)
 
-cpprefjp のソースコードとメタ情報の包括管理
+__cpprefjp/site__ のソースコードとメタ情報の包括管理
 
 - [x] 読み込まれていない状態では従来と同じ機能性
 - [x] 現在開いているページのMarkdownソースをGitHubリポジトリからフェッチ、正しく構文解析してメタ情報として使う
@@ -57,7 +57,7 @@ cpprefjp のソースコードとメタ情報の包括管理
 
 - [x] 全てのサンプルソースにWandboxエディタを動的に追加
 - [x] 何も読み込まれていない状態ではこれまでの静的な表示を保つ
-- [x] cpprefjp/site のソースのサンプルコードの段階でC++の `#include` が足りていないものを検知して自動で追加
+- [x] __cpprefjp/site__ のソースのサンプルコードの段階で C++ の `#include` が足りていないものを検知して自動で追加
 
 
 ---
