@@ -37,7 +37,7 @@ module.exports = Merge.multiple(common, {
       new HtmlWebpackPlugin({
         title: '[kunai-testing]',
         hash: true,
-        template: '../html/index.hbs',
+        template: '../html/kunai-testing.hbs',
         chunks: [
           'kunai-vendor',
           'kunai',
