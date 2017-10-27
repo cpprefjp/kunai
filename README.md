@@ -10,9 +10,9 @@
 
 ## 設計思想 (v1)
 
-i. C++のことを調べて知って試すフローをcpprefjp上で完結可能にする
-ii. cpprefjp/site の記事のソース改変ゼロ
-iii. cpprefjp/site_generator の現行アセットを全て ES2017+ / PostCSS 化
+- C++のことを調べて知って試すフローをcpprefjp上で完結可能にする
+- cpprefjp/site の記事のソース改変ゼロ
+- cpprefjp/site_generator の現行アセットを全て ES2017+ / PostCSS 化
 
 
 ---
