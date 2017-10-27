@@ -111,6 +111,7 @@ module.exports = {
     entry: {
       kunai: './kunai.scss',
       'font-awesome': './font-awesome.scss',
+      'bootstrap': './bootstrap.scss',
       'codemirror': './codemirror.scss',
     },
     output: {

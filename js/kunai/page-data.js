@@ -60,12 +60,12 @@ class PageData {
       })
     }
 
+    // assign surrogate ids
     {
       let id = 0
       for (let code_r of this.raw_get(PageKey.codes)) {
         ++id
         let code = $(code_r)
-        console.log(id, code)
         code.attr('data-kunai-code-id', id)
       }
     }

@@ -1,11 +1,20 @@
 import {Logger} from './kunai/logger'
+import {Compat} from './kunai/compat'
 import {PageKey, PageData} from './kunai/page-data'
 import * as Mirror from './kunai/mirror'
 
 
-export default class Kunai {
+class Kunai {
+  static defaultOptions = {
+    compat: true,
+  }
+
   constructor(opts = {}) {
-    this.log = new Logger('Kunai', opts)
+    this.opts = Object.assign({}, Kunai.defaultOptions, opts)
+    this.log = new Logger('Kunai', this.opts)
+
+    this.compat = new Compat(this.log)
+
     this.themes = new Map
     this.currentTheme = Mirror.DefaultOptions.theme
     this.yatas = new Map
@@ -162,4 +171,7 @@ export default class Kunai {
     }
   }
 }
+
+export {Kunai}
+module.exports = Kunai
 

@@ -47,6 +47,7 @@ module.exports = Merge.multiple(common, {
       new HtmlWebpackIncludeAssetsPlugin({
         assets: [
           'css/font-awesome.css',
+          'css/bootstrap.css',
           'css/codemirror.css',
         ],
         append: false,

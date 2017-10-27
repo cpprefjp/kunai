@@ -15,6 +15,26 @@
 - cpprefjp/site_generator の現行アセットを全て ES2017+ / PostCSS 化
 
 
+## site_generator の todo (v1)
+
+### 全般
+- HTMLからCSSを全て消す
+- Googleサイト内検索とアナリティクス以外のJSを全て消す
+- `onclick=tree_onclick` してる部分を全て消す
+- faviconのmanifest.jsonのパスを直す（元からおかしい）
+- `glyphicon glyphicon-home` -> `fa fa-fw fa-home`
+- `glyphicon glyphicon-time` -> `fa fa-fw fa-clock-o fa-flip-horizontal`
+- `glyphicon glyphicon-pencil` -> `fa fa-fw fa-pencil`
+
+
+### サイドバー
+
+https://github.com/cpprefjp/site_generator/blob/fef73565384008fb47d23f09b6db10f6e212fbdb/cpprefjp/templates/content.html#L15
+
+- `active` をつける処理以外は全て消す（ `display: none` は必要なし）
+- `glyphicon` をつけている箇所は全て消す (CSSで自動でつく）
+
+
 ---
 
 
@@ -24,9 +44,11 @@
 
 互換性モジュール ([css/kunai/compat.scss](css/kunai/compat.scss))
 
-- [ ] 現行の __cpprefjp/site_generator__ のCSSを置換した場合に同じ表示にする
+- [x] 現行の __cpprefjp/site_generator__ のCSSと同じ表示
+- [x] *Bootstrap* v3 を自前で読む
 - [x] *Bootstrap* v3 と干渉しない
-- [x] アイコン類はなるべく *FontAwesome* を使う
+- [x] *Glyphicon* (*Bootstrap* v4 で deprecate) -> *FontAwesome* に移行
+- [x] *jQuery* を自前で読む
 
 
 ### Compat (v2)
@@ -34,7 +56,6 @@
 将来版
 
 - [ ] *Bootstrap* -> v4
-- [ ] *Glyphicon* が *Bootstrap* v4 で deprecate -> *FontAwesome* に完全移行
 
 
 ### Kunai (core, v1)

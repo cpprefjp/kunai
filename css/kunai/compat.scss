@@ -1,14 +1,351 @@
-body.kunai {
-  .fa {
-    @include box-reset;
+@import './variables';
+@import '../font-awesome';
 
-    &:before, &:after {
-      @include box-reset;
+
+body {
+  font-size: 14px;
+
+  .navbar-brand {
+    line-height: 32px;
+    padding: 0.5em 15px;
+  }
+  .navbar-brand > .title-wrapper {
+    &:before {
+      content: "";
+      float: left;
+      display: inline-block;
+      overflow: hidden;
+      height: 0;
+      padding: 32px 32px 0 0;
+      margin: 0 4px 0 0;
+      background-image: url(https://cpprefjp.github.io/static/original-icons/cpprefjp-icon-v1.1-transparent.png);
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+    > .title {
+      float: left;
+      display: inline-block;
     }
   }
 
-  button {
-    outline: none;
+  .google-search {
+    width: 250px;
+    margin-top: 2px;
   }
-} // body.kunai
+
+  .google-search-result .gsc-control-cse {
+    padding: 0px;
+    border: 0px;
+  }
+
+  /*
+  .google-search-result .gsc-adBlock {
+  display: none !important;
+  visibility: hidden !important;
+  }
+  .google-search-result .gsc-adBlockVertical {
+  display: none !important;
+  visibility: hidden !important;
+  }
+   */
+
+code {
+  color: #000000;
+}
+a code {
+  color: #428bca;
+}
+
+.content-body {
+  > h1:first-child {
+    margin-top: 0px;
+  }
+  h2 {
+    border-left: solid 8px skyblue;
+    padding-left: 5px;
+    border-bottom: solid 2px skyblue;
+  }
+}
+
+.edit {
+  border-radius: 4px;
+  border: 1px solid #999;
+  margin: 5px;
+  padding: 3px;
+}
+
+.history {
+  border-radius: 4px;
+  border: 1px solid #999;
+  margin: 5px;
+  padding: 3px;
+}
+
+.content-header {
+  display: flex;
+  padding: 0 1em 0 0;
+  margin-bottom: 5px;
+  background: #f5f5f5;
+  border-radius: 4px;
+  align-items: center;
+}
+
+ol.breadcrumb {
+  flex-grow: 1;
+  margin-bottom: 0;
+  background: none;
+  border-radius: 0;
+}
+.footer {
+  text-align: center;
+}
+.footer.navbar {
+  min-height: 0;
+  margin-top: 20px;
+  margin-bottom: 0px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.identifier-type {
+  float: left;
+}
+.header {
+  float: right;
+  text-align: right;
+}
+h1 {
+  &.namespace {
+    font-size: 14px;
+  }
+  &.class {
+  }
+  &.cpp {
+    font-size: 14px;
+  }
+} // h1
+
+pre .err {
+  border: none;
+}
+.syntax pre .err {
+  border: none;
+}
+
+
+.fa {
+  @include box-reset;
+
+  &:before, &:after {
+    @include box-reset;
+  }
+}
+
+button {
+  outline: none;
+}
+
+.crsearch {
+  width: 260px;
+}
+} // body
+
+
+main[role="main"] {
+  .tree {
+    $cl-border: #999;
+    $tree-grid: 1px solid $cl-border;
+    $bg-tree: #fbfbfb;
+    $plus-size: 2.3rem;
+    $indent: 3rem;
+
+    // hack
+    // 元のHTMLがおかしくて、要素にテキストが生で入っていて対応できないので、ずれてない方をずらして辻褄を合わせる
+    $legacy-hack-001: .2rem;
+
+
+    display: flex;
+    flex-direction: column;
+
+    border-radius: 4px;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
+    background-color: $bg-tree;
+    border: $tree-grid;
+    margin-bottom: 10px;
+    // max-height: 300px;
+    // min-height: 20px;
+    overflow-x: scroll;
+    padding: 3px;
+
+    .cpp-sidebar {
+      font-size: 10px;
+    }
+
+    .treespan {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      width: $plus-size;
+      height: $plus-size;
+
+      border: $tree-grid;
+      border-radius: 5px;
+
+      flex-shrink: 1;
+
+      font-size: 1.6rem;
+      line-height: $plus-size;
+
+      margin-right: .4rem;
+
+      color: #333;
+
+      // line-height: 14px;
+      // padding: .2rem;
+
+      text-decoration: none;
+
+      // hack ここ
+      margin-top: -$legacy-hack-001;
+    }
+
+    a {
+      flex-shrink: 1;
+      display: block;
+
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      // width: 90%;
+    }
+
+    ul, li {
+      display: flex;
+    }
+
+    ul {
+      flex-direction: column;
+      flex-basis: 100%;
+      padding-left: $indent;
+      overflow: hidden;
+
+      position: relative;
+
+      &:before {
+        content: "";
+        position: absolute;
+        display: block;
+
+        border-left: $tree-grid;
+        top: 0;
+        left: $plus-size / 2;
+        width: $plus-size / 2;
+        height: 100%;
+      }
+    }
+    > ul {
+      padding-left: 0px;
+
+      &:before, &:after {
+        content: none;
+        border: none;
+      }
+
+      > li {
+        &:before, &:after {
+          content: none;
+          border: none;
+        }
+      }
+    }
+
+    li {
+      flex-wrap: wrap;
+      align-items: flex-start;
+
+      list-style-type: none;
+      margin: 0;
+      padding: .5rem 0 0 .2rem;
+      position: relative;
+
+      &:before, &:after {
+        position: absolute;
+      }
+
+      &:before {
+        content: "";
+        // border-left: $tree-grid;
+        border-bottom: $tree-grid;
+
+        top: 0;
+        left: -($indent - ($plus-size / 2));
+
+        width: $indent / 2;
+        height: $indent / 2;
+      }
+
+      &:last-child {
+        &:after {
+          content: "";
+          width: $indent / 2;
+          height: 100%;
+
+          left: -($indent - ($plus-size / 2));
+          top: $indent / 2;
+
+          border-left: 1px solid $bg-tree;
+        }
+      }
+
+      &.parent_li > .treespan {
+        cursor: pointer;
+
+        &:hover {
+          background-color: #df8505;
+          border: 1px solid #c67605;
+          color: #fff;
+
+          & ~ ul {
+            $hi-color: #f89406;
+
+            &:before {
+              border-left-color: $hi-color;
+            }
+
+            > li {
+              &:before {
+                border-bottom-color: $hi-color;
+              }
+              .treespan {
+                background: #fddfb3;
+                border: 1px solid #faa937;
+                color: #000;
+              }
+            }
+          }
+        }
+      }
+
+      &.parent_li:not(.active) {
+        > .treespan:before {
+          @extend .fa;
+          @extend .fa-fw;
+          @extend .fa-plus;
+        }
+
+        > ul {
+          display: none;
+        }
+      }
+
+      &.parent_li.active {
+        > .treespan:before {
+          @extend .fa;
+          @extend .fa-fw;
+          @extend .fa-minus;
+        }
+      }
+    } // .tree li
+  } // .tree
+} // main
 
