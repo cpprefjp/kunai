@@ -16,6 +16,8 @@ class Yata {
     this.log = log.make_context(`${this.constructor.name} #${this.id}`)
     this.opts = Object.assign({}, DefaultOptions, opts)
 
+    // this.isDragging = false
+
     this.log.info(`creating CodeMirror element...`)
     this.cm = CodeMirror.fromTextArea(elem, this.opts)
 
@@ -28,6 +30,14 @@ class Yata {
       )
     })
 
+    // this.resizer = $('<div>').addClass('yata-resizer').attr('data-kunai-yata-for', this.id)
+
+    // this.resizer.on('mouseup', this.onResize.bind(this))
+    // this.resizer.on('mousedown', this.onResize.bind(this))
+    // this.resizer.on('mousemove', this.onResize.bind(this))
+
+    // $(this.cm.getWrapperElement()).after(this.resizer)
+
     this.log.info('CodeMirror element created', this.cm)
 
     this.cm.refresh() // this is VERY important!!
@@ -38,6 +48,23 @@ class Yata {
       this.cm.refresh()
       this.cm.focus()
     }, 50)
+  }
+
+  onResize(e) {
+    e.stopPropagation()
+    this.log.info(`dragged ${e.offsetY}`, e)
+
+    if (e.type === 'mousedown') {
+      this.isDragging = false
+      return false
+    } else if (e.type === 'mousemove') {
+      this.isDragging = true
+      return false
+    }
+
+    if (this.isDragging) {
+      this.log.info(`dragged ${e.offsetY}`, e)
+    }
   }
 
   makeMarker() {

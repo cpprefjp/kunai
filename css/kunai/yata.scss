@@ -30,6 +30,12 @@ body.kunai {
       background: $cl-shuri;
     }
 
+    .tools-l-r {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+    }
+
     ul.tools {
       display: flex;
       align-items: flex-start;
@@ -48,6 +54,8 @@ body.kunai {
           background: $bg-ui-gray;
           height: 1.6em;
           font-size: .9em;
+
+          width: 8em;
 
           option {
             &:checked {
@@ -125,6 +133,15 @@ body.kunai {
           content: 'Theme';
         }
 
+        &.theme {
+          select {
+            direction: rtl;
+            text-align: left;
+            option {
+              text-align: left;
+            }
+          }
+        }
       } // .tool
     } // .tools
   } // .yata
@@ -148,6 +165,19 @@ body.kunai {
 
   .mirror:not(.enabled) + .CodeMirror {
     display: none;
+
+    & + .yata-resizer {
+      display: none;
+    }
+  }
+
+  .CodeMirror + .yata-resizer {
+    width: 100%;
+    background: #DDD;
+    border-top: 1px solid #AAA;
+    border-bottom: 1px solid #666;
+    padding-bottom: 3px;
+    cursor: row-resize;
   }
 
   .cm-s-solarized.CodeMirror {

@@ -52,45 +52,55 @@ class Kunai {
         yata.attr('data-kunai-yata-for', id)
 
         this.log.info(`creating Yata toolbar for code snippet #${id}`, yata)
-
-        let tb = $('<ul />').addClass('tools')
+        let tools_l_r = $('<div>').addClass('tools-l-r')
         const tooltip = $('<div class="tooltip-wrapper"><div class="tooltip"></div></div>')
         const tool = $('<li>').addClass('tool')
+
         {
-          let li = tool.clone().addClass('play')
+          let tb = $('<ul />').addClass('tools left')
+          {
+            let li = tool.clone().addClass('play')
 
-          let btn = $(`<button />`).attr('data-kunai-id', kunai_id++)
-          tooltip.clone().appendTo(btn)
+            let btn = $(`<button />`).attr('data-kunai-id', kunai_id++)
+            tooltip.clone().appendTo(btn)
 
-          $('<i>').addClass('fa fa-fw fa-magic').appendTo(btn)
+            $('<i>').addClass('fa fa-fw fa-magic').appendTo(btn)
 
-          btn.on('click', this.onToolClick.bind(this))
-          btn.appendTo(li)
-          li.appendTo(tb)
+            btn.on('click', this.onToolClick.bind(this))
+            btn.appendTo(li)
+            li.appendTo(tb)
+          }
+          tb.appendTo(tools_l_r)
         }
 
         {
-          let li = tool.clone().addClass('theme')
-          let btn = $('<div>').addClass('not-a-button')
-          $('<i>').addClass('fa fa-fw fa-adjust').appendTo(btn)
-          tooltip.clone().appendTo(btn)
-          btn.appendTo(li)
+          let tb = $('<ul />').addClass('tools right')
 
-          let sel = $('<select>')
+          {
+            let li = tool.clone().addClass('theme')
+            let btn = $('<div>').addClass('not-a-button')
+            $('<i>').addClass('fa fa-fw fa-adjust').appendTo(btn)
+            tooltip.clone().appendTo(btn)
+            btn.appendTo(li)
 
-          for (const theme of Mirror.Theme) {
-            $('<option>').val(theme).text(theme).appendTo(sel)
+            let sel = $('<select>')
+
+            for (const theme of Mirror.Theme) {
+              $('<option>').val(theme).text(theme).appendTo(sel)
+            }
+
+            // i.e. default theme
+            sel.val(this.currentTheme)
+
+            sel.on('change', this.onThemeChange.bind(this))
+            sel.appendTo(li)
+            li.appendTo(tb)
           }
 
-          // i.e. default theme
-          sel.val(this.currentTheme)
-
-          sel.on('change', this.onThemeChange.bind(this))
-          sel.appendTo(li)
-          li.appendTo(tb)
+          tb.appendTo(tools_l_r)
         }
 
-        tb.appendTo(yata)
+        tools_l_r.appendTo(yata)
         c.before(yata)
       } // each code
 
