@@ -5,6 +5,8 @@ import {KunaiError} from './error'
 import {default as CodeMirror} from 'codemirror'
 import * as js from 'codemirror/mode/clike/clike'
 
+import {default as AN} from 'anser'
+
 
 const ToolID = {
   play: Symbol.for('play'),
@@ -25,6 +27,7 @@ class Yata {
   constructor(log, wand, code, opts = {}) {
     this.wand = wand
     this.code = code
+    this.console = null
 
     this.log = log.make_context(`${this.constructor.name} ${this.code.id}`, new Logger.Option({icon: {text: '\u{1F426}', color: '#222'}}))
     this.opts = Object.assign({}, Mirror.DefaultOptions, opts)
@@ -159,6 +162,7 @@ class Yata {
 
     // $(this.cm.getWrapperElement()).after(this.resizer)
 
+    this.cm.setSize(null, '380px')
     this.log.info('CodeMirror element created', this.cm)
 
     this.cm.focus()
@@ -171,6 +175,9 @@ class Yata {
     this.cmRefresh = setInterval(() => {
       this.cm.refresh()
     }, 250)
+
+    this.console = $('<div>').addClass('yata-console')
+    $(this.cm.getWrapperElement()).after(this.console)
   } // initMirror
 
   onResize(e) {
@@ -236,6 +243,25 @@ class Yata {
 
   async onCompilePostPost(e, extra) {
     this.tools.get(ToolID.compile).removeClass('compiling')
+    this.console.html(
+      [].concat(
+        Yata.processConsole(e.compiler_message)
+      ).concat(
+        Yata.processConsole(e.program_message),
+      )
+    )
+  }
+
+  static processConsole(raw) {
+    if (!raw) return []
+
+    let lines = []
+    const proto = $('<p>').addClass('yata-console-line')
+
+    $('<span />').text(raw).html().split(/\n+/).map((l) => {
+      lines.push(proto.clone().html(AN.ansiToHtml(l, {use_classes: true})))
+    })
+    return lines
   }
 
   onThemeChange(e) {

@@ -17,6 +17,9 @@ body.kunai {
     background: lighten($cl-shuri, 25%);
     border-radius: 2px 2px 0 0;
 
+    position: relative;
+    z-index: 5;
+
     &.hidden {
       display: none;
     }
@@ -211,6 +214,76 @@ body.kunai {
     & + .yata-resizer {
       display: none;
     }
+  }
+
+  $cm-shadow: 2px 2px 12px 1px #2aa;
+  .CodeMirror {
+    position: relative;
+    z-index: 1;
+    box-shadow: $cm-shadow;
+  }
+
+  .CodeMirror + .yata-console {
+    background: #2E1E2F;
+    color: #EAEAEA;
+    font-family: monospace;
+    font-size: .9em;
+    padding: 1em 2em;
+
+    border-radius: 6px;
+    box-shadow: $cm-shadow;
+
+    margin: 1em 0 2em 0;
+    width: 100%;
+    min-height: 120px;
+    max-height: 220px;
+    overflow-y: scroll;
+
+    p, span {
+      margin: 0;
+      padding: 0;
+      line-height: 1.5;
+
+      white-space: pre;
+    }
+
+    p {
+      display: block;
+    }
+
+    span {
+      display: inline-block;
+    }
+
+    .ansi-bold {
+      font-weight: bold;
+    }
+
+    @each $c in blue, green, yellow, cyan, magenta, red {
+      .ansi-#{$c}-fg {
+        color: $c;
+      }
+      .ansi-#{$c}-bg {
+        background-color: $c;
+      }
+    }
+
+    .ansi-white-fg {
+      color: #EDEDED;
+    }
+    .ansi-white-bg {
+      background-color: #EDEDED;
+    }
+    .ansi-black-fg {
+      color: #AAA;
+    }
+    .ansi-black-bg {
+      background-color: #AAA;
+    }
+  }
+
+  .yata:not(.enabled) + .kunai-code + .mirror + .CodeMirror + .yata-console {
+    display: none;
   }
 
   .CodeMirror + .yata-resizer {
