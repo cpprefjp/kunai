@@ -255,13 +255,11 @@ class Yata {
   static processConsole(raw) {
     if (!raw) return []
 
-    let lines = []
-    const proto = $('<p>').addClass('yata-console-line')
-
-    $('<span />').text(raw).html().split(/\n+/).map((l) => {
-      lines.push(proto.clone().html(AN.ansiToHtml(l, {use_classes: true})))
+    return $('<span />').text(raw).html().split(/\n+/).map((l) => {
+      return $('<p>').addClass('yata-console-line').html(AN.ansiToHtml(l, {
+        use_classes: true
+      }))
     })
-    return lines
   }
 
   onThemeChange(e) {
