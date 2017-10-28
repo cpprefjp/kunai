@@ -20,7 +20,7 @@
 
 ### 全般
 - HTMLからCSSを全て消す
-- Googleサイト内検索とアナリティクス以外のJSを全て消す
+- Googleサイト内検索とアナリティクスとCRSearch以外のJSを全て消す
 - `onclick=tree_onclick` してる部分を全て消す
 - faviconのmanifest.jsonのパスを直す（元からおかしい）
 - `glyphicon glyphicon-home` -> `fa fa-fw fa-home`
