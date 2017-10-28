@@ -145,7 +145,15 @@ Docker をインストール済みなら:
 
 - [Wiki](https://github.com/saki7/kunai/wiki)
 
+## メンテナ
+
+- [@saki7] ([cpprefjp] Member)
+
 ## ライセンス
 
 → [LICENSE](LICENSE)
+
+
+[@saki7]: https://github.com/saki7
+[cpprefjp]: https://github.com/cpprefjp
 
