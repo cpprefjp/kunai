@@ -4,7 +4,7 @@ import {ID} from './id'
 
 class Pool {
   constructor(log) {
-    this.log = log.make_context(this.constructor.name)
+    this.log = log.makeContext('Pool')
     this.langs = new Map
   }
 

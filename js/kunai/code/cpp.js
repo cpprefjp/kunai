@@ -1,11 +1,12 @@
 import {ID} from './id'
-import {Logger} from '../logger'
+
+import {Logger} from 'nagato'
 
 
 class CPP {
   constructor(log, id, buf, hints) {
     this.id = id
-    this.log = log.make_context(`${this.constructor.name} #${this.id.key}`, new Logger.Option({icon: {text: '\u{1F4BB}', color: '#2244FF'}}))
+    this.log = log.makeContext(`CPP #${this.id.key}`, new Logger.Option({icon: {text: '\u{1F4BB}', color: '#2244FF'}}))
     this.buf = buf
     this.parse(hints)
   }

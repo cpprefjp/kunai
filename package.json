@@ -61,6 +61,7 @@
     "font-awesome": "^4.7.0",
     "jquery": "^3.2.1",
     "marked": "^0.3.6",
+    "nagato": "^1.5.0",
     "numeral": "^2.0.6"
   }
 }

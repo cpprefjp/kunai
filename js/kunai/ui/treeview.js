@@ -12,7 +12,7 @@ function makeLangLink(key) {
 
 class Treeview {
   constructor(log) {
-    this.log = log.make_context(['UI', this.constructor.name])
+    this.log = log.makeContext('Treeview')
 
     this.log.info('initialzing...')
 

@@ -1,6 +1,7 @@
-import {Logger} from './logger'
 import * as Mirror from './mirror'
 import {KunaiError} from './error'
+
+import {Logger} from 'nagato'
 
 import {default as CodeMirror} from 'codemirror'
 import * as js from 'codemirror/mode/clike/clike'
@@ -29,7 +30,7 @@ class Yata {
     this.code = code
     this.console = null
 
-    this.log = log.make_context(`${this.constructor.name} ${this.code.id}`, new Logger.Option({icon: {text: '\u{1F426}', color: '#222'}}))
+    this.log = log.makeContext(`Yata ${this.code.id}`, new Logger.Option({icon: {text: '\u{1F426}', color: '#222'}}))
     this.opts = Object.assign({}, Mirror.DefaultOptions, opts)
 
     this.tools = new Map

@@ -1,6 +1,6 @@
 class Compat {
   constructor(log) {
-    this.log = log.make_context(this.constructor.name)
+    this.log = log.makeContext('Compat')
 
     this.log.info('applying...')
 

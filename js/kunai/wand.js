@@ -1,7 +1,7 @@
-import {Logger} from './logger'
 import {NetworkError} from './error'
 
 import {default as Numeral} from 'numeral'
+import {Logger} from 'nagato'
 
 
 class APIError extends NetworkError {
@@ -125,7 +125,7 @@ class Wand {
   }
 
   constructor(log, opts = new Map) {
-    this.log = log.make_context(`${this.constructor.name}`, new Logger.Option({icon: {text: '\u{1F32D}', color: '#CCAA14'}}))
+    this.log = log.makeContext(`Wand`, new Logger.Option({icon: {text: '\u{1F32D}', color: '#CCAA14'}}))
     this.opts = new Map([...Wand.defaults, ...opts])
     this.log.info('三へ( へ՞ਊ ՞)へ ﾊｯﾊｯ')
   }

@@ -1,5 +1,4 @@
 import {KunaiError} from './kunai/error'
-import {Logger} from './kunai/logger'
 import {Compat} from './kunai/compat'
 import * as UI from './kunai/ui'
 
@@ -8,6 +7,8 @@ import {Wand} from './kunai/wand'
 // import * as Code from './kunai/code'
 import * as Mirror from './kunai/mirror'
 import {Yata} from './kunai/yata'
+
+import {Logger} from 'nagato'
 
 
 class Kunai {
@@ -76,8 +77,10 @@ class Kunai {
   }
 
   async initUI() {
+    const l = this.log.makeContext('UI')
+
     this.ui = {
-      treeview: new UI.Treeview(this.log),
+      treeview: new UI.Treeview(l),
     }
   }
 }

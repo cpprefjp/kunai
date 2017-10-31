@@ -4,7 +4,7 @@ import {PageKey} from './page-key'
 import * as Net from '../net'
 import * as Code from '../code'
 
-import {Logger} from '../logger'
+import {Logger} from 'nagato'
 
 
 let Marked = require('marked')
@@ -17,7 +17,7 @@ class Meta {
   static PageKey = PageKey
 
   constructor(log, config, onCodeFound) {
-    this.log = log.make_context(`${this.constructor.name}`, new Logger.Option({icon: {text: '\u{262F}', color: '#AAA'}}))
+    this.log = log.makeContext(`Meta`, new Logger.Option({icon: {text: '\u{262F}', color: '#AAA'}}))
     this.config = config
     this.onCodeFound = onCodeFound
     this.last_key = 0
