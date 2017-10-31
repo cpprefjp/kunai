@@ -207,7 +207,8 @@ class Yata {
   async loadTheme(id) {
     if (!this.themes.has(id)) {
       this.log.info(`initial theme load for '${id}'`)
-      this.themes.set(id, require(`codemirror/theme/${id}.css`))
+      this.themes.set(id, true)
+      // this.themes.set(id, require(`codemirror/theme/${id}.css`))
     }
   }
 

@@ -44,17 +44,20 @@ module.exports = Merge.multiple(common, {
           'browser',
         ],
       }),
+      // new HtmlWebpackIncludeAssetsPlugin({
+        // assets: [
+          // 'css/font-awesome.css',
+          // 'css/bootstrap.css',
+        // ],
+        // append: false,
+        // hash: true,
+      // }),
       new HtmlWebpackIncludeAssetsPlugin({
         assets: [
-          'css/font-awesome.css',
-          'css/bootstrap.css',
-          'css/codemirror.css',
+          'css/kunai-vendor.css',
+          'css/browser.css',
+          'css/kunai.css',
         ],
-        append: false,
-        hash: true,
-      }),
-      new HtmlWebpackIncludeAssetsPlugin({
-        assets: ['css/browser.css', 'css/kunai.css'],
         append: true,
         hash: true,
       }),
