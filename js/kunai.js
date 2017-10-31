@@ -33,8 +33,6 @@ class Kunai {
       this.compat = new Compat(this.log)
     }
 
-    this.initCRSearch()
-
     this.initUI()
 
     this.wand = new Wand(this.log)
@@ -44,10 +42,12 @@ class Kunai {
 
   cpprefjp() {
     this.load_impl(['cpprefjp', 'site'])
+    this.initCRSearch(true)
   }
 
   boostjp() {
     this.load_impl(['boostjp', 'site'])
+    this.initCRSearch(false)
   }
 
   load_impl(config) {
@@ -90,7 +90,9 @@ class Kunai {
     }
   }
 
-  async initCRSearch() {
+  async initCRSearch(isEnabled) {
+    if (isEnabled) return
+
     this.crs = new CRSearch
     this.crs.database('https://cpprefjp.github.io/static/crsearch/crsearch.json')
     this.crs.searchbox(document.getElementsByClassName('crsearch'))
