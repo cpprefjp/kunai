@@ -216,7 +216,7 @@ class Yata {
   }
 
   onCompile(e) {
-    this.log.debug(`onCompile`, e)
+    // this.log.debug(`onCompile`, e)
     this.tools.get(ToolID.compile).addClass('compiling')
 
     // save to textarea
@@ -286,7 +286,7 @@ class Yata {
     let btn = $(e.srcElement || e.originalTarget || e.target)
     let yata = btn.closest('.yata')
 
-    this.log.debug(`onEnable`, e, btn.get(0))
+    // this.log.debug(`onEnable`, e, btn.get(0))
 
     let orig_code = $(yata.nextAll(`.codehilite${this.code.id.makeSelector()}`))
 
