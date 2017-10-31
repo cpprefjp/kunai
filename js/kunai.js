@@ -9,6 +9,7 @@ import * as Mirror from './kunai/mirror'
 import {Yata} from './kunai/yata'
 
 import {Logger} from 'nagato'
+import {CRSearch} from 'crsearch'
 
 
 class Kunai {
@@ -28,7 +29,12 @@ class Kunai {
       }))
     )
 
-    this.compat = new Compat(this.log)
+    if (this.opts.compat) {
+      this.compat = new Compat(this.log)
+    }
+
+    this.initCRSearch()
+
     this.initUI()
 
     this.wand = new Wand(this.log)
@@ -82,6 +88,12 @@ class Kunai {
     this.ui = {
       treeview: new UI.Treeview(l),
     }
+  }
+
+  async initCRSearch() {
+    this.crs = new CRSearch
+    this.crs.database('https://cpprefjp.github.io/static/crsearch/crsearch.json')
+    this.crs.searchbox(document.getElementsByClassName('crsearch'))
   }
 }
 

@@ -31,7 +31,6 @@
     "babel-plugin-transform-object-assign": "^6.22.0",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.6.1",
-    "babel-preset-minify": "^0.2.0",
     "babel-types": "^6.26.0",
     "clean-webpack-plugin": "^0.1.17",
     "css-loader": "^0.28.7",
@@ -58,10 +57,11 @@
     "bootstrap": "^3.3.7",
     "bootstrap-sass": "^3.3.7",
     "codemirror": "^5.31.0",
+    "crsearch": "^1.4.2",
     "font-awesome": "^4.7.0",
     "jquery": "^3.2.1",
     "marked": "^0.3.6",
-    "nagato": "^1.5.0",
+    "nagato": "^1.6.0",
     "numeral": "^2.0.6"
   }
 }
