@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 
 function isExternal(module) {
@@ -15,7 +16,7 @@ function isExternal(module) {
 }
 
 
-module.exports = {
+module.exports = env => ({
   js: {
     context: path.resolve(__dirname, 'js'),
     entry: {
@@ -166,7 +167,9 @@ module.exports = {
         disable: false,
         allChunks: true,
       }),
+      new OptimizeCSSAssetsPlugin({
+      }),
     ]
   },
-};
+})
 

@@ -216,7 +216,7 @@ class Meta {
             this.log.info(`got C++ code (#${this.last_key})`, code)
 
             const headers = [this.andareMetaInfo.get('header')].filter(Boolean)
-            const id = new Code.ID(Code.CPP.name, this.last_key)
+            const id = new Code.ID('CPP', this.last_key)
             this.codes.add(
               new Code.CPP(
                 this.log,

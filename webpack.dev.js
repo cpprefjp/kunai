@@ -5,7 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plugin');
 const Merge = require('webpack-merge');
 
-module.exports = Merge.multiple(common, {
+module.exports = env => (Merge.multiple(common(env), {
   js: {
     entry: {
       browser: './browser.js',
@@ -54,9 +54,11 @@ module.exports = Merge.multiple(common, {
       // }),
       new HtmlWebpackIncludeAssetsPlugin({
         assets: [
-          'css/kunai-vendor.css',
+          'css/kunai-stage-0.css',
+          'css/kunai-stage-1.css',
+          'css/kunai-stage-2.css',
+          'css/kunai-stage-3.css',
           'css/browser.css',
-          'css/kunai.css',
         ],
         append: true,
         hash: true,
@@ -65,9 +67,9 @@ module.exports = Merge.multiple(common, {
   },
   css: {
     entry: {
-      browser: './browser.scss',
+      browser: './browser.css',
     },
     devtool: 'cheap-module-eval-source-map',
   },
-});
+}))
 

@@ -2,7 +2,7 @@ const common = require('./webpack.common.js');
 const webpack = require('webpack');
 const Merge = require('webpack-merge');
 
-module.exports = Merge.multiple(common, {
+module.exports = env => (Merge.multiple(common(env), {
   js: {
     plugins: [
       new webpack.optimize.UglifyJsPlugin(),
@@ -13,5 +13,5 @@ module.exports = Merge.multiple(common, {
       }),
     ],
   },
-});
+}))
 
