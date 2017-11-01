@@ -1,8 +1,12 @@
 const path = require('path');
+const URL = require('url');
+
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+
+const PJ = require('./package.json')
 
 
 function isExternal(module) {
@@ -68,6 +72,12 @@ module.exports = env => ({
       new webpack.ProvidePlugin({
         $: 'jquery',
         jQuery: 'jquery',
+      }),
+      new webpack.DefinePlugin({
+        KUNAI_PACKAGE: JSON.stringify({
+          version: PJ.version,
+          bugs_url: PJ.bugs.url,
+        }),
       }),
       new webpack.optimize.CommonsChunkPlugin({
         name: 'kunai-vendor',

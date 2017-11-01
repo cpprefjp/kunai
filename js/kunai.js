@@ -20,7 +20,7 @@ class Kunai {
 
   constructor(opts = {}) {
     // fastest
-    $('body').addClass('js').removeClass('no-js')
+    // $('body').addClass('js').removeClass('no-js')
 
     this.opts = Object.assign({}, Kunai.defaultOptions, opts)
     this.log = new Logger(
@@ -29,6 +29,14 @@ class Kunai {
         icon: {text: '\u{1F5E1}', color: '#2244AA'}
       }))
     )
+
+    try {
+      this.log.disableBacktrace(true)
+      this.log.info(`version ${KUNAI_PACKAGE.version} (https://github.com/cpprefjp/kunai/tree/v${KUNAI_PACKAGE.version})`)
+      this.log.info(`please report frontend bugs to: ${KUNAI_PACKAGE.bugs_url}`)
+    } finally {
+      this.log.disableBacktrace(false)
+    }
 
     if (this.opts.compat) {
       this.compat = new Compat(this.log)
