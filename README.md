@@ -11,8 +11,8 @@
 ## 設計思想
 
 - C++のことを調べて知って試すフローをcpprefjp上で完結可能にする
-- cpprefjp/site の記事のソース改変ゼロ
-- cpprefjp/site_generator の現行アセットを全て ES2017+ / PostCSS 化
+- __cpprefjp/site__ の記事のソース改変ゼロ
+- __cpprefjp/site_generator__ の現行アセットを全て ES2017+ / PostCSS 化
 - JavaScriptが無効になっていてもコンテンツ自体は完全に閲覧できる
 
 
@@ -20,7 +20,7 @@
 
 ### Compat
 
-互換性モジュール ([kunai/compat.scss](css/kunai/compat.css), [kunai/compat.js](js/kunai/compat.js))
+互換性モジュール
 
 - [x] 現行の __cpprefjp/site_generator__ のCSSとほぼ同じ表示
 - [x] *Bootstrap* をドロップ
@@ -30,7 +30,7 @@
 
 ### Site
 
-Compatに上乗せするUX改善アセット ([kunai/site.css](css/kunai/site.css))
+Compatに上乗せするUX改善アセット
 
 - [x] C++バッジ（ツリービューその他）
 
