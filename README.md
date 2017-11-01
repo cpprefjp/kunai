@@ -1,4 +1,4 @@
-# kunai
+# Kunai
 
 [cpprefjp](https://cpprefjp.github.io/) と [boostjp](https://boostjp.github.io/) のフロントエンド、強化版
 
@@ -8,7 +8,7 @@
 ---
 
 
-## 設計思想 (v1)
+## 設計思想
 
 - C++のことを調べて知って試すフローをcpprefjp上で完結可能にする
 - cpprefjp/site の記事のソース改変ゼロ
@@ -43,37 +43,30 @@ https://github.com/cpprefjp/site_generator/blob/fef73565384008fb47d23f09b6db10f6
 
 ### Compat
 
-互換性モジュール ([kunai/compat.scss](css/kunai/compat.scss), [kunai/compat.js](js/kunai/compat.js))
+互換性モジュール ([kunai/compat.scss](css/kunai/compat.css), [kunai/compat.js](js/kunai/compat.js))
 
 - [x] 現行の __cpprefjp/site_generator__ のCSSとほぼ同じ表示
-- [x] *Bootstrap* v3 を自前で読む
-- [x] *Bootstrap* v3 と干渉しない
-- [x] *Glyphicon* (*Bootstrap* v4 で deprecate) -> *FontAwesome* に移行
+- [x] *Bootstrap* をドロップ
+- [x] *Glyphicon* -> *FontAwesome* に移行
 - [x] *jQuery* を自前で読む
 
 
-### Ext
+### Site
 
-Compatに上乗せするUX改善アセット ([kunai/ext.scss](css/kunai/ext.scss))
+Compatに上乗せするUX改善アセット ([kunai/site.css](css/kunai/site.css))
 
 - [x] C++バッジ（ツリービューその他）
 - [ ] *Bootstrap* -> v4
 
 
 
-### Kunai (core, v1)
+### Kunai (core)
 
 __cpprefjp/site__ のソースコードとメタ情報の包括管理
 
 - [x] 読み込まれていない状態では従来と同じ機能性
 - [x] 現在開いているページのMarkdownソースをGitHubリポジトリからフェッチ、正しく構文解析してメタ情報として使う
 - [ ] 最新版ではなくビルドバージョンのmdを取ってくる
-
-
-### Kunai (core, v2)
-
-将来版
-
 - [ ] 左のツリービューのUX改善 (cpprefjp/site#472)
 
 

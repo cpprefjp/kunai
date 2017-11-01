@@ -1,4 +1,4 @@
-import {default as Kunai} from './kunai'
+import {Kunai} from './kunai'
 
 document.addEventListener('DOMContentLoaded', function() {
   let kn = new Kunai

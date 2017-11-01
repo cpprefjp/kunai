@@ -1,0 +1,22 @@
+@import '../font-awesome';
+
+
+body.kunai {
+  .yata {
+    .tools {
+      .tool {
+        &.compile {
+          &.compiling {
+            button {
+              .fa {
+                @extend .fa-cog;
+                @extend .fa-spin;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+

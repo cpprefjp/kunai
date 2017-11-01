@@ -19,11 +19,14 @@ module.exports = {
   js: {
     context: path.resolve(__dirname, 'js'),
     entry: {
-      kunai: ['./kunai', './codemirror-themes'],
+      kunai: './kunai',
     },
     output: {
       path: path.resolve(__dirname, 'dist'),
       filename: 'js/[name].js',
+      library: 'Kunai',
+      libraryTarget: 'window',
+      libraryExport: 'Kunai',
     },
     module: {
       rules: [
@@ -49,10 +52,6 @@ module.exports = {
           test: /\.js$/,
           use: [
             {
-              loader: 'expose-loader',
-              options: 'Kunai',
-            },
-            {
               loader: 'babel-loader',
             },
           ],
@@ -73,13 +72,14 @@ module.exports = {
         jQuery: 'jquery',
       }),
       new webpack.optimize.CommonsChunkPlugin({
-        names: ['kunai', 'kunai-vendor'],
+        name: 'kunai-vendor',
+        chunks: ['kunai'],
         minChunks: function(module) {
           return isExternal(module);
         },
       }),
       new ExtractTextPlugin({
-        filename: 'css/[name].css',
+        filename: 'css/kunai-stage-0.css',
         disable: false,
         allChunks: true,
       }),
@@ -88,7 +88,8 @@ module.exports = {
   css: {
     context: path.resolve(__dirname, 'css'),
     entry: {
-      kunai: './kunai.scss',
+      'kunai-stage-1': './kunai-stage-1.css',
+      'kunai-stage-2': './kunai-stage-2.scss',
     },
     output: {
       path: path.resolve(__dirname, 'dist'),
@@ -99,21 +100,47 @@ module.exports = {
         {
           test: /\.scss$/,
           use: ExtractTextPlugin.extract({
+            use: [
+              {
+                loader: 'css-loader',
+                options: {
+                  importLoaders: 1,
+                },
+              },
+              {
+                loader: 'sass-loader',
+              },
+            ],
+          }),
+        },
+        {
+          test: /\.css$/,
+          use: ExtractTextPlugin.extract({
             // fallback: 'style-loader',
             use: [
               {
                 loader: 'css-loader',
                 options: {
-                  minimize: true,
-                  sourceMap: true,
+                  // minimize: true,
+                  // sourceMap: true,
+                  importLoaders: 1,
                 }
               },
               {
                 loader: 'postcss-loader',
+                options: {
+                  config: {
+                    ctx: {
+                      autoprefixer: {
+                        browsers: 'last 2 versions',
+                      },
+                    },
+                  },
+                },
               },
-              {
-                loader: 'sass-loader',
-              },
+              // {
+                // loader: 'sass-loader',
+              // },
             ],
           }),
         },

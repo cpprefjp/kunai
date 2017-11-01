@@ -1,6 +1,18 @@
-module.exports = {
+module.exports = ({file, options, env}) => ({
+  parser: 'postcss-scss',
   plugins: {
-    'precss': {},
-    'autoprefixer': {},
-  },
-};
+    // 'postcss-import': {
+      // root: file.dirname,
+    // },
+    'precss': {
+    },
+    'postcss-calc': {
+      warnWhenCannotResolve: true,
+      // mediaQueries: true,
+      // selectors: true,
+    },
+    'autoprefixer': env === 'production' ? options.autoprefixer : false,
+    'cssnano': env === 'production' ? options.cssnano : false,
+  }
+})
+

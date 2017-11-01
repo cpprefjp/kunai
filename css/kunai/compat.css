@@ -1,5 +1,4 @@
 @import './variables';
-@import '../font-awesome';
 
 html {
   font-size: 14px;
@@ -238,8 +237,8 @@ main[role="main"] {
 
         border-left: $tree-grid;
         top: 0;
-        left: $plus-size / 2;
-        width: $plus-size / 2;
+        left: calc($plus-size / 2);
+        width: calc($plus-size / 2);
         height: 100%;
       }
     }
@@ -283,20 +282,20 @@ main[role="main"] {
         border-bottom: $tree-grid;
 
         top: 0;
-        left: -($indent - ($plus-size / 2));
+        left: calc(-1 * ($indent - ($plus-size / 2)));
 
-        width: $indent / 2;
-        height: $indent / 2;
+        width: calc($indent / 2);
+        height: calc($indent / 2);
       }
 
       &:last-child {
         &:after {
           content: "";
-          width: $indent / 2;
+          width: calc($indent / 2);
           height: 100%;
 
-          left: -($indent - ($plus-size / 2));
-          top: $indent / 2;
+          left: calc(-1 * ($indent - ($plus-size / 2)));
+          top: calc($indent / 2);
 
           border-left: 1px solid $bg-tree;
         }
@@ -334,30 +333,6 @@ main[role="main"] {
               }
             }
           }
-        }
-      }
-
-      &.parent_li:not(.active) {
-        > .treespan:before {
-          @extend .fa;
-          @extend .fa-fw;
-          @extend .fa-plus;
-        }
-
-        // jsがオフの時は無条件でツリーを展開
-        //   ……しようと思ったけど最速で処理しても
-        //       操作性が著しく悪化したので却下
-        // body.js & > ul {
-        > ul {
-          display: none;
-        }
-      }
-
-      &.parent_li.active {
-        > .treespan:before {
-          @extend .fa;
-          @extend .fa-fw;
-          @extend .fa-minus;
         }
       }
     } // .tree li

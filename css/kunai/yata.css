@@ -1,6 +1,5 @@
 @import './variables';
 
-
 body.kunai {
   .yata:not(.hidden) + .codehilite {
     pre {
@@ -162,11 +161,6 @@ body.kunai {
               &:hover, &:disabled {
                 background-color: inherit;
               }
-
-              .fa {
-                @extend .fa-cog;
-                @extend .fa-spin;
-              }
             }
           }
         }
@@ -187,9 +181,9 @@ body.kunai {
         &:not(:last-child) {
           margin-right: .4em;
         }
-      } // .tool
-    } // .tools
-  } // .yata
+      }
+    }
+  }
 
   .codehilite {
     display: block;
@@ -260,10 +254,10 @@ body.kunai {
     }
 
     @each $c in blue, green, yellow, cyan, magenta, red {
-      .ansi-#{$c}-fg {
+      .ansi-$(c)-fg {
         color: $c;
       }
-      .ansi-#{$c}-bg {
+      .ansi-$(c)-bg {
         background-color: $c;
       }
     }

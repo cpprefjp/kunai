@@ -1,0 +1,31 @@
+@import '../font-awesome';
+
+
+main[role="main"] {
+  .tree li {
+    &.parent_li:not(.active) {
+      > .treespan:before {
+        @extend .fa;
+        @extend .fa-fw;
+        @extend .fa-plus;
+      }
+
+      // jsがオフの時は無条件でツリーを展開
+      //   ……しようと思ったけど最速で処理しても
+      //       操作性が著しく悪化したので却下
+      // body.js & > ul {
+      > ul {
+        display: none;
+      }
+    }
+
+    &.parent_li.active {
+      > .treespan:before {
+        @extend .fa;
+        @extend .fa-fw;
+        @extend .fa-minus;
+      }
+    }
+  } // .tree li
+} // main
+

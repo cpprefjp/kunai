@@ -4,9 +4,10 @@ import * as UI from './kunai/ui'
 
 import {Meta} from './kunai/meta'
 import {Wand} from './kunai/wand'
-// import * as Code from './kunai/code'
 import * as Mirror from './kunai/mirror'
 import {Yata} from './kunai/yata'
+
+import './codemirror-themes'
 
 import {Logger} from 'nagato'
 import {CRSearch} from 'crsearch'
@@ -100,5 +101,4 @@ class Kunai {
 }
 
 export {Kunai}
-module.exports = Kunai
 
