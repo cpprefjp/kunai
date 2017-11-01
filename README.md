@@ -16,29 +16,6 @@
 - JavaScriptが無効になっていてもコンテンツ自体は完全に閲覧できる
 
 
-## site_generator の todo (v1)
-
-### 全般
-- HTMLからCSSを全て消す
-- Googleサイト内検索とアナリティクスとCRSearch以外のJSを全て消す
-- `onclick=tree_onclick` してる部分を全て消す
-- faviconのmanifest.jsonのパスを直す（元からおかしい）
-- `glyphicon glyphicon-home` -> `fa fa-fw fa-home`
-- `glyphicon glyphicon-time` -> `fa fa-fw fa-clock-o fa-flip-horizontal`
-- `glyphicon glyphicon-pencil` -> `fa fa-fw fa-pencil`
-
-
-### サイドバー
-
-https://github.com/cpprefjp/site_generator/blob/fef73565384008fb47d23f09b6db10f6e212fbdb/cpprefjp/templates/content.html#L15
-
-- `active` をつける処理以外は全て消す（ `display: none` は必要なし）
-- `glyphicon` をつけている箇所は全て消す (CSSで自動でつく）
-
-
----
-
-
 ## コンポーネント
 
 ### Compat
@@ -56,8 +33,6 @@ https://github.com/cpprefjp/site_generator/blob/fef73565384008fb47d23f09b6db10f6
 Compatに上乗せするUX改善アセット ([kunai/site.css](css/kunai/site.css))
 
 - [x] C++バッジ（ツリービューその他）
-- [ ] *Bootstrap* -> v4
-
 
 
 ### Kunai (core)
@@ -67,7 +42,7 @@ __cpprefjp/site__ のソースコードとメタ情報の包括管理
 - [x] 読み込まれていない状態では従来と同じ機能性
 - [x] 現在開いているページのMarkdownソースをGitHubリポジトリからフェッチ、正しく構文解析してメタ情報として使う
 - [ ] 最新版ではなくビルドバージョンのmdを取ってくる
-- [ ] 左のツリービューのUX改善 (cpprefjp/site#472)
+- [ ] 左のツリービューのUX改善 (cpprefjp/site#472, cpprefjp#site_generator#28)
 
 
 ### Yata
@@ -104,9 +79,10 @@ Docker をインストール済みなら:
 <html>
   <head>
     <title>Kunai - sample setup</title>
-    <link href="kunai/css/font-awesome.css" rel="stylesheet">
-    <link href="kunai/css/codemirror.css" rel="stylesheet">
-    <link href="kunai/css/kunai.css" rel="stylesheet">
+    <link href="kunai/css/kunai-stage-0.css" rel="stylesheet">
+    <link href="kunai/css/kunai-stage-1.css" rel="stylesheet">
+    <link href="kunai/css/kunai-stage-2.css" rel="stylesheet">
+    <link href="kunai/css/kunai-stage-3.css" rel="stylesheet">
 
     <script type="text/javascript" src="js/kunai-vendor.js"></script>
     <script type="text/javascript" src="js/kunai.js"></script>
