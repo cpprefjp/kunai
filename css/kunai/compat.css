@@ -265,11 +265,11 @@ main[role="main"] {
 
       list-style-type: none;
       margin: 0;
-      padding: 0 0 0 .2rem;
+      padding: .15rem 0 .15rem .2rem;
       position: relative;
 
-      &:not(:first-child) {
-        padding-top: .3rem;
+      &:last-child {
+        padding-bottom: 0;
       }
 
       &:before, &:after {

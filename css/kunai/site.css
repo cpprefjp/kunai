@@ -1,2 +1,12 @@
-// TODO
+main[role="main"] {
+  .tree {
+    ul {
+      li {
+        &:not(.parent_li):hover {
+          background-color: #f0f0fd;
+        }
+      }
+    }
+  }
+}
 
