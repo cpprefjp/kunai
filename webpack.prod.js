@@ -1,5 +1,6 @@
 const common = require('./webpack.common.js');
 const webpack = require('webpack');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 const Merge = require('webpack-merge');
 
 module.exports = env => (Merge.multiple(common(env), {
