@@ -12,8 +12,7 @@ body.kunai {
 
   .yata {
     display: flex;
-    // background: lighten($cl-shuri, 50%);
-    background: lighten($cl-shuri, 25%);
+    background: color($cl-shuri tint(25%));
     border-radius: 2px 2px 0 0;
 
     position: relative;
@@ -232,6 +231,12 @@ body.kunai {
     min-height: 120px;
     max-height: 220px;
     overflow-y: scroll;
+
+    .yata-console-line {
+      &:empty:after {
+        content: " "; // force LF
+      }
+    }
 
     p, span {
       margin: 0;

@@ -11,6 +11,7 @@ module.exports = ({file, options, env}) => ({
       // mediaQueries: true,
       // selectors: true,
     },
+    'postcss-color-function': {},
     'autoprefixer': env === 'production' ? options.autoprefixer : false,
     'cssnano': env === 'production' ? options.cssnano : false,
   }

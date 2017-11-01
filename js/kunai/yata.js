@@ -257,7 +257,7 @@ class Yata {
   static processConsole(raw) {
     if (!raw) return []
 
-    return $('<span />').text(raw).html().split(/\n+/).map((l) => {
+    return $('<span />').text(raw).html().split(/\n/).map((l) => {
       return $('<p>').addClass('yata-console-line').html(AN.ansiToHtml(l, {
         use_classes: true
       }))

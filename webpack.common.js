@@ -88,8 +88,9 @@ module.exports = {
   css: {
     context: path.resolve(__dirname, 'css'),
     entry: {
-      'kunai-stage-1': './kunai-stage-1.css',
-      'kunai-stage-2': './kunai-stage-2.scss',
+      'kunai-stage-1': './kunai-stage-1.scss',
+      'kunai-stage-2': './kunai-stage-2.css',
+      'kunai-stage-3': './kunai-stage-3.scss',
     },
     output: {
       path: path.resolve(__dirname, 'dist'),

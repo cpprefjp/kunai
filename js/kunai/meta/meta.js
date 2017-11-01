@@ -153,6 +153,8 @@ class Meta {
 
     switch (token.get('type')) {
       case 'heading': {
+        this.heading_depth = token.depth
+
         if (token.get('text').trim().match(/例|Example|Sample|サンプル/i)) {
           this.is_inside_example = true
         } else {
@@ -169,16 +171,18 @@ class Meta {
       case 'list_item_end': {
         const final_buf = this.single_bufs.pop()
 
-        if (this.is_first_list) {
+        if (this.heading_depth === 1 && this.is_first_list) {
           const match = final_buf.match(/([^\]]+)\[([^\] ]+) ([^\]]+)\]$/)
-          this.log.debug(`matched: '${match[0]}'`, final_buf, match)
+          if (match) {
+            this.log.debug(`matched: '${match[0]}'`, final_buf, match)
 
-          const [_, target, k, v] = match
-          this.log.debug(`matched (detailed): ${target} ${k} ${v}`, target, k, v)
+            const [_, target, k, v] = match
+            this.log.debug(`matched (detailed): ${target} ${k} ${v}`, target, k, v)
 
-          if (k === 'meta') {
-            this.andareMetaInfo.set(v, target)
-            this.log.info(`got meta: '${v}' --> '${target}'`)
+            if (k === 'meta') {
+              this.andareMetaInfo.set(v, target)
+              this.log.info(`got meta: '${v}' --> '${target}'`)
+            }
           }
         }
         break
@@ -211,7 +215,7 @@ class Meta {
           if (lang === 'cpp') {
             this.log.info(`got C++ code (#${this.last_key})`, code)
 
-            const headers = [this.andareMetaInfo.get('header')]
+            const headers = [this.andareMetaInfo.get('header')].filter(Boolean)
             const id = new Code.ID(Code.CPP.name, this.last_key)
             this.codes.add(
               new Code.CPP(
@@ -243,7 +247,7 @@ class Meta {
     this.setDOM(PageKey.main, null, 'main[role="main"]')
     this.setDOM(PageKey.article, PageKey.main, 'div[itemtype="http://schema.org/Article"]')
     this.setDOM(PageKey.articleBody, PageKey.article, 'div[itemprop="articleBody"]')
-    this.setDOM(PageKey.codes, PageKey.articleBody, '.codehilite')
+    this.setDOM(PageKey.codes, PageKey.articleBody, '> .codehilite, > pre > code')
 
     {
       const a = this.getDOM(PageKey.article).find('.edit-button .edit')

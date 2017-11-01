@@ -41,14 +41,14 @@ class Kunai {
     this.yatas = new Map
   }
 
-  cpprefjp() {
+  async cpprefjp() {
     this.load_impl(['cpprefjp', 'site'])
-    this.initCRSearch(true)
+    this.crs = await this.initCRSearch(true)
   }
 
-  boostjp() {
+  async boostjp() {
     this.load_impl(['boostjp', 'site'])
-    this.initCRSearch(false)
+    this.crs = await this.initCRSearch(false)
   }
 
   load_impl(config) {
@@ -92,11 +92,12 @@ class Kunai {
   }
 
   async initCRSearch(isEnabled) {
-    if (isEnabled) return
+    if (!isEnabled) return null
 
-    this.crs = new CRSearch
-    this.crs.database('https://cpprefjp.github.io/static/crsearch/crsearch.json')
-    this.crs.searchbox(document.getElementsByClassName('crsearch'))
+    let crs = new CRSearch
+    crs.database('https://cpprefjp.github.io/static/crsearch/crsearch.json')
+    crs.searchbox(document.getElementsByClassName('crsearch'))
+    return crs
   }
 }
 

@@ -327,7 +327,7 @@ main[role="main"] {
                 border-bottom-width: 2px;
               }
               .treespan {
-                background: lighten(#fddfb3, 10%);
+                background: color(#fddfb3 tint(10%));
                 border: 1px solid #faa937;
                 color: #000;
               }
