@@ -65,9 +65,6 @@ module.exports = env => ({
       ],
     },
     plugins: [
-      new CleanWebpackPlugin(
-        ['dist'], { verbose: true, }
-      ),
       new webpack.ProvidePlugin({
         $: 'jquery',
         jQuery: 'jquery',
