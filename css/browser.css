@@ -12,8 +12,20 @@ body.kunai {
         .title {
           &:after {
             content: "[kunai-testing]";
+
+            position: absolute;
+            top: 10px;
+            left: 40%;
+            line-height: 1.5;
+            font-size: 14px;
+            display: block;
+
+            height: 0;
+            overflow: hidden;
+            padding-top: 1em;
+
             font-weight: bold;
-            background: #F02436;
+            background: rgba(240, 36, 54, 0.8);
             color: #FFF;
             padding: .2em .4em;
             margin-left: 1em;
