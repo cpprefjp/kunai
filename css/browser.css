@@ -20,10 +20,6 @@ body.kunai {
             font-size: 14px;
             display: block;
 
-            height: 0;
-            overflow: hidden;
-            padding-top: 1em;
-
             font-weight: bold;
             background: rgba(240, 36, 54, 0.8);
             color: #FFF;
