@@ -1,1 +1,1 @@
-FROM node:6.11.2-alpine
+FROM node:8.9.0-alpine
