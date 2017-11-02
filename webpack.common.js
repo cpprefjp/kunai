@@ -112,6 +112,7 @@ module.exports = env => ({
               {
                 loader: 'css-loader',
                 options: {
+                  minimize: true,
                   importLoaders: 1,
                 },
               },
@@ -140,7 +141,7 @@ module.exports = env => ({
                   config: {
                     ctx: {
                       env: env,
-                      // csswring: {},
+                      csswring: {},
                     },
                   },
                 },
@@ -172,8 +173,8 @@ module.exports = env => ({
         disable: false,
         allChunks: true,
       }),
-      new OptimizeCSSAssetsPlugin({
-      }),
+      // new OptimizeCSSAssetsPlugin({
+      // }),
     ]
   },
 })
