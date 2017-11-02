@@ -40,15 +40,15 @@ main[role="main"] {
 
         span {
           display: block;
-          color: $cl-heading-lighter;
 
           &.namespace, &.class {
             font-family: monospace;
           }
 
-          &:not(.cpp) {
+          &:not(.token) {
             font-size: .5em;
             font-weight: normal;
+            color: $cl-heading-lighter;
           }
 
           &:nth-last-child(2) {
