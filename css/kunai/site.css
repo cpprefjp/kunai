@@ -169,9 +169,14 @@ main[role="main"] {
             color: $cl-heading-lighter;
           }
 
-          &:nth-last-child(2) {
-            padding-right: .5em;
-            // font-weight: bold;
+          &.token:not(:first-child) {
+            font-family: monospace;
+            overflow-wrap: break-word;
+            max-width: 100%;
+          }
+
+          &.cpp {
+            margin: .5rem 0 0 .5rem;
           }
         }
       } // h1
