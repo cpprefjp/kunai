@@ -56,7 +56,7 @@ class Yata {
     elem.addClass('hidden') // hide by default
     this.code.id.serializeInDOM(elem)
 
-    this.log.info(`creating Yata toolbar for code snippet ${this.code.id}`, elem)
+    this.log.info(`creating Yata toolbar for code snippet`, elem)
     let tools_all = $('<div>').addClass('tools-all')
     const tooltip = $('<div class="tooltip-wrapper"><div class="tooltip"></div></div>')
     const tool = $('<li>').addClass('tool')
@@ -135,7 +135,7 @@ class Yata {
     this.buf.text(this.code.buf)
 
     this.orig_code.after(this.buf)
-    this.log.info(`enabling Yata ${this.code.id}`, this.buf)
+    this.log.info(`initializing mirror data...`, this.buf)
 
 
     this.log.info(`creating CodeMirror element...`)
