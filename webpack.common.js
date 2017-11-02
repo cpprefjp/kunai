@@ -136,6 +136,14 @@ module.exports = env => ({
               },
               {
                 loader: 'postcss-loader',
+                options: {
+                  config: {
+                    ctx: {
+                      env: env,
+                      // csswring: {},
+                    },
+                  },
+                },
               },
               // {
                 // loader: 'sass-loader',
@@ -164,8 +172,8 @@ module.exports = env => ({
         disable: false,
         allChunks: true,
       }),
-      // new OptimizeCSSAssetsPlugin({
-      // }),
+      new OptimizeCSSAssetsPlugin({
+      }),
     ]
   },
 })
