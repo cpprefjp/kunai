@@ -73,7 +73,7 @@ class Yata {
 
         $('<i>').addClass('fa fa-fw fa-magic').appendTo(btn)
 
-        btn.on('click', this.onEnable.bind(this))
+        btn.on('click', ::this.onEnable)
         btn.appendTo(li)
         li.appendTo(tb)
       }
@@ -84,7 +84,7 @@ class Yata {
 
         $('<i>').addClass('fa fa-fw fa-play').appendTo(btn)
 
-        btn.on('click', this.onCompile.bind(this))
+        btn.on('click', ::this.onCompile)
         btn.appendTo(li)
         li.appendTo(tb)
       }
@@ -112,7 +112,7 @@ class Yata {
         // i.e. default theme
         sel.val(this.currentTheme)
 
-        sel.on('change', this.onThemeChange.bind(this))
+        sel.on('change', ::this.onThemeChange)
         sel.appendTo(li)
         li.appendTo(tb)
       }
@@ -157,9 +157,9 @@ class Yata {
 
     // this.resizer = this.code.id.serializeInDOM($('<div>').addClass('yata-resizer'))
 
-    // this.resizer.on('mouseup', this.onResize.bind(this))
-    // this.resizer.on('mousedown', this.onResize.bind(this))
-    // this.resizer.on('mousemove', this.onResize.bind(this))
+    // this.resizer.on('mouseup', ::this.onResize)
+    // this.resizer.on('mousedown', ::this.onResize)
+    // this.resizer.on('mousemove', ::this.onResize)
 
     // $(this.cm.getWrapperElement()).after(this.resizer)
 
@@ -225,7 +225,7 @@ class Yata {
 
     this.wand.compile(
       this.cm.getTextArea().value,
-      this.onCompileSuccess.bind(this), this.onCompileFailure.bind(this)
+      ::this.onCompileSuccess, ::this.onCompileFailure
     )
   }
 

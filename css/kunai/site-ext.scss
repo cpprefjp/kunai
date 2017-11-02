@@ -122,3 +122,27 @@ main[role="main"] {
 } // main
 
 
+#navbar-collapse {
+  ul.nav {
+    li {
+      a {
+        &:before {
+          margin-right: .2em;
+        }
+      }
+
+      &:nth-child(1) {
+        a {
+          &:before {
+            @extend .fa;
+            @extend .fa-fw;
+            @extend .fa-github;
+          }
+        }
+      }
+    }
+  }
+}
+
+
+

@@ -63,7 +63,7 @@ class Kunai {
     const desc = config.join('/')
     this.log.info(`loading (${desc})`)
     $('body').addClass('kunai')
-    this.meta = new Meta(this.log, config, this.onCodeFound.bind(this))
+    this.meta = new Meta(this.log, config, ::this.onCodeFound)
     this.log.info(`loaded (${desc})`)
   }
 
@@ -98,6 +98,7 @@ class Kunai {
     )
 
     this.ui = {
+      navbar: new UI.Navbar(l),
       treeview: new UI.Treeview(l),
       content: new UI.Content(l),
     }

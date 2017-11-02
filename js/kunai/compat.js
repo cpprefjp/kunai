@@ -12,7 +12,7 @@ class Compat {
     }
 
     // real...
-    $('.treespan').on('click', this.onTreeClick.bind(this))
+    $('.treespan').on('click', ::this.onTreeClick)
 
     this.log.info('applied.')
   } // constructor

@@ -1,3 +1,121 @@
+.cpprefjp body {
+  $nav-height: 50px;
+
+  > header {
+    nav {
+      $bg: #f8f8f8;
+      background: $bg;
+
+      position: relative;
+      height: $nav-height;
+      display: flex;
+
+      border: none;
+
+      .container-fluid {
+        margin: 0;
+        padding: 0;
+
+        display: flex;
+        flex-basis: 100%;
+      }
+
+      @media (min-width: 768px) {
+        .container-fluid .navbar-brand {
+          margin: 0 0 0 2rem;
+        }
+      }
+      .navbar-brand {
+        margin: 0;
+        padding: 0;
+        float: none;
+        display: flex;
+        // flex-grow: 1;
+
+        > .title-wrapper {
+          display: flex;
+          flex-basis: 100%;
+          align-items: center;
+
+          &:before {
+            content: "";
+            display: inline-block;
+            overflow: hidden;
+            height: 0;
+            padding: 32px 32px 0 0;
+            margin: 0 4px 0 0;
+            background-image: url(https://cpprefjp.github.io/static/original-icons/cpprefjp-icon-v1.1-transparent.png);
+            background-size: contain;
+            background-repeat: no-repeat;
+          }
+          > .title {
+          }
+        }
+      }
+
+      .navbar-header {
+        display: flex;
+        position: relative;
+        z-index: 3;
+        flex-basis: 100%;
+        margin: 0;
+        background: $bg;
+      }
+
+      .navbar-toggle {
+        padding: 0 12px;
+        margin: 0;
+
+        &:hover, &:focus {
+          background-color: initial;
+        }
+
+        border-radius: 0;
+        border: none;
+      }
+
+      #navbar-collapse {
+        position: absolute;
+        top: $nav-height;
+        left: 0;
+        z-index: 2;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+
+        border: none;
+        background: $bg;
+
+        box-shadow: 0 1px 4px 0 #AAA;
+
+        ul.nav {
+          display: flex;
+          margin: 0;
+          font-size: 1.2rem;
+
+          > li {
+            flex-basis: 100%;
+
+            > a {
+              margin: 0;
+              padding: .5rem 1rem;
+            }
+          }
+        }
+
+        &.collapse {
+          display: none !important; // :(
+        }
+      }
+    }
+  }
+
+  code {
+    border-radius: 0;
+  }
+}
+
+
 main[role="main"] {
   .tree {
     ul {

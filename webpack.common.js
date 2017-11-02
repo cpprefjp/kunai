@@ -136,15 +136,6 @@ module.exports = env => ({
               },
               {
                 loader: 'postcss-loader',
-                options: {
-                  config: {
-                    ctx: {
-                      autoprefixer: {
-                        browsers: 'last 2 versions',
-                      },
-                    },
-                  },
-                },
               },
               // {
                 // loader: 'sass-loader',
@@ -173,8 +164,8 @@ module.exports = env => ({
         disable: false,
         allChunks: true,
       }),
-      new OptimizeCSSAssetsPlugin({
-      }),
+      // new OptimizeCSSAssetsPlugin({
+      // }),
     ]
   },
 })
