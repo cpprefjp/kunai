@@ -9,9 +9,11 @@ $cl-badge-base: #757575;
   justify-content: center;
   align-items: center;
 
-  font-size: .8em;
+  // NB: the unit 'rem' is very important here!
+
+  font-size: .8rem;
   flex-shrink: 1;
-  padding: 0 .25em;
+  padding: 0 .25rem;
 
   border-radius: 3px;
   color: #666;
@@ -19,7 +21,7 @@ $cl-badge-base: #757575;
   border: 1px solid #BBB;
   box-shadow: inset 0 0 2px 0 rgba(0, 0, 0, 0.2);
 
-  margin-left: .4rem;
+  margin-left: .5em;
   margin-right: .1rem;
 
   a {
@@ -34,7 +36,7 @@ $cl-badge-base: #757575;
   &.text-warning, &.text-danger {
     &:before {
       @extend .fa;
-      margin-right: .2em;
+      margin-right: .2rem;
     }
   }
 
@@ -89,25 +91,32 @@ $cl-badge-base: #757575;
   }
 }
 
+@mixin enable-badge {
+  &.cpp11, &.cpp11deprecated, &.cpp11removed {
+    @include badge-cpp11;
+  }
+  &.cpp14, &.cpp14deprecated, &.cpp14removed {
+    @include badge-cpp-newer;
+  }
+  &.cpp17, &.cpp17deprecated, &.cpp17removed {
+    @include badge-cpp-newer;
+  }
+  &.cpp20, &.cpp20deprecated, &.cpp20removed {
+    @include badge-cpp-latest;
+  }
+}
+
 
 main[role="main"] {
-  // 何かしらのバッジっぽいのは多分これに全部引っかかる
-  // li > a + span {
-  // margin-left: .3rem;
-  // }
-
   .cpp-sidebar {
-    &.cpp11, &.cpp11deprecated, &.cpp11removed {
-      @include badge-cpp11;
-    }
-    &.cpp14, &.cpp14deprecated, &.cpp14removed {
-      @include badge-cpp-newer;
-    }
-    &.cpp17, &.cpp17deprecated, &.cpp17removed {
-      @include badge-cpp-newer;
-    }
-    &.cpp20, &.cpp20deprecated, &.cpp20removed {
-      @include badge-cpp-latest;
+    @include enable-badge;
+  }
+
+  div[itemtype="http://schema.org/Article"] {
+    .content-body {
+      span.cpp {
+        @include enable-badge;
+      }
     }
   }
 } // main

@@ -119,16 +119,16 @@ body {
   }
 
   div[itemtype="http://schema.org/Article"] {
-    h1[itemprop="name"] {
-      .namespace {
-        font-size: 1rem;
-      }
-      .class {
-      }
-      .cpp {
-        font-size: 1rem;
-      }
-    } // h1
+    // h1[itemprop="name"] {
+      // .namespace {
+        // font-size: 1rem;
+      // }
+      // .class {
+      // }
+      // .cpp {
+        // font-size: 1rem;
+      // }
+    // } // h1
 
     pre {
       // background: #f0f0f0; // これヤバい

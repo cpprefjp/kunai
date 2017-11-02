@@ -92,10 +92,14 @@ class Kunai {
   }
 
   async initUI() {
-    const l = this.log.makeContext('UI')
+    const l = new Logger(
+      ['Kunai', 'UI'],
+      this.log.opts
+    )
 
     this.ui = {
       treeview: new UI.Treeview(l),
+      content: new UI.Content(l),
     }
   }
 

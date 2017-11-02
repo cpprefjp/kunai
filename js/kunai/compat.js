@@ -26,32 +26,6 @@ class Compat {
     // this.log.debug('onTreeClick', e, self, ul)
     // ul.toggle()
   }
-
-  onTreeClickOld(e) {
-    let self = $(e.target)
-    let children = self.parent('li.parent_li').find(' > ul > li')
-
-    this.log.debug(`onTreeClick (visible: ${children.is(':visible')}, prevented: ${e.isDefaultPrevented()})`, e)
-
-    if (children.is(':visible')) {
-      children.hide(100)
-      self
-        .attr('title', 'Expand this branch')
-        .find(' > i')
-        .addClass('glyphicon-plus')
-        .removeClass('glyphicon-minus')
-
-    } else {
-      children.show(100)
-      self
-        .attr('title', 'Collapse this branch')
-        .find(' > i')
-        .addClass('glyphicon-minus')
-        .removeClass('glyphicon-plus')
-    }
-    e.stopPropagation()
-    // return false
-  } // onTreeClick
 } // Compat
 
 export {Compat}
