@@ -6,6 +6,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 const PJ = require('./package.json')
+const CRS_PJ = require('crsearch/package.json')
 
 
 function isExternal(module) {
@@ -76,6 +77,10 @@ module.exports = env => ({
         KUNAI_PACKAGE: JSON.stringify({
           version: PJ.version,
           bugs_url: PJ.bugs.url,
+        }),
+        CRS_PACKAGE: JSON.stringify({
+          version: CRS_PJ.version,
+          bugs_url: CRS_PJ.bugs.url,
         }),
       }),
       new webpack.optimize.CommonsChunkPlugin({
