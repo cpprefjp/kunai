@@ -1,5 +1,7 @@
 #!/bin/bash
 
+NPM_OPTS="--unsafe-perm"
+
 function show_help() {
   echo "$0 build"
   echo "$0 install"
@@ -22,7 +24,7 @@ fi
 
 case "$1" in
   "build" ) docker build -t kunai:0.0.0-alpine docker ;;
-  "install" ) docker run -v `pwd`:/var/src -p 8080:8080 $DOCKER_IT kunai:0.0.0-alpine /bin/sh -c "cd /var/src && exec npm install" ;;
+  "install" ) docker run -v `pwd`:/var/src -p 8080:8080 $DOCKER_IT kunai:0.0.0-alpine /bin/sh -c "cd /var/src && exec npm install $NPM_OPTS" ;;
   "run" )
     if [ $# -lt 2 ]; then
       show_help
