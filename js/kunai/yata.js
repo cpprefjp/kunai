@@ -166,7 +166,7 @@ class Yata {
     this.cm.on('scroll', (cm) => {
       const info = cm.getScrollInfo()
       const eps = 2
-      this.log.debug('scroll', info, cm)
+      // this.log.debug('scroll', info, cm)
 
       let we = $(cm.getWrapperElement())
 

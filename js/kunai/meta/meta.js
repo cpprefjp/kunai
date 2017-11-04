@@ -247,7 +247,7 @@ class Meta {
     this.setDOM(PageKey.main, null, 'main[role="main"]')
     this.setDOM(PageKey.article, PageKey.main, 'div[itemtype="http://schema.org/Article"]')
     this.setDOM(PageKey.articleBody, PageKey.article, 'div[itemprop="articleBody"]')
-    this.setDOM(PageKey.codes, PageKey.articleBody, '> .codehilite, > pre > code')
+    this.setDOM(PageKey.codes, PageKey.articleBody, '.codehilite')
 
     {
       const a = this.getDOM(PageKey.article).find('.edit-button .edit')
