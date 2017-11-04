@@ -15,6 +15,13 @@ const ToolID = {
   theme: Symbol.for('theme'),
 }
 
+class RefreshTimerInfo {
+  constructor(id) {
+    this.id = id
+    this.realID = null
+    this.count = 0
+  }
+}
 
 class Yata {
   static ToolID = ToolID
@@ -29,6 +36,7 @@ class Yata {
     this.wand = wand
     this.code = code
     this.console = null
+    this.cmRefreshTimers = new Map
 
     this.log = log.makeContext(`Yata ${this.code.id}`, new Logger.Option({icon: {text: '\u{1F426}', color: '#222'}}))
     this.opts = Object.assign({}, Mirror.DefaultOptions, opts)
@@ -155,6 +163,26 @@ class Yata {
       )
     })
 
+    this.cm.on('scroll', (cm) => {
+      const info = cm.getScrollInfo()
+      const eps = 2
+      this.log.debug('scroll', info, cm)
+
+      let we = $(cm.getWrapperElement())
+
+      if (info.left > eps) {
+        we.addClass('scrolling-x')
+      } else {
+        we.removeClass('scrolling-x')
+      }
+
+      if (info.top > eps) {
+        we.addClass('scrolling-y')
+      } else {
+        we.removeClass('scrolling-y')
+      }
+    })
+
     // this.resizer = this.code.id.serializeInDOM($('<div>').addClass('yata-resizer'))
 
     // this.resizer.on('mouseup', ::this.onResize)
@@ -166,20 +194,45 @@ class Yata {
     this.cm.setSize(null, '380px')
     this.log.info('CodeMirror element created', this.cm)
 
-    this.cm.focus()
+    // this.cm.focus()
+    // this.cm.refresh()
 
+    this.autoRefresh()
+
+    this.console = $('<div>').addClass('yata-console')
+    $(this.cm.getWrapperElement()).after(this.console)
+  } // initMirror
+
+  async autoRefresh() {
     // OMG...............
     // CodeMirrorのクソ仕様をよく分かっていないので
     // 生成されてからしばらく経ってから強制再描画しないと
     // 何も表示されない
     // †最大の闇†
-    this.cmRefresh = setInterval(() => {
-      this.cm.refresh()
-    }, 250)
 
-    this.console = $('<div>').addClass('yata-console')
-    $(this.cm.getWrapperElement()).after(this.console)
-  } // initMirror
+    let id = this.cmRefreshTimers.size
+    while (true) {
+      ++id
+      if (!this.cmRefreshTimers.has(id)) {
+        break
+      }
+    }
+    let info = new RefreshTimerInfo(id)
+    this.log.debug(`autoRefresh engaged (id: #${id})`)
+    this.cmRefreshTimers.set(id, info)
+
+    this.cmRefreshTimers.get(id).realID = setInterval((e) => {
+      ++info.count
+      this.cm.refresh()
+
+      if (info.count > 10) {
+        this.cmRefreshTimers.delete(id)
+
+        this.log.debug(`removing autoRefresh timer (id: #${id}, realID: #${info.realID})`)
+        clearInterval(info.realID)
+      }
+    }, 200)
+  }
 
   onResize(e) {
     e.stopPropagation()
@@ -333,6 +386,8 @@ class Yata {
     }
 
     this.buf.addClass('enabled')
+    this.autoRefresh()
+    this.cm.focus()
   } // onEnable
 }
 

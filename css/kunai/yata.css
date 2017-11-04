@@ -230,7 +230,7 @@ body.kunai {
     width: 100%;
     min-height: 120px;
     max-height: 220px;
-    overflow-x: scroll;
+    overflow-x: auto;
     overflow-y: scroll;
 
     .yata-console-line {
@@ -300,6 +300,12 @@ body.kunai {
   }
 
   .CodeMirror {
+    &.scrolling-x {
+      .CodeMirror-gutters {
+        box-shadow: 2px -2px 2px 0 rgba(0, 0, 0, 0.2);
+      }
+    }
+
     .CodeMirror-line {
       padding: 0 4px 0 12px;
     }
