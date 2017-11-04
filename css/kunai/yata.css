@@ -18,6 +18,8 @@ body.kunai {
     position: relative;
     z-index: 5;
 
+    $cl-tool-active: #ffff1d;
+
     &.hidden {
       display: none;
     }
@@ -37,8 +39,15 @@ body.kunai {
       }
     }
 
-    &:not(.enabled) .play button {
-      background: none;
+    &:not(.enabled) {
+      .tool:not(.play) {
+        display: none;
+      }
+
+      .tool.play button {
+        background: none;
+        color: $cl-tool-active;
+      }
     }
 
     &.enabled .play button {
@@ -155,7 +164,7 @@ body.kunai {
             }
 
             button {
-              color: #ffff1d;
+              color: $cl-tool-active;
 
               &:hover, &:disabled {
                 background-color: inherit;
