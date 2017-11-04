@@ -230,6 +230,7 @@ body.kunai {
     width: 100%;
     min-height: 120px;
     max-height: 220px;
+    overflow-x: scroll;
     overflow-y: scroll;
 
     .yata-console-line {
