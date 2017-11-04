@@ -154,8 +154,13 @@ class Meta {
     switch (token.get('type')) {
       case 'heading': {
         this.heading_depth = token.depth
+        const heading = token.get('text').trim()
+        if (heading.match(/実装例/)) {
+          this.is_inside_example = false
+          break
+        }
 
-        if (token.get('text').trim().match(/例|Example|Sample|サンプル/i)) {
+        if (heading.match(/例|Example|Sample|サンプル/i)) {
           this.is_inside_example = true
         } else {
           this.is_inside_example = false
