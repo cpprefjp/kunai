@@ -66,6 +66,14 @@ module.exports = env => ({
             path.resolve(__dirname, 'node_modules', 'crsearch'),
           ],
         },
+        {
+          test: /\.md$/,
+          use: [
+            {
+              loader: 'raw-loader',
+            },
+          ],
+        },
       ],
     },
     plugins: [

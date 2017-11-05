@@ -9,7 +9,7 @@ class Navbar {
   }
 
   onNavbarToggle(e) {
-    this.log.debug('onNavbarToggle', e)
+    // this.log.debug('onNavbarToggle', e)
     e.preventDefault()
 
     this.btn.toggleClass('collapsed')

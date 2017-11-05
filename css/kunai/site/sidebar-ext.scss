@@ -1,0 +1,167 @@
+@import '../../font-awesome';
+@import './badge-ext';
+
+
+.kunai-sidebar {
+  position: relative;
+
+  > .status {
+    display: flex;
+    justify-content: center;
+
+    position: absolute;
+    top: 1em;
+    left: 0;
+
+    width: 100%;
+    text-align: center;
+
+    font-size: 2em;
+    color: #222;
+  }
+
+  &.loading {
+    > .status {
+      &:before {
+        @extend .fa;
+        @extend .fa-fw;
+        @extend .fa-spin;
+        @extend .fa-refresh;
+      }
+    }
+  }
+
+  .tree.v2 {
+    ul:not(.root) {
+      li:not(.top) {
+        ul.articles {
+          li.article {
+            &:before {
+              @extend .fa;
+              @extend .fa-fw;
+              // @extend .fa-lightbulb-o;
+              // @extend .fa-terminal;
+              @extend .fa-angle-double-right;
+
+              display: block;
+              color: #ADADAD;
+            }
+          }
+        }
+      }
+    }
+
+    li.member {
+      &.special {
+        .index {
+          .keys {
+            > .key {
+              &:last-child {
+                &:before {
+                  @extend .fa;
+                  @extend .fa-fw;
+                  @extend .fa-star-half-o;
+
+                  position: relative;
+                  top: 0;
+                  left: 0;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    li.top {
+      > a.title {
+        &:before {
+          @extend .fa;
+          @extend .fa-fw;
+
+          margin-right: .15em;
+          color: darker;
+        }
+      }
+
+      &[data-top-id="implementation"] > a.title:before {
+        @extend .fa-cogs;
+      }
+      &[data-top-id="implementation-status"] > a.title:before {
+        @extend .fa-calendar-check-o;
+      }
+      &[data-top-id="mailing-lists"] > a.title:before {
+        @extend .fa-inbox;
+      }
+      &[data-top-id="third_party_library"] > a.title:before {
+        @extend .fa-university;
+      }
+      &[data-top-id="working_style"] > a.title:before {
+        @extend .fa-pencil-square-o;
+      }
+      &[data-top-id="editors_doc"] > a.title:before {
+        @extend .fa-text-height;
+      }
+      &[data-top-id="article"] > a.title:before {
+        @extend .fa-book;
+      }
+      &[data-top-id="lang"] > a.title:before {
+        @extend .fa-superscript;
+      }
+      &[data-top-id="reference"] {
+        > a.title:before {
+          @extend .fa-tags;
+        }
+
+        .articles {
+          > .article {
+            > a:before {
+              @extend .fa;
+              @extend .fa-fw;
+              @extend .fa-paragraph;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .attributes {
+    > .attribute {
+      background-color: #FEFEFE;
+
+      &.cpp17deprecated:before {
+        content: "";
+      }
+      @include enable-badge;
+
+      &.deprecated, &.removed {
+        &:before {
+          @extend .fa;
+          @extend .fa-fw;
+        }
+      }
+
+      &.deprecated {
+        $c: #f90;
+        color: $c;
+        border-color: $c;
+
+        &:before {
+          @extend .fa-warning;
+        }
+      }
+
+      &.removed {
+        $c: #8a6d3b;
+        color: $c;
+        border-color: $c;
+
+        &:before {
+          @extend .fa-ban;
+        }
+      }
+    }
+  }
+}
+

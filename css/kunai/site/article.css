@@ -1,0 +1,56 @@
+div[itemtype="http://schema.org/Article"] {
+  .content-body {
+    // FIXME: the dark side of float
+    overflow: hidden;
+
+    $cl-heading-lighter: #666;
+    > .identifier-type {
+      font-style: oblique;
+      color: #666;
+      font-family: serif;
+    }
+    > .header {
+      font-family: monospace;
+    }
+
+    h1[itemprop="name"] {
+      display: flex;
+      justify-content: flex-start;
+      align-items: baseline;
+
+      // FIXME: FLOAT
+      width: 100%;
+      flex-wrap: wrap;
+
+      margin: 0;
+      padding: .3rem 0 .1rem 0;
+
+      color: #333;
+
+      span {
+        display: block;
+
+        &.namespace, &.class {
+          font-family: monospace;
+        }
+
+        &:not(.token) {
+          font-size: .5em;
+          font-weight: normal;
+          color: $cl-heading-lighter;
+        }
+
+        &.token:not(:first-child) {
+          font-family: monospace;
+          overflow-wrap: break-word;
+          max-width: 100%;
+        }
+
+        &.cpp {
+          margin: .5rem 0 0 .5rem;
+        }
+      }
+    } // h1
+  }
+}
+

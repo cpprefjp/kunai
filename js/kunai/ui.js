@@ -1,4 +1,4 @@
 export {Content} from './ui/content'
-export {Treeview} from './ui/treeview'
+export {Sidebar} from './ui/sidebar'
 export {Navbar} from './ui/navbar'
 

@@ -42,6 +42,11 @@ class Kunai {
       this.compat = new Compat(this.log)
     }
 
+    this.ui = {
+      navbar: null,
+      sidebar: null,
+      content: null,
+    }
     this.initUI()
 
     this.wand = new Wand(this.log)
@@ -91,23 +96,32 @@ class Kunai {
     }
   }
 
+  async initSidebar() {
+    this.ui.sidebar = new UI.Sidebar(new Logger(
+      ['Kunai', 'UI'],
+      this.log.opts
+    ))
+    return this.ui.sidebar
+  }
+
   async initUI() {
     const l = new Logger(
       ['Kunai', 'UI'],
       this.log.opts
     )
 
-    this.ui = {
-      navbar: new UI.Navbar(l),
-      treeview: new UI.Treeview(l),
-      content: new UI.Content(l),
-    }
+    this.ui.navbar = new UI.Navbar(l)
+    this.ui.content = new UI.Content(l)
   }
 
-  async initCRSearch(isEnabled) {
+  async initCRSearch(isEnabled, onDatabase) {
     if (!isEnabled) return null
 
-    let crs = new CRSearch
+    await this.initSidebar()
+
+    let crs = new CRSearch({
+      onDatabase: ::this.ui.sidebar.onDatabase,
+    })
     crs.database('https://cpprefjp.github.io/static/crsearch/crsearch.json')
     crs.searchbox(document.getElementsByClassName('crsearch'))
     return crs

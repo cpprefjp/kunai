@@ -4,6 +4,7 @@ module.exports = ({file, options, env}) => ({
     'postcss-import': {
       from: file.dirname,
     },
+    'postcss-mixins': {},
     'postcss-advanced-variables': {},
     'postcss-nesting': {},
     'postcss-nested': {},
