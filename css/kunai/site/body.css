@@ -170,7 +170,8 @@ html, html.cpprefjp, html.boostjp {
 
       div[itemtype="http://schema.org/Article"] + div {
         float: none;
-        flex-basis: 42rem;
+        // flex-basis: 42rem;
+        flex-basis: 300px;
         overflow: hidden;
 
         width: initial;
