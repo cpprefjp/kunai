@@ -1,5 +1,6 @@
 @import '../../font-awesome';
-@import './badge-ext';
+@import '~crsearch/css/index.scss';
+@import '~crsearch/css/badge.scss';
 
 
 .kunai-sidebar {
@@ -25,8 +26,9 @@
       &:before {
         @extend .fa;
         @extend .fa-fw;
-        @extend .fa-spin;
         @extend .fa-refresh;
+
+        animation: fa-spin .5s infinite linear;
       }
     }
   }
@@ -53,9 +55,9 @@
 
     li.member {
       &.special {
-        .index {
-          .keys {
-            > .key {
+        .cr-index {
+          ul.keys {
+            > li.key {
               &:last-child {
                 &:before {
                   @extend .fa;
@@ -65,6 +67,27 @@
                   position: relative;
                   top: 0;
                   left: 0;
+                }
+              }
+            }
+          }
+        }
+      }
+      &:not(.special) {
+        .cr-index {
+          ul.keys {
+            > li.key {
+              &:last-child {
+                &:before {
+                  @extend .fa;
+                  @extend .fa-fw;
+                  @extend .fa-caret-right;
+
+                  position: relative;
+                  top: 0;
+                  left: 0;
+
+                  color: transparent;
                 }
               }
             }
@@ -113,52 +136,41 @@
           @extend .fa-tags;
         }
 
-        .articles {
-          > .article {
-            > a:before {
-              @extend .fa;
-              @extend .fa-fw;
-              @extend .fa-paragraph;
-            }
-          }
-        }
+        // .articles {
+          // > .article {
+            // > a:before {
+              // @extend .fa;
+              // @extend .fa-fw;
+              // @extend .fa-paragraph;
+            // }
+          // }
+        // }
       }
     }
   }
 
-  .attributes {
-    > .attribute {
-      background-color: #FEFEFE;
-
-      &.cpp17deprecated:before {
-        content: "";
+  .cr-index {
+    @include cr-index {
+      > .type {
+        display: none;
       }
-      @include enable-badge;
 
-      &.deprecated, &.removed {
+      > .title > ul.badges {
+        @include cr-badge-auto(".badge");
+      }
+    }
+  }
+}
+
+.kunai-sidebar > .tree.v2 > ul.root > li.top {
+  &:not([data-top-id="lang"]) {
+    .kunai-branch > ul.branch.articles {
+      > li.article {
         &:before {
           @extend .fa;
           @extend .fa-fw;
-        }
-      }
-
-      &.deprecated {
-        $c: #f90;
-        color: $c;
-        border-color: $c;
-
-        &:before {
-          @extend .fa-warning;
-        }
-      }
-
-      &.removed {
-        $c: #8a6d3b;
-        color: $c;
-        border-color: $c;
-
-        &:before {
-          @extend .fa-ban;
+          // @extend .fa-lightbulb-o;
+          @extend .fa-paragraph;
         }
       }
     }

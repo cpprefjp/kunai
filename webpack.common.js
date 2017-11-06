@@ -99,7 +99,7 @@ module.exports = env => ({
         },
       }),
       new ExtractTextPlugin({
-        filename: 'css/kunai-stage-0.css',
+        filename: 'css/kunai-stage-1.css',
         disable: false,
         allChunks: true,
       }),
@@ -108,9 +108,9 @@ module.exports = env => ({
   css: {
     context: path.resolve(__dirname, 'css'),
     entry: {
-      'kunai-stage-1': './kunai-stage-1.scss',
-      'kunai-stage-2': './kunai-stage-2.css',
-      'kunai-stage-3': './kunai-stage-3.scss',
+      'kunai-stage-0': './kunai-stage-0.css',
+      'kunai-stage-2': './kunai-stage-2.scss',
+      'kunai-stage-3': './kunai-stage-3.css',
     },
     output: {
       path: path.resolve(__dirname, 'dist'),
@@ -125,10 +125,13 @@ module.exports = env => ({
               {
                 loader: 'css-loader',
                 options: {
-                  minimize: true,
-                  importLoaders: 1,
+                  // minimize: true,
+                  importLoaders: 2,
                 },
               },
+              // {
+                // loader: 'postcss-loader',
+              // },
               {
                 loader: 'sass-loader',
               },

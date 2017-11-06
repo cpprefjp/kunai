@@ -1,0 +1,12 @@
+@import '../../font-awesome.scss';
+
+div[itemtype="http://schema.org/Article"] {
+  .edit-button {
+    span[itemprop="datePublished"] {
+      // @extend .fa;
+      // @extend .fa-fw;
+      // @extend .fa-calendar;
+    }
+  }
+}
+

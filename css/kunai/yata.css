@@ -1,12 +1,15 @@
 @import './variables';
 
 body.kunai {
-  .yata:not(.hidden) + .codehilite {
-    pre {
-      border-top-left-radius: 0;
-      border-top-right-radius: 0;
+  div[itemprop="articleBody"] {
+    .yata:not(.hidden) + .codehilite {
+      pre {
+        margin-top: 0;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
 
-      border-top: none;
+        border-top: none;
+      }
     }
   }
 
@@ -236,11 +239,11 @@ body.kunai {
     box-shadow: $cm-shadow;
 
     margin: 1em 0 2em 0;
-    width: 100%;
+    // width: 100%;
     min-height: 120px;
     max-height: 220px;
     overflow-x: auto;
-    overflow-y: scroll;
+    overflow-y: auto;
 
     .yata-console-line {
       &:empty:after {

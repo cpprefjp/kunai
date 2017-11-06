@@ -1,0 +1,155 @@
+@import '../variables.css';
+
+
+nav[role="navigation"] {
+  $bg: #f8f8f8;
+  background: $bg;
+
+  position: relative;
+  height: $nav-height;
+  display: flex;
+
+  margin: 0;
+  padding: 0;
+
+  font-size: 1.2rem;
+
+  border: none;
+  border-bottom: 1px solid color($cl-shuri alpha(0.2));
+
+  a {
+    color: #777;
+    font-family: sans-serif;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  .container-fluid {
+    margin: 0;
+    padding: 0;
+
+    display: flex;
+    flex-basis: 100%;
+  }
+
+  @media (min-width: 768px) {
+    .container-fluid .navbar-brand {
+      margin: 0 0 0 2rem;
+    }
+  }
+  .navbar-brand {
+    margin: 0;
+    padding: 0;
+    float: none;
+    display: flex;
+    // flex-grow: 1;
+
+    > .title-wrapper {
+      display: flex;
+      flex-basis: 100%;
+      align-items: center;
+
+      &:before {
+        content: "";
+        display: inline-block;
+        overflow: hidden;
+        height: 0;
+        padding: 32px 32px 0 0;
+        margin: 0 4px 0 0;
+        background-image: url(https://cpprefjp.github.io/static/original-icons/cpprefjp-icon-v1.1-transparent.png);
+        background-size: contain;
+        background-repeat: no-repeat;
+      }
+      > .title {
+      }
+    }
+  }
+
+  .navbar-header {
+    display: flex;
+    position: relative;
+    z-index: 3;
+    flex-basis: 100%;
+    margin: 0;
+    background: $bg;
+
+    align-items: center;
+  }
+
+  .navbar-toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+
+    padding: 0;
+    margin: 0 .5rem 0 .5rem;
+    height: 2.2rem;
+    width: 2.5rem;
+
+    background: none;
+
+    // border: 1px solid #AAA;
+    border: none;
+    border-radius: 6px;
+
+    @media (min-width: 768px) {
+      display: none;
+    }
+
+    &:hover, &:focus {
+      background-color: initial;
+    }
+
+    .sr-only {
+      display: none;
+    }
+
+    .icon-bar {
+      display: block;
+      width: 1.5rem;
+      height: 2px;
+      background: #AAA;
+    }
+  }
+
+  #navbar-collapse {
+    position: absolute;
+    top: $nav-height;
+    left: 0;
+    z-index: 2;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+
+    border: none;
+    background: $bg;
+
+    box-shadow: 0 1px 4px 0 #AAA;
+
+    ul.nav {
+      display: flex;
+      flex-direction: column;
+
+      margin: 0;
+      font-size: 1.2rem;
+      list-style: none;
+
+      > li {
+        flex-basis: 100%;
+
+        > a {
+          margin: 0;
+          padding: .5rem 1rem;
+        }
+      }
+    }
+
+    &.collapse {
+      display: none !important; // :(
+    }
+  }
+}
+

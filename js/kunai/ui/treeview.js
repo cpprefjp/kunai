@@ -1,37 +1,29 @@
 import * as Badge from './badge'
+import {IndexID} from 'crsearch'
+
 
 class DOM {
+  static crOptions = {
+    badges: {
+      noselfcpp: true,
+      switches: ['simple'],
+    },
+  }
+
+  static crClassOptions = {
+    badges: {
+      noselfcpp: false,
+      switches: ['simple'],
+    },
+  }
+
   constructor(log, kc) {
     this.log = log.makeContext('DOM')
     this.kc = kc
   }
 
-  /* async */ makeScrollable(me) {
-    return $('<div>').addClass('scrollable').append(me.addClass('scrollme'))
-  }
-
-  /* async */ makeAttributed(self, elem) {
-    if (self.attributes && self.attributes.length) {
-      let attrs = $('<ul>').addClass('attributes').appendTo(elem)
-
-      for (const attr of self.attributes) {
-        let li = $('<li>').addClass('attribute').addClass(attr).appendTo(attrs)
-        const m = attr.match(/^cpp(\d[\da-zA-Z]+)(deprecated|removed)$/)
-        if (m) {
-          const ver = m[1]
-          // let what = '(不明)'
-          // if (m[2] === 'deprecated') {
-            // what = '非推奨'
-          // } else if (m[2] === 'removed') {
-            // what = '削除'
-          // }
-
-          // li.text(`C++${ver}で${what}`)
-          li.text(`C++${ver}`).addClass(m[2])
-        }
-      }
-    }
-    return elem
+  /* async */ kunaiBranch(me) {
+    return $('<div>').addClass('kunai-branch').append(me.addClass('branch'))
   }
 
   async makeTitle(top) {
@@ -45,24 +37,30 @@ class DOM {
   }
 
   async makeArticle(idx) {
-    const a = $('<a>').attr('href', idx.url()).text(idx.id.join())
-    return this.makeAttributed(idx, $('<li>').addClass('article').append(a))
+    return $('<li>').addClass('article').append(
+      $('<a>').attr('href', idx.url()).text(idx.id.join())
+    )
   }
 
   async makeMember(m) {
-    const a = $('<a>').attr('href', m.url()).html(m.join_html())
-    let li = $('<li>').addClass('member').append(a)
+    const a = $('<a>').attr('href', m.url()).html(await m.join_html(DOM.crOptions))
+    let li = $('<li>').addClass('member').addClass('classy').append(a)
 
     if (this.kc.getPriorityForIndex(m).index !== this.kc.prioSpecials.get('__functions__').index) {
       li.addClass('special')
     }
-
-    return this.makeAttributed(m, li)
+    return li
   }
 
   async makeClass(c) {
-    let li = $('<li>').addClass('class')
-    $('<a>').attr('href', c.self.url()).addClass('self').html(c.self.join_html()).appendTo(li)
+    let li = $('<li>').addClass('class classy')
+    $('<a>').attr('href', c.self.url()).addClass('self').html(
+      await c.self.join_html(DOM.crClassOptions)
+    ).appendTo(li)
+
+    if (c.self.cpp_version) {
+      li.attr('data-cpp-version', c.self.cpp_version)
+    }
 
     if (c.members && c.members.length) {
       let members = $('<ul>').addClass('members').appendTo(li)
@@ -72,7 +70,19 @@ class DOM {
     } else {
       // this.log.warn(`no members present in class '${c.self.id.join()}'`, c)
     }
-    return this.makeAttributed(c, li)
+    return li
+  }
+
+  async makeOther(o) {
+    let li = $('<li>').addClass('other').addClass(Symbol.keyFor(o.id.type))
+
+    if (IndexID.isClassy(o.id.type)) {
+      li.addClass('classy')
+    }
+
+    return li.append(
+      $('<a>').attr('href', o.url()).html(await o.join_html(DOM.crOptions))
+    )
   }
 
   async makeLang(l) {
@@ -84,7 +94,7 @@ class DOM {
       self.append(await Promise.all(l.articles.map(async (ar) => {
         return await this.makeArticle(ar)
       })))
-      this.makeScrollable(self).appendTo(ret)
+      this.kunaiBranch(self).appendTo(ret)
     }
 
     return ret
@@ -92,19 +102,29 @@ class DOM {
 
   async makeHeader(h) {
     let ret = $('<li>').addClass('header')
-    let a = $('<a>').attr('href', h.self.url()).html(h.self.join_html()).appendTo(ret)
+    let a = $('<a>').attr('href', h.self.url()).html(await h.self.join_html(DOM.crOptions)).appendTo(ret)
+
+    if (h.self.cpp_version) {
+      ret.attr('data-cpp-version', h.self.cpp_version)
+    } else if (h.self.ns && h.self.ns.cpp_version) {
+      // throw h
+    }
 
     if (h.classes && h.classes.length) {
       let classes = $('<ul>').addClass('classes').appendTo(ret)
       classes.append(await Promise.all(h.classes.map(async (c) => {
         return await this.makeClass(c)
       })))
-
-    } else {
-      // this.log.warn(`no classes present in header '${h.self.id.join()}'`, h)
     }
 
-    return this.makeAttributed(h, ret)
+    if (h.others && h.others.length) {
+      let others = $('<ul>').addClass('others').appendTo(ret)
+      others.append(await Promise.all(h.others.map(async (o) => {
+        return await this.makeOther(o)
+      })))
+    }
+
+    return ret
   }
 }
 
@@ -176,7 +196,7 @@ class Treeview {
         return await this.dom.makeArticle(ar)
       })))
 
-      this.dom.makeScrollable(self).appendTo(e)
+      this.dom.kunaiBranch(self).appendTo(e)
     }
 
     if (top.headers && top.headers.length) {
@@ -184,7 +204,7 @@ class Treeview {
         return await this.dom.makeHeader(h)
       })))
 
-      this.dom.makeScrollable(self).appendTo(e)
+      this.dom.kunaiBranch(self).appendTo(e)
     }
   }
 

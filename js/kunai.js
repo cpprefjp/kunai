@@ -123,7 +123,10 @@ class Kunai {
       onDatabase: ::this.ui.sidebar.onDatabase,
     })
     crs.database('https://cpprefjp.github.io/static/crsearch/crsearch.json')
-    crs.searchbox(document.getElementsByClassName('crsearch'))
+
+    let e = $('.crsearch')
+    await crs.searchbox(e)
+    e.addClass('loaded')
     return crs
   }
 }

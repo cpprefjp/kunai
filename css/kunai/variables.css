@@ -1,7 +1,12 @@
+$nav-height: 50px;
+
 $cl-shuri: #306E82;
 $cl-theme: #87ceeb;
 $cl-white: #FEFEFE;
 $cl-blue: #25649f;
+
+$cl-link: #428bca;
+$cl-link-hover: #2a6496;
 
 $bg-bg-gray: #fafbfc;
 

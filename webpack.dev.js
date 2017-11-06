@@ -22,7 +22,7 @@ module.exports = env => (Merge.multiple(common(env), {
         },
       ],
     },
-    devtool: 'cheap-module-eval-source-map',
+    devtool: 'inline-source-map',
     devServer: {
       publicPath: '/',
       contentBase: path.join(__dirname, 'example'),
@@ -69,7 +69,7 @@ module.exports = env => (Merge.multiple(common(env), {
     entry: {
       browser: './browser.css',
     },
-    devtool: 'cheap-module-eval-source-map',
+    devtool: 'inline-source-map',
   },
 }))
 

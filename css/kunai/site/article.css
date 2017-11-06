@@ -1,16 +1,143 @@
 div[itemtype="http://schema.org/Article"] {
+  display: flex;
+  flex-direction: column;
+
+  color: #333;
+  margin: 0;
+  padding: 0;
+
+  // flex-basis: 42rem;
+  flex-basis: 300px;
+
+  width: initial;
+  left: unset;
+  right: unset;
+
+  float: none;
+  flex-grow: 1;
+  width: initial;
+  left: unset;
+
+  padding: 0;
+
+  line-height: 1.5;
+
+  position: relative;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    flex-basis: 100%;
+  }
+
+  > .row {
+    &:nth-child(2) {
+      order: 1;
+
+      display: flex;
+      flex-direction: column;
+    }
+    &:nth-child(1) {
+      order: 2;
+    }
+    &:nth-child(3) {
+      order: 3;
+    }
+    &:nth-child(4) {
+      order: 4;
+    }
+  }
+
+  ul {
+    margin: .6rem 0 .6rem 0;
+  }
+
+  h2, h3, h4, h5, h6 {
+    font-weight: 500;
+  }
+
+  h2 {
+    font-size: 2rem;
+    margin: 1.8rem 0 1rem 0;
+  }
+
+  h3 {
+    font-size: 1.6rem;
+    margin: 1rem 0 .4rem 0;
+
+    + ul {
+      margin-top: .2rem;
+    }
+  }
+
+  code {
+    font-family: monospace;
+    font-size: .9rem;
+    background-color: #EFEFEF;
+    color: #232323;
+
+    display: inline-block;
+    margin: 0 .25em;
+    padding: 0 .25em;
+  }
+
+  a:hover code {
+    text-decoration: underline;
+  }
+
+  .edit-button {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+
+    // br {
+      // display: none;
+    // }
+
+    a {
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    p {
+      margin: .3rem .5rem;
+      padding: 0;
+    }
+
+    .text-right {
+      display: inline-flex;
+      text-align: right;
+    }
+  }
+
+
+  .syntax pre .err {
+    border: none;
+  }
+
   .content-body {
-    // FIXME: the dark side of float
-    overflow: hidden;
+    position: relative;
+    padding: 0 1.6rem 2.5rem 1.6rem;
+    background: #FFF;
+
+    overflow: visible;
+    margin: 0;
+
 
     $cl-heading-lighter: #666;
     > .identifier-type {
+      float: left;
       font-style: oblique;
-      color: #666;
+      color: #777;
       font-family: serif;
+      text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.08);
     }
     > .header {
+      float: right;
+      color: #4e4e4e;
+      text-align: left;
       font-family: monospace;
+      text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.08);
     }
 
     h1[itemprop="name"] {
@@ -26,12 +153,17 @@ div[itemtype="http://schema.org/Article"] {
       padding: .3rem 0 .1rem 0;
 
       color: #333;
+      text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.1);
 
       span {
         display: block;
 
         &.namespace, &.class {
           font-family: monospace;
+        }
+
+        &.token {
+          font-weight: normal;
         }
 
         &:not(.token) {
@@ -50,7 +182,110 @@ div[itemtype="http://schema.org/Article"] {
           margin: .5rem 0 0 .5rem;
         }
       }
-    } // h1
+    }
+
+
+    h1 {
+      font-size: 2.5rem;
+    }
+
+    > h1:first-child {
+      margin-top: 0px;
+    }
+    h2 {
+      border-left: solid 8px skyblue;
+      padding-left: 5px;
+      border-bottom: solid 2px skyblue;
+    }
+
+    div[itemprop="articleBody"] {
+      .codehilite > pre, & > pre {
+        overflow-x: auto;
+
+        color: #444;
+        font-size: .9rem;
+        border: 1px solid #CCC;
+        padding: .75em .75em;
+        border-radius: 6px;
+
+        line-height: 1.5;
+
+        .err {
+          border: none;
+        }
+      }
+    }
+  }
+
+  .edit {
+    border-radius: 4px;
+    border: 1px solid #999;
+    margin: 5px;
+    padding: 3px;
+  }
+
+  .history {
+    border-radius: 4px;
+    border: 1px solid #999;
+    margin: 5px;
+    padding: 3px;
+  }
+
+  .content-header {
+    display: flex;
+    flex-direction: row;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+    }
+
+    padding: 0 1em 0 0;
+    margin-bottom: 5px;
+    background: #f5f5f5;
+    border-radius: 0;
+    align-items: center;
+    justify-content: space-between;
+
+    box-shadow: 0 -4px 12px 0 rgba(20, 20, 20, 0.6);
+
+    float: none;
+
+    ol.breadcrumb {
+      display: inline-flex;
+      align-items: baseline;
+      margin-bottom: 0;
+
+      margin: 0;
+      padding: .75rem 1rem;
+
+      background: none;
+      border-radius: 0;
+
+      list-style: none;
+
+      text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.1);
+
+      @media (max-width: 768px) {
+        width: 100%;
+      }
+
+      > .active {
+        color: #777;
+      }
+
+      > li {
+        + li:before {
+          content: '/';
+          color: #ccc;
+          padding: 0 0 0 .3rem;
+          font-size: 1rem;
+        }
+
+        &:first-child {
+          font-size: 1.2rem;
+        }
+      }
+    }
   }
 }
 

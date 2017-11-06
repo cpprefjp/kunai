@@ -73,11 +73,12 @@
     "anser": "^1.4.4",
     "babel-runtime": "^6.26.0",
     "codemirror": "^5.31.0",
-    "crsearch": "^2.2.8",
+    "crsearch": "^2.4.6",
     "font-awesome": "^4.7.0",
     "jquery": "^3.2.1",
     "marked": "^0.3.6",
     "nagato": "^1.8.2",
+    "normalize.css": "^7.0.0",
     "numeral": "^2.0.6"
   }
 }
