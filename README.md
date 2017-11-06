@@ -18,21 +18,12 @@
 
 ## コンポーネント
 
-### Compat
-
-互換性モジュール
-
-- [x] 現行の __cpprefjp/site_generator__ のCSSとほぼ同じ表示
-- [x] *Bootstrap* をドロップ
-- [x] *Glyphicon* -> *FontAwesome* に移行
-- [x] *jQuery* を自前で読む
-
-
 ### Site
 
-Compatに上乗せするUX改善アセット
+UX改善アセット
 
 - [x] C++バッジ（ツリービューその他）
+- [ ] 今度こそBootstrapを殺す
 
 
 ### Kunai (core)
