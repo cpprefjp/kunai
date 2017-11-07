@@ -22,29 +22,33 @@ class DOM {
     this.kc = kc
   }
 
-  /* async */ kunaiBranch(me) {
-    return $('<div>').addClass('kunai-branch').append(me.addClass('branch'))
+  async kunaiBranch(me) {
+    return $('<div>', {class: 'kunai-branch'}).append(me.addClass('branch'))
   }
 
   async makeTitle(top) {
-    const TITLE_PROTO = $('<a>').addClass('title')
+    return top.root ?
+      $('<a>', {
+        class: 'title',
+        href: top.root.url(),
+        title: top.category.name
+      }).text(top.category.name) :
 
-    if (top.root) {
-      return TITLE_PROTO.clone().attr('href', top.root.url()).text(top.category.name)
-    } else {
-      return TITLE_PROTO.clone().text(top.category.name).attr('title', '存在しないページ')
-    }
+      $('<a>', {
+        class: 'title',
+        title: '存在しないページ'
+      }).text(top.category.name)
   }
 
   async makeArticle(idx) {
-    return $('<li>').addClass('article').append(
-      $('<a>').attr('href', idx.url()).text(idx.id.join())
+    return $('<li>', {class: 'article'}).append(
+      $('<a>', {href: idx.url()}).text(idx.id.join())
     )
   }
 
   async makeMember(m) {
     const a = $('<a>').attr('href', m.url()).html(await m.join_html(DOM.crOptions))
-    let li = $('<li>').addClass('member').addClass('classy').append(a)
+    let li = $('<li>', {class: 'member classy'}).append(a)
 
     if (this.kc.getPriorityForIndex(m).index !== this.kc.prioSpecials.get('__functions__').index) {
       li.addClass('special')
@@ -53,8 +57,8 @@ class DOM {
   }
 
   async makeClass(c) {
-    let li = $('<li>').addClass('class classy')
-    $('<a>').attr('href', c.self.url()).addClass('self').html(
+    let li = $('<li>', {class: 'class classy'})
+    $('<a>', {class: 'self'}).attr('href', c.self.url()).html(
       await c.self.join_html(DOM.crClassOptions)
     ).appendTo(li)
 
@@ -63,7 +67,7 @@ class DOM {
     }
 
     if (c.members && c.members.length) {
-      let members = $('<ul>').addClass('members').appendTo(li)
+      let members = $('<ul>', {class: 'members'}).appendTo(li)
       members.append(await Promise.all(c.members.map(async (m) => {
         return await this.makeMember(m)
       })))
@@ -74,7 +78,7 @@ class DOM {
   }
 
   async makeOther(o) {
-    let li = $('<li>').addClass('other').addClass(Symbol.keyFor(o.id.type))
+    let li = $('<li>', {class: `other ${Symbol.keyFor(o.id.type)}`})
 
     if (IndexID.isClassy(o.id.type)) {
       li.addClass('classy')
@@ -86,22 +90,22 @@ class DOM {
   }
 
   async makeLang(l) {
-    let ret = $('<li>').addClass('lang').attr('data-lang-id', l.self.id.join())
-    let a = $('<a>').addClass('title').attr('href', l.self.url()).text(l.self.id.join()).appendTo(ret)
+    let ret = $('<li>', {class: 'lang', 'data-lang-id': l.self.id.join()})
+    let a = $('<a>', {class: 'title', 'href': l.self.url()}).text(l.self.id.join()).appendTo(ret)
 
     {
-      let self = $('<ul>').addClass('articles')
+      let self = $('<ul>', {class: 'articles'})
       self.append(await Promise.all(l.articles.map(async (ar) => {
         return await this.makeArticle(ar)
       })))
-      this.kunaiBranch(self).appendTo(ret)
+      ret.append(await this.kunaiBranch(self))
     }
 
     return ret
   }
 
   async makeHeader(h) {
-    let ret = $('<li>').addClass('header')
+    let ret = $('<li>', {class: 'header'})
     let a = $('<a>').attr('href', h.self.url()).html(await h.self.join_html(DOM.crOptions)).appendTo(ret)
 
     if (h.self.cpp_version) {
@@ -111,14 +115,14 @@ class DOM {
     }
 
     if (h.classes && h.classes.length) {
-      let classes = $('<ul>').addClass('classes').appendTo(ret)
+      let classes = $('<ul>', {class: 'classes'}).appendTo(ret)
       classes.append(await Promise.all(h.classes.map(async (c) => {
         return await this.makeClass(c)
       })))
     }
 
     if (h.others && h.others.length) {
-      let others = $('<ul>').addClass('others').appendTo(ret)
+      let others = $('<ul>', {class: 'others'}).appendTo(ret)
       others.append(await Promise.all(h.others.map(async (o) => {
         return await this.makeOther(o)
       })))
@@ -133,13 +137,13 @@ class Treeview {
     this.log = log.makeContext('Treeview')
     this.kc = kc
     this.e = e
-    this.root = $('<div>').addClass('tree v2').appendTo(this.e)
+    this.root = $('<div>', {class: 'tree v2'}).appendTo(this.e)
     this.opts = Object.assign({}, opts)
     this.legacy = this.opts.legacy
     this.forceLegacy = false
 
     {
-      let aaa = $('<label>', {id: 'forceLegacyWrapper'}).append($('<div>').addClass('notice').text('Legacy sidebar')).prependTo(this.e)
+      let aaa = $('<label>', {id: 'forceLegacyWrapper'}).append($('<div>', {class: 'notice'}).text('Legacy sidebar')).prependTo(this.e)
       this.forceLegacyCheck = $('<input>', {id: 'forceLegacy', type: 'checkbox'}).appendTo(aaa)
     }
 
@@ -168,9 +172,9 @@ class Treeview {
 
   async onDataImpl(tree) {
     this.log.debug('data', tree)
-    let root = $('<ul>').addClass('root').appendTo(this.root)
-    const HEADER_PROTO = $('<li>').addClass('header')
-    const CLASS_PROTO = $('<li>').addClass('class')
+    let root = $('<ul>', {class: 'root'}).appendTo(this.root)
+    const HEADER_PROTO = $('<li>', {class: 'header'})
+    const CLASS_PROTO = $('<li>', {class: 'class'})
 
     const cats = this.kc.categories()
 
@@ -179,7 +183,7 @@ class Treeview {
         continue
       }
 
-      let e = $('<li>').addClass('top').appendTo(root).attr('data-top-id', top.namespace.namespace[0])
+      let e = $('<li>', {class: 'top', 'data-top-id': top.namespace.namespace[0]}).appendTo(root)
       e.append(await this.dom.makeTitle(top))
 
       if (top.category.index === cats.get('lang').index) {
@@ -192,19 +196,19 @@ class Treeview {
 
   async processTop(top, e) {
     if (top.articles && top.articles.length) {
-      let self = $('<ul>').addClass('articles').append(await Promise.all(top.articles.map(async (ar) => {
+      let self = $('<ul>', {class: 'articles'}).append(await Promise.all(top.articles.map(async (ar) => {
         return await this.dom.makeArticle(ar)
       })))
 
-      this.dom.kunaiBranch(self).appendTo(e)
+      e.append(await this.dom.kunaiBranch(self))
     }
 
     if (top.headers && top.headers.length) {
-      let self = $('<ul>').addClass('headers').append(await Promise.all(top.headers.map(async (h) => {
+      let self = $('<ul>', {class: 'headers'}).append(await Promise.all(top.headers.map(async (h) => {
         return await this.dom.makeHeader(h)
       })))
 
-      this.dom.kunaiBranch(self).appendTo(e)
+      e.append(await this.dom.kunaiBranch(self))
     }
   }
 
@@ -223,7 +227,7 @@ class Treeview {
       return aid < bid ? 1 : -1
     })
 
-    let langs = $('<ul>').addClass('langs').appendTo(e)
+    let langs = $('<ul>', {class: 'langs'}).appendTo(e)
 
     for (const [id, t] of ltops) {
       langs.append(await this.dom.makeLang(t))
