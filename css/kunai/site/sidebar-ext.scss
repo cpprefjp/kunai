@@ -62,10 +62,6 @@
                 &:before {
                   @include fa-patch;
                   @extend .fa-star-half-o;
-
-                  position: relative;
-                  top: 0;
-                  left: 0;
                 }
               }
             }
@@ -80,10 +76,6 @@
                 &:before {
                   @include fa-patch;
                   @extend .fa-caret-right;
-
-                  position: relative;
-                  top: 0;
-                  left: 0;
 
                   color: transparent;
                 }

@@ -109,6 +109,8 @@ main[role="main"] .kunai-sidebar.force-legacy {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
+
+      max-width: 100%;
     }
 
     ul.keys, ul.badges {
@@ -125,6 +127,8 @@ main[role="main"] .kunai-sidebar.force-legacy {
       white-space: nowrap;
 
       > li.key {
+        max-width: 100%;
+        white-space: pre-line;
       }
     }
 
@@ -328,6 +332,13 @@ main[role="main"] .kunai-sidebar.force-legacy {
     }
   }
 
+  ul.articles > li.article > a,
+  ul.classes > li.class > a,
+  ul.members > li.member > a,
+  ul.others > li.other > a {
+    max-width: 100%;
+  }
+
   ul.articles {
     > li.article {
       direction: ltr;
@@ -454,9 +465,20 @@ main[role="main"] .kunai-sidebar.force-legacy {
         margin-bottom: 1em;
       }
 
-      .cr-index {
-        ul.keys {
-          padding-left: .3em;
+      > .self {
+        $c: #87ceeb;
+        border-left: 4px solid $c;
+        border-bottom: 1px dashed color($c alpha(0.7));
+        margin-bottom: .5em;
+        // box-shadow: 0 3px 13px -6px rgba(20, 20, 20, 0.2);
+
+        .cr-index {
+          ul.keys {
+            max-width: 75%;
+            word-break: break-all;
+
+            padding-left: .3em;
+          }
         }
       }
     }
@@ -477,6 +499,12 @@ main[role="main"] .kunai-sidebar.force-legacy {
       .cr-index {
         ul.keys {
           > li.key {
+            display: inline-flex;
+            align-items: baseline;
+
+            word-break: break-all;
+            // position: relative;
+
             &:first-child {
               /* visibility: hidden; */
               display: none;
@@ -485,6 +513,12 @@ main[role="main"] .kunai-sidebar.force-legacy {
 
             &:last-child {
               flex-basis: 100%;
+
+              // &:before {
+                // position: absolute;
+                // top: 0;
+                // left: 0;
+              // }
             }
 
             &:not(:first-child):not(:last-child) {
