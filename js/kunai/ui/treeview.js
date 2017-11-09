@@ -21,6 +21,65 @@ class DOM {
     this.log = log.makeContext('DOM')
     this.kc = kc
     this.lazyLoaders = new WeakMap
+
+    this.lastBranchID = 0
+    this.branchPrevs = new Map
+  }
+
+  static scrollEps = 8
+
+  async handleScroll(e) {
+    let elem = $(e.target)
+    const bID = elem.attr('data-branch-id')
+    const branch = elem.children('.branch')
+    const st = elem.scrollTop()
+    const btop = branch.position().top
+    this.log.debug(`handleScroll #${bID} (top = ${st}px, branch = ${btop}px)`, e, elem, branch)
+
+    let topChild = null
+    let topDelta = 0
+    for (const child_ of branch.children('li')) {
+      const child = $(child_)
+      const delta = btop - child.position().top
+
+      if (!topChild) {
+        topDelta = delta
+        topChild = child
+      } else {
+        this.log.debug(`${delta} < ${topDelta} < ${btop}`)
+        if (delta > btop) {
+          topDelta = delta
+          topChild = child
+        } else {
+          break
+        }
+      }
+    }
+
+    {
+      let last = this.branchPrevs.get(bID)
+      if (last) {
+        last.removeClass('preview')
+      }
+    }
+
+    this.log.debug(`current branch = '${topChild.find('.cr-index > .title > .keys')[0].innerText.trim()}'`, topChild)
+
+    this.branchPrevs.set(bID, topChild)
+    topChild.addClass('preview')
+    // throw [topChild, topDelta]
+
+    if (topChild.hasClass('expanded')) {
+      let bar = $(topChild.children('.expandbar')[0])
+      bar.css({top: `${(st)}px`})
+      // throw true
+    }
+
+    if (st < DOM.scrollEps) {
+      elem.removeClass('scrolling')
+    } else {
+      elem.addClass('scrolling')
+    }
   }
 
   async createContent(e, elem, obj) {
@@ -73,8 +132,15 @@ class DOM {
     $(e.target).closest('li').toggleClass('expanded')
   }
 
-  async kunaiBranch(me) {
-    return $('<div>', {class: 'kunai-branch'}).append(me.addClass('branch'))
+  async kunaiBranch(me, scrollHandler) {
+    let elem = $('<div>', {class: 'kunai-branch', 'data-branch-id': this.lastBranchID++}).append(me.addClass('branch'))
+
+    if (scrollHandler) {
+      elem.prepend($('<div>', {class: 'preview'}))
+      elem.scroll(scrollHandler)
+    }
+
+    return elem
   }
 
   async makeTitle(top) {
@@ -266,7 +332,11 @@ class Treeview {
         return await this.dom.makeHeader(h)
       })))
 
-      e.append(await this.dom.kunaiBranch(self))
+      e.append(await this.dom.kunaiBranch(
+        self,
+        top.category.index === this.kc.categories().get('reference').index ?
+          ::this.dom.handleScroll : null
+      ))
     }
   }
 
