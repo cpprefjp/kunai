@@ -3,7 +3,6 @@ const URL = require('url');
 
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 const PJ = require('./package.json')
 const CRS_PJ = require('crsearch/package.json')
@@ -157,7 +156,9 @@ module.exports = env => ({
                   config: {
                     ctx: {
                       env: env,
-                      csswring: {},
+                      cssnano: {
+                        autoprefixer: false,
+                      },
                     },
                   },
                 },
@@ -189,8 +190,6 @@ module.exports = env => ({
         disable: false,
         allChunks: true,
       }),
-      // new OptimizeCSSAssetsPlugin({
-      // }),
     ]
   },
 })

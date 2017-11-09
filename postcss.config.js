@@ -15,8 +15,8 @@ module.exports = ({file, options, env}) => ({
     },
     'postcss-color-function': {},
     // 'postcss-strip-inline-comments': {},
-    // env === 'production' ? 'autoprefixer')(options.autoprefixer) : false,
-    'csswring': options.env === 'production' ? options.csswring : false,
+    'autoprefixer': {},
+    'cssnano': options.env === 'production' ? options.cssnano : false,
   },
 })
 
