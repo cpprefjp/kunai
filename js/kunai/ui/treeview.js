@@ -1,5 +1,5 @@
 import * as Badge from './badge'
-import {IndexID} from 'crsearch'
+import {IndexID, IndexType as IType} from 'crsearch'
 
 
 class DOM {
@@ -20,6 +20,57 @@ class DOM {
   constructor(log, kc) {
     this.log = log.makeContext('DOM')
     this.kc = kc
+    this.lazyLoaders = new WeakMap
+  }
+
+  async createContent(e, elem, obj) {
+    // this.log.debug(`createContent '${obj.self.id}'`, e, elem, obj)
+
+    switch (obj.self.id.type) {
+      case IType.header:
+        return await this.createHeaderContent(e, elem, obj)
+
+      default:
+        this.log.error('createContent', e, elem, obj)
+        throw new Error(`unhandled index type in createContent`)
+    }
+  }
+
+  async createHeaderContent(e, elem, h) {
+    // this.log.debug(`createHeaderContent (${h.self.id.join()})`, e, elem, h)
+    let empty = true
+
+    if (h.classes && h.classes.length) {
+      empty = false
+      let classes = $('<ul>', {class: 'classes'}).appendTo(elem)
+      classes.append(await Promise.all(h.classes.map(async (c) => {
+        return await this.makeClass(c)
+      })))
+    }
+
+    if (h.others && h.others.length) {
+      empty = false
+      let others = $('<ul>', {class: 'others'}).appendTo(elem)
+      others.append(await Promise.all(h.others.map(async (o) => {
+        return await this.makeOther(o)
+      })))
+    }
+
+    if (empty) {
+      elem.addClass('empty')
+    }
+    this.lazyLoaders.set(h.self.id, async () => await this.getHeader(h))
+  }
+
+  async getHeader(h) {
+    // this.log.debug(`getHeader (${h.self.id.join()})`, h)
+    return true // this.lazyLoaders.get(h.self.id)
+  }
+
+  async doExpand(id, e) {
+    // this.log.debug(`doExpand '${id.join()}'`, id, e)
+    await this.lazyLoaders.get(id)(e)
+    $(e.target).closest('li').toggleClass('expanded')
   }
 
   async kunaiBranch(me) {
@@ -104,31 +155,40 @@ class DOM {
     return ret
   }
 
+  async makeExpandable(elem, obj) {
+    this.lazyLoaders.set(
+      obj.self.id,
+      async (e) => {
+        return await ::this.createContent(e, elem, obj)
+      }
+    )
+
+    let bar = $('<div>', {class: 'expandbar'}).appendTo(elem)
+
+    bar.append(
+      $('<div>', {class: 'expander'}).on('click', async (e) => {
+        await this.doExpand(obj.self.id, e)
+      })
+    )
+
+    bar.append(
+      $('<a>')
+        .attr('href', obj.self.url())
+        .html(await obj.self.join_html(DOM.crOptions))
+    )
+    return elem
+  }
+
   async makeHeader(h) {
-    let ret = $('<li>', {class: 'header'})
-    let a = $('<a>').attr('href', h.self.url()).html(await h.self.join_html(DOM.crOptions)).appendTo(ret)
+    let li = $('<li>', {class: 'header'})
 
     if (h.self.cpp_version) {
-      ret.attr('data-cpp-version', h.self.cpp_version)
+      li.attr('data-cpp-version', h.self.cpp_version)
     } else if (h.self.ns && h.self.ns.cpp_version) {
       // throw h
     }
 
-    if (h.classes && h.classes.length) {
-      let classes = $('<ul>', {class: 'classes'}).appendTo(ret)
-      classes.append(await Promise.all(h.classes.map(async (c) => {
-        return await this.makeClass(c)
-      })))
-    }
-
-    if (h.others && h.others.length) {
-      let others = $('<ul>', {class: 'others'}).appendTo(ret)
-      others.append(await Promise.all(h.others.map(async (o) => {
-        return await this.makeOther(o)
-      })))
-    }
-
-    return ret
+    return await this.makeExpandable(li, h)
   }
 }
 
@@ -173,8 +233,6 @@ class Treeview {
   async onDataImpl(tree) {
     this.log.debug('data', tree)
     let root = $('<ul>', {class: 'root'}).appendTo(this.root)
-    const HEADER_PROTO = $('<li>', {class: 'header'})
-    const CLASS_PROTO = $('<li>', {class: 'class'})
 
     const cats = this.kc.categories()
 
