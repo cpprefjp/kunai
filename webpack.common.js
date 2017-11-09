@@ -128,9 +128,19 @@ module.exports = env => ({
                   importLoaders: 2,
                 },
               },
-              // {
-                // loader: 'postcss-loader',
-              // },
+              {
+                loader: 'postcss-loader',
+                options: {
+                  config: {
+                    ctx: {
+                      env: env,
+                      cssnano: {
+                        autoprefixer: false,
+                      },
+                    },
+                  },
+                },
+              },
               {
                 loader: 'sass-loader',
               },
