@@ -34,7 +34,7 @@ class DOM {
     const branch = elem.children('.branch')
     const st = elem.scrollTop()
     const btop = branch.position().top
-    this.log.debug(`handleScroll #${bID} (top = ${st}px, branch = ${btop}px)`, e, elem, branch)
+    // this.log.debug(`handleScroll #${bID} (top = ${st}px, branch = ${btop}px)`, e, elem, branch)
 
     let topChild = null
     let topDelta = 0
@@ -46,7 +46,7 @@ class DOM {
         topDelta = delta
         topChild = child
       } else {
-        this.log.debug(`${delta} < ${topDelta} < ${btop}`)
+        // this.log.debug(`${delta} < ${topDelta} < ${btop}`)
         if (delta > btop) {
           topDelta = delta
           topChild = child
@@ -63,7 +63,7 @@ class DOM {
       }
     }
 
-    this.log.debug(`current branch = '${topChild.find('.cr-index > .title > .keys')[0].innerText.trim()}'`, topChild)
+    // this.log.debug(`current branch = '${topChild.find('.cr-index > .title > .keys')[0].innerText.trim()}'`, topChild)
 
     this.branchPrevs.set(bID, topChild)
     topChild.addClass('preview')
