@@ -102,10 +102,11 @@ main[role="main"] .kunai-sidebar.force-legacy {
   }
 
   .cr-index {
+    display: flex;
     flex-basis: 100%;
 
     > .title {
-      display: inline-flex;
+      display: flex;
       flex-wrap: wrap;
       align-items: center;
     }
@@ -118,6 +119,10 @@ main[role="main"] .kunai-sidebar.force-legacy {
 
     ul.keys {
       align-self: flex-start;
+      align-items: center;
+
+      flex-wrap: nowrap;
+      white-space: nowrap;
 
       > li.key {
       }
@@ -174,7 +179,8 @@ main[role="main"] .kunai-sidebar.force-legacy {
 
       > li {
         display: flex;
-        align-items: baseline;
+        flex-direction: column;
+        align-items: stretch;
         font-size: .9rem;
         margin: .1em 0;
 
@@ -183,17 +189,68 @@ main[role="main"] .kunai-sidebar.force-legacy {
         }
 
         &:not(.expanded) {
-          > .expander {
+          // align-items: center;
+          > ul.others, > ul.classes {
+            display: none;
+          }
+        }
+
+        > .expandbar {
+          display: inline-flex;
+        }
+
+
+        &.empty.expanded:after {
+          content: "(サブページはありません)";
+          display: block;
+          position: relative;
+          left: 1em;
+          bottom: 0;
+          color: #ADADAD;
+          cursor: help;
+          border-bottom: 1px dashed rgba(220, 20, 30, .2);
+        }
+
+        > .expandbar > .expander {
+          flex-basis: 100%;
+          display: inline-flex;
+          align-items: center;
+
+          $c: #ADADAD;
+          color: $c;
+
+          cursor: pointer;
+
+          &:before {
+            content: "\25B6";
+            display: block;
+            border-radius: 6px;
+            width: 1.5em;
+            line-height: 1.5em;
+            text-align: center;
+            // border: 1px solid $c;
+          }
+
+          &:after {
+            content: "";
+            display: block;
+            height: 2px;
+            border-bottom: 1px solid color($c alpha(0.7));
+            flex-basis: 100%;
+          }
+        }
+
+        &.expanded {
+          > .expandbar > .expander {
             &:before {
-              content: "";
-              display: block;
-              flex-basis: 100%;
+              transform: rotate(45deg);
             }
           }
         }
 
-        > a {
-          flex-basis: 100%;
+        > .expandbar > a {
+          flex-basis: auto;
+          margin-bottom: 0;
           color: color($cl-link saturation(-20%));
         }
 
@@ -301,22 +358,33 @@ main[role="main"] .kunai-sidebar.force-legacy {
 
     > li.header {
       display: flex;
-      flex-direction: column;
       position: relative;
-      min-height: 4.6em;
+
+      // flex-direction: column;
+      // min-height: 4.6em;
 
       &:not(:first-child) {
         margin-top: 1em;
       }
 
-      &:before {
-        @mixin mini-right-hr;
+      .cr-index > .title {
+        flex-direction: column;
+        justify-content: flex-end;
       }
 
-      > a {
+      &.expanded {
+        &:before {
+          // @mixin mini-right-hr;
+        }
+
+        > .expandbar {
+          margin-bottom: .5em;
+        }
+      }
+
+      > .expandbar > a {
         align-self: flex-end;
         // background-color: rgba(100, 100, 100, .03);
-        margin-bottom: .5em;
         font-size: .9em;
 
         $c-b: 1px solid color($cl-link saturation(-5%) tint(65%) alpha(0.4));
@@ -325,19 +393,6 @@ main[role="main"] .kunai-sidebar.force-legacy {
         border-radius: 4px;
 
         padding: .1em .25em;
-
-        &:last-child {
-          &:before {
-            content: "(サブページはありません)";
-            display: block;
-            position: absolute;
-            left: 1em;
-            bottom: 0;
-            color: #ADADAD;
-            cursor: help;
-            border-bottom: 1px dashed rgba(220, 20, 30, .2);
-          }
-        }
       }
     }
   }
@@ -385,7 +440,7 @@ main[role="main"] .kunai-sidebar.force-legacy {
     font-size: .9em;
     list-style: none;
     width: 100%;
-    padding: 0;
+    padding: 0 0 0 .3em;
 
     &:not(:last-child) {
       margin-bottom: 1em;
@@ -397,47 +452,6 @@ main[role="main"] .kunai-sidebar.force-legacy {
 
       &:not(:last-child) {
         margin-bottom: 1em;
-      }
-
-      > a {
-        border-right: 2px solid $cl-link;
-        padding-right: 2px;
-
-        &:hover {
-          background-color: $cl-list-hover;
-        }
-
-        &:not(:last-child) {
-          border-bottom: 1px dashed color($cl-link alpha(0.5));
-          margin-bottom: .4em;
-        }
-
-        > .index {
-          .key-container {
-            .keys {
-              display: flex;
-              flex-wrap: wrap;
-
-              > .key {
-                &:not(:last-child) {
-                  color: color($cl-link saturation(-10%) tint(50%));
-
-                  &:after {
-                    content: "::";
-                  }
-                }
-
-                &:first-child {
-                  display: none;
-                }
-
-                &:last-child {
-                  // font-weight: bold;
-                }
-              }
-            }
-          }
-        }
       }
     }
   }
@@ -495,23 +509,43 @@ main[role="main"] .kunai-sidebar.force-legacy {
       > a {
         display: flex;
       }
+    }
+  }
 
-      .cr-index {
-        > .title {
-          display: flex;
-          flex-direction: row;
-          flex-basis: 100%;
+  ul.others > li.other, ul.classes > li.class {
+    .cr-index {
+      > .title {
+        display: flex;
+        flex-direction: row;
+        flex-basis: 100%;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+      }
+
+      ul.keys {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        // flex-basis: 100%;
+
+        > li.key {
+          &:last-child {
+            flex-basis: 100%;
+            padding: 0 0 0 1.5em;
+            box-sizing: border-box;
+          }
         }
+      }
 
-        ul.keys {
-          flex-basis: 100%;
+      ul.badges {
+        flex-wrap: wrap;
+        flex-direction: column;
+        justify-content: flex-end;
+        margin: 0;
 
-          > li.key {
-            &:last-child {
-              flex-basis: 100%;
-              padding: 0 0 0 1.5em;
-              box-sizing: border-box;
-            }
+        > li.badge {
+          &:not(:last-child) {
+            margin-bottom: .2em;
           }
         }
       }
