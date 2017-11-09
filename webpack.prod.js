@@ -22,6 +22,10 @@ module.exports = env => (Merge.multiple(common(env), {
     plugins: [
       new OptimizeCSSAssetsPlugin({
         canPrint: true,
+        cssProcessorOptions: {
+          // http://cssnano.co/optimisations/reduceidents/
+          reduceIdents: false,
+        },
       }),
     ],
   },

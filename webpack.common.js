@@ -163,6 +163,12 @@ module.exports = env => ({
                   config: {
                     ctx: {
                       env: env,
+                      cssnano: {
+                        cssProcessorOptions: {
+                          // http://cssnano.co/optimisations/reduceidents/
+                          reduceIdents: false,
+                        },
+                      },
                     },
                   },
                 },
