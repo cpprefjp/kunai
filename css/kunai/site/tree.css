@@ -41,6 +41,14 @@
     text-decoration: none;
   }
 
+  .cpp-sidebar {
+    margin-left: .2em;
+
+    > a {
+      display: inline-flex;
+    }
+  }
+
   a {
     flex-shrink: 1;
     display: block;
