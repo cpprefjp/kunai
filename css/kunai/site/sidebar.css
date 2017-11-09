@@ -440,7 +440,7 @@ main[role="main"] .kunai-sidebar.force-legacy {
     font-size: .9em;
     list-style: none;
     width: 100%;
-    padding: 0 0 0 .3em;
+    padding: 0;
 
     &:not(:last-child) {
       margin-bottom: 1em;
@@ -452,6 +452,12 @@ main[role="main"] .kunai-sidebar.force-legacy {
 
       &:not(:last-child) {
         margin-bottom: 1em;
+      }
+
+      .cr-index {
+        ul.keys {
+          padding-left: .3em;
+        }
       }
     }
   }
