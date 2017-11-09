@@ -406,7 +406,13 @@ main[role="main"] .kunai-sidebar.force-legacy {
         position: relative;
         z-index: 3;
 
+        color: #888;
+
         padding: .2rem 0 .2rem 1.4em;
+
+        &:hover {
+          text-decoration: underline;
+        }
       }
     }
   }
