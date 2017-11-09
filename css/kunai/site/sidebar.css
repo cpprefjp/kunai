@@ -167,15 +167,58 @@ main[role="main"] .kunai-sidebar.force-legacy {
     margin: .2rem 0 0 0;
     padding: 0;
 
+    position: relative;
+
     $c: rgba(20, 20, 20, 0.1);
     box-shadow: 0px 6px 10px -6px $c inset, 0px -6px 10px -6px $c inset;
 
     direction: rtl;
 
+    > .preview {
+      display: flex;
+      width: 100%;
+
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    &:not(.scrolling) {
+      > .preview {
+        display: none;
+      }
+    }
+
+    &.scrolling {
+      > ul.branch {
+        // margin-top: 4em;
+
+        > li.preview.expanded {
+          > .expandbar {
+            position: absolute;
+            left: 0;
+            width: 100%;
+
+            // box-shadow: 0 2px 20px -2px rgba(20, 20, 20, 0.3);
+            // background-color: #FBFBFB;
+
+            background-color: rgba(220, 220, 240, 0.5);
+
+            > a {
+              background: rgba(250, 250, 255, 1);
+              font-weight: bold;
+            }
+          }
+        }
+      }
+    }
+
     > ul.branch {
       direction: ltr;
       display: flex;
       flex-direction: column;
+
+      // position: relative;
 
       list-style: none;
       margin: 0;
@@ -369,7 +412,7 @@ main[role="main"] .kunai-sidebar.force-legacy {
 
     > li.header {
       display: flex;
-      position: relative;
+      // position: relative;
 
       // flex-direction: column;
       // min-height: 4.6em;
