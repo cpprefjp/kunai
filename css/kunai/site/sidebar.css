@@ -208,6 +208,12 @@ main[role="main"] .kunai-sidebar.force-legacy {
               background: rgba(250, 250, 255, 1);
               font-weight: bold;
             }
+
+            .cr-index {
+              ul.badges {
+                display: none;
+              }
+            }
           }
         }
       }
