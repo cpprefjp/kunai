@@ -15,13 +15,17 @@ body.kunai {
 
   .yata {
     display: flex;
-    background: color($cl-shuri tint(25%));
+    // background: color($cl-shuri tint(25%));
+    background: #a9d4e2;
     border-radius: 2px 2px 0 0;
 
     position: relative;
     z-index: 5;
 
-    $cl-tool-active: #ffff1d;
+    // $cl-tool-active: #ffff1d;
+    // $cl-tool-active: #523fdc;
+    // $cl-tool-active: #343c38;
+    $cl-tool-active: #92525d;
 
     &.hidden {
       display: none;
@@ -111,11 +115,13 @@ body.kunai {
           color: #FFF;
           text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.5);
 
+          cursor: pointer;
+
           .tooltip {
             position: absolute;
             visibility: hidden;
             display: block;
-            top: 100%;
+            top: -100%;
             left: 1em;
             cursor: text;
 
@@ -149,7 +155,8 @@ body.kunai {
           padding-top: 2px;
 
           &:not(:disabled):hover {
-            background: $cl-shuri;
+            // background: $cl-shuri;
+            background: #8098a0;
           }
         } // button
 
