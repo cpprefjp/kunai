@@ -54,7 +54,6 @@ main[role="main"] .tree:not(.v2) {
   display: none;
 }
 
-
 #forceLegacyWrapper {
   display: flex;
   cursor: pointer;
@@ -63,16 +62,16 @@ main[role="main"] .tree:not(.v2) {
 
   font-weight: normal;
 
-  .force-legacy & {
-    font-weight: bold;
-  }
-
   .notice {
     margin-right: .3em;
   }
 }
 
 main[role="main"] .kunai-sidebar.force-legacy {
+  #forceLegacyWrapper {
+    font-weight: bold;
+  }
+
   .tree:not(.v2) {
     display: flex;
   }
@@ -181,6 +180,16 @@ main[role="main"] .kunai-sidebar.force-legacy {
 
         &:before {
           flex-basis: 1.2em;
+        }
+
+        &:not(.expanded) {
+          > .expander {
+            &:before {
+              content: "";
+              display: block;
+              flex-basis: 100%;
+            }
+          }
         }
 
         > a {

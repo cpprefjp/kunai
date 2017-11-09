@@ -20,9 +20,9 @@ module.exports = env => (Merge.multiple(common(env), {
   },
   css: {
     plugins: [
-      // new OptimizeCSSAssetsPlugin({
-        // canPrint: true,
-      // }),
+      new OptimizeCSSAssetsPlugin({
+        canPrint: true,
+      }),
     ],
   },
 }))

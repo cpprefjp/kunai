@@ -1,12 +1,12 @@
-@import '../font-awesome';
+@import '~crsearch/css/fa-patch.scss';
+@import '../font-awesome.scss';
 
 
 main[role="main"] {
   .tree li {
     &.parent_li:not(.active) {
       > .treespan:before {
-        @extend .fa;
-        @extend .fa-fw;
+        @include fa-patch;
         @extend .fa-plus;
       }
 
@@ -21,8 +21,7 @@ main[role="main"] {
 
     &.parent_li.active {
       > .treespan:before {
-        @extend .fa;
-        @extend .fa-fw;
+        @include fa-patch;
         @extend .fa-minus;
       }
     }

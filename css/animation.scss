@@ -1,0 +1,14 @@
+@keyframes kn-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(359deg);
+  }
+}
+
+@mixin kn-spin($duration: ".5s") {
+  animation: kn-spin unquote($duration) infinite linear;
+}
+

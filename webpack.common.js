@@ -134,9 +134,6 @@ module.exports = env => ({
                   config: {
                     ctx: {
                       env: env,
-                      cssnano: {
-                        autoprefixer: false,
-                      },
                     },
                   },
                 },
@@ -166,9 +163,6 @@ module.exports = env => ({
                   config: {
                     ctx: {
                       env: env,
-                      cssnano: {
-                        autoprefixer: false,
-                      },
                     },
                   },
                 },

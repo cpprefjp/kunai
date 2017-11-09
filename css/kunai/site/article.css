@@ -95,7 +95,7 @@ div[itemtype="http://schema.org/Article"] {
 
     a {
       &:hover {
-        text-decoration: underline;
+        text-decoration: none;
       }
     }
 
@@ -107,6 +107,29 @@ div[itemtype="http://schema.org/Article"] {
     .text-right {
       display: inline-flex;
       text-align: right;
+    }
+
+    .history, .edit {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      align-content: center;
+      padding: .1em .2em;
+
+      &:hover {
+        text-decoration: none;
+      }
+    }
+
+    .history {
+      border-radius: 4px;
+      border: 1px solid #999;
+      margin-right: .5em;
+    }
+
+    .edit {
+      border-radius: 4px;
+      border: 1px solid #999;
     }
   }
 
@@ -215,20 +238,6 @@ div[itemtype="http://schema.org/Article"] {
         }
       }
     }
-  }
-
-  .edit {
-    border-radius: 4px;
-    border: 1px solid #999;
-    margin: 5px;
-    padding: 3px;
-  }
-
-  .history {
-    border-radius: 4px;
-    border: 1px solid #999;
-    margin: 5px;
-    padding: 3px;
   }
 
   .content-header {

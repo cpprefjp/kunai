@@ -1,7 +1,8 @@
-@import '../../font-awesome';
+@import '~crsearch/css/fa-patch.scss';
 @import '~crsearch/css/index.scss';
 @import '~crsearch/css/badge.scss';
 
+@import '../../font-awesome.scss';
 
 .kunai-sidebar {
   position: relative;
@@ -24,11 +25,9 @@
   &.loading {
     > .status {
       &:before {
-        @extend .fa;
-        @extend .fa-fw;
+        @include fa-patch;
+        @include kn-spin;
         @extend .fa-refresh;
-
-        animation: fa-spin .5s infinite linear;
       }
     }
   }
@@ -39,8 +38,7 @@
         ul.articles {
           li.article {
             &:before {
-              @extend .fa;
-              @extend .fa-fw;
+              @include fa-patch;
               // @extend .fa-lightbulb-o;
               // @extend .fa-terminal;
               @extend .fa-angle-double-right;
@@ -60,8 +58,7 @@
             > li.key {
               &:last-child {
                 &:before {
-                  @extend .fa;
-                  @extend .fa-fw;
+                  @include fa-patch;
                   @extend .fa-star-half-o;
 
                   position: relative;
@@ -79,8 +76,7 @@
             > li.key {
               &:last-child {
                 &:before {
-                  @extend .fa;
-                  @extend .fa-fw;
+                  @include fa-patch;
                   @extend .fa-caret-right;
 
                   position: relative;
@@ -99,8 +95,7 @@
     li.top {
       > a.title {
         &:before {
-          @extend .fa;
-          @extend .fa-fw;
+          @include fa-patch;
 
           margin-right: .15em;
           color: darker;
@@ -139,8 +134,7 @@
         // .articles {
           // > .article {
             // > a:before {
-              // @extend .fa;
-              // @extend .fa-fw;
+              // @include fa-patch;
               // @extend .fa-paragraph;
             // }
           // }
@@ -167,8 +161,7 @@
     .kunai-branch > ul.branch.articles {
       > li.article {
         &:before {
-          @extend .fa;
-          @extend .fa-fw;
+          @include fa-patch;
           // @extend .fa-lightbulb-o;
           @extend .fa-paragraph;
         }

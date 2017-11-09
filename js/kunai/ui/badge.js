@@ -1,14 +1,3 @@
-const LangLink = {
-  '11': '/lang/cpp11.html',
-  '14': '/lang/cpp14.html',
-  '17': '/lang/cpp17.html',
-  '20': '/lang/cpp20.html',
-}
-
-const makeLangLink = (key) => {
-  return LangLink[key]
-}
-
 const sanitize = (badges) => {
   let i = 0
 
@@ -16,30 +5,40 @@ const sanitize = (badges) => {
     ++i
 
     let b = $(b_raw)
-    const clean_txt = b.text().trim().replace(/\(([^)]+)\)/, '$1')
-    const maybe_cpp_ver = b.text().trim().match(/C\+\+[a-zA-Z0-9]+/i)
+    const classes = b.attr('class').split(/\s+/).map(t => t.trim())
+    // const clean_txt = b.text().trim().replace(/\(([^)]+)\)/, '$1')
 
-    let link = null
-    if (maybe_cpp_ver) {
-      switch (maybe_cpp_ver[0]) {
-        case 'C++11':
-          link = makeLangLink('11')
-          break
-        case 'C++14':
-          link = makeLangLink('14')
-          break
-        case 'C++17':
-          link = makeLangLink('17')
-          break
-        case 'C++20':
-          link = makeLangLink('20')
-          break
+    let deprecated_or_removed = false
+    let cppv = null
+    for (const c of classes) {
+      const cppm = c.match(/^cpp(\d[\da-zA-Z])(.*)$/)
+      if (!cppm) continue
+
+      b.attr('data-cpp-version', cppm[1])
+      if (cppm[1].length) {
+        cppv = cppm[1]
+      }
+
+      if (c.match(/deprecated$/)) {
+        deprecated_or_removed = true
+        b.addClass('deprecated-spec')
+      } else if (c.match(/removed$/)) {
+        deprecated_or_removed = true
+        b.addClass('removed-spec')
       }
     }
 
-    if (link) {
-      b.html($('<a>').attr('href', link).text(clean_txt))
+    if (!deprecated_or_removed) {
+      b.addClass('added-in-spec')
     }
+
+    const lang_path = cppv ? `/lang/cpp${cppv}` : `/lang`
+
+    b.html(
+      $('<a>').attr('href', `${lang_path}.html`)
+        .append($('<i>'))
+        // .append($('<span>').text(clean_txt))
+    )
   }
   return i
 }

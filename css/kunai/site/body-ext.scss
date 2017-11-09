@@ -1,10 +1,10 @@
+@import '~crsearch/css/fa-patch.scss';
 @import '../../font-awesome.scss';
 
 div[itemtype="http://schema.org/Article"] {
   .edit-button {
     span[itemprop="datePublished"] {
-      // @extend .fa;
-      // @extend .fa-fw;
+      // @include fa-patch;
       // @extend .fa-calendar;
     }
   }

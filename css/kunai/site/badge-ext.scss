@@ -1,120 +1,22 @@
-@import '../../font-awesome';
+@import '../../font-awesome.scss';
 
-$cl-badge-base: #757575;
-
-@mixin badge-cpp-legacy {
-  display: flex;
-  align-content: center;
-  justify-content: center;
-  align-items: center;
-
-  // NB: the unit 'rem' is very important here!
-
-  font-size: .8rem;
-  flex-shrink: 1;
-  padding: 0 .25rem;
-
-  border-radius: 3px;
-  color: #666;
-  background: #FBFBFB;
-  border: 1px solid #BBB;
-  box-shadow: inset 0 0 2px 0 rgba(0, 0, 0, 0.2);
-
-  margin-left: .5em;
-  margin-right: .1rem;
-
-  a {
-    text-decoration: none;
-    color: inherit;
-  }
-
-  &:last-child {
-    margin-right: 0;
-  }
-
-  &.text-warning, &.text-danger {
-    &:before {
-      @extend .fa;
-      margin-right: .2rem;
-    }
-  }
-
-  &.text-warning {
-    @extend .fa-warning;
-
-    &, & a {
-      font-weight: normal;
-      $color: #ff9900;
-      color: $color;
-      border-color: $color;
-    }
-  }
-  &.text-danger {
-    @extend .fa-ban;
-
-    &, & a {
-      font-weight: bold;
-      $color: #8a6d3b;
-      color: $color;
-      border-color: $color;
-    }
-  }
-}
-
-
-
-@mixin badge-cpp11 {
-  @include badge-cpp-legacy;
-  &, & a {
-    color: $cl-badge-base;
-  }
-}
-
-@mixin badge-cpp-newer {
-  @include badge-cpp-legacy;
-  &, & a {
-    $color: darken($cl-badge-base, 35%);
-    color: $color;
-    border-color: $color;
-  }
-}
-
-@mixin badge-cpp-latest {
-  @include badge-cpp-legacy;
-  &, & a {
-    font-weight: bold;
-
-    $color: darken($cl-badge-base, 35%);
-    color: $color;
-    border-color: $color;
-  }
-}
-
-@mixin enable-badge {
-  &.cpp11, &.cpp11deprecated, &.cpp11removed {
-    @include badge-cpp11;
-  }
-  &.cpp14, &.cpp14deprecated, &.cpp14removed {
-    @include badge-cpp-newer;
-  }
-  &.cpp17, &.cpp17deprecated, &.cpp17removed {
-    @include badge-cpp-newer;
-  }
-  &.cpp20, &.cpp20deprecated, &.cpp20removed {
-    @include badge-cpp-latest;
-  }
-}
+@import '~crsearch/css/fa-patch.scss';
+@import '~crsearch/css/badge.scss';
 
 
 main[role="main"] {
   .cpp-sidebar {
-    @include enable-badge;
+    @include cr-badge;
   }
+
+  @include cr-badge-decoration('.cpp-sidebar');
 
   div[itemtype="http://schema.org/Article"] {
     .content-body {
+      @include cr-badge-decoration('span.cpp');
+
       span.cpp {
-        @include enable-badge;
+        @include cr-badge;
       }
     }
   }
@@ -124,20 +26,15 @@ main[role="main"] {
 #navbar-collapse {
   ul.nav {
     li {
-      a {
-        &:before {
-          margin-right: .2em;
-        }
+      a:before {
+        margin-right: .2em;
       }
+    }
 
-      &:nth-child(1) {
-        a {
-          &:before {
-            @extend .fa;
-            @extend .fa-fw;
-            @extend .fa-github;
-          }
-        }
+    li:nth-child(1) {
+      a:before {
+        @include fa-patch;
+        @extend .fa-github;
       }
     }
   }

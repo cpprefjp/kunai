@@ -1,20 +1,11 @@
-@import '../font-awesome';
-
+@import '../font-awesome.scss';
 
 body.kunai {
   .yata {
     .tools {
-      .tool {
-        &.compile {
-          &.compiling {
-            button {
-              .fa {
-                @extend .fa-cog;
-                @extend .fa-spin;
-              }
-            }
-          }
-        }
+      .tool.compile.compiling button > i {
+        @extend .fa-cog;
+        @include kn-spin;
       }
     }
   }
