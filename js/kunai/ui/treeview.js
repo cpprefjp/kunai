@@ -132,8 +132,12 @@ class DOM {
     $(e.target).closest('li').toggleClass('expanded')
   }
 
-  async kunaiBranch(me, scrollHandler) {
-    let elem = $('<div>', {class: 'kunai-branch', 'data-branch-id': this.lastBranchID++}).append(me.addClass('branch'))
+  async kunaiBranch(me, branchFor, scrollHandler) {
+    let elem = $('<div>', {
+      class: 'kunai-branch',
+      'data-branch-id': this.lastBranchID++,
+      'data-branch-for': branchFor,
+    }).append(me.addClass('branch'))
 
     if (scrollHandler) {
       elem.prepend($('<div>', {class: 'preview'}))
@@ -215,7 +219,7 @@ class DOM {
       self.append(await Promise.all(l.articles.map(async (ar) => {
         return await this.makeArticle(ar)
       })))
-      ret.append(await this.kunaiBranch(self))
+      ret.append(await this.kunaiBranch(self, 'articles'))
     }
 
     return ret
@@ -324,7 +328,7 @@ class Treeview {
         return await this.dom.makeArticle(ar)
       })))
 
-      e.append(await this.dom.kunaiBranch(self))
+      e.append(await this.dom.kunaiBranch(self, 'articles'))
     }
 
     if (top.headers && top.headers.length) {
@@ -334,6 +338,7 @@ class Treeview {
 
       e.append(await this.dom.kunaiBranch(
         self,
+        'headers',
         top.category.index === this.kc.categories().get('reference').index ?
           ::this.dom.handleScroll : null
       ))

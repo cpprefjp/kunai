@@ -650,9 +650,24 @@ main[role="main"] .kunai-sidebar.force-legacy {
   }
 
   &[data-top-id="reference"] {
-    .kunai-branch {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2em;
+
+    border-bottom: 3px dashed rgba(120, 120, 220, 0.6);
+
+    > .kunai-branch {
       > ul.branch {
         margin-bottom: .5em;
+      }
+
+      &[data-branch-for="headers"] {
+        order: 3;
+        margin-bottom: 2em;
+        max-height: 70vh;
+      }
+      &[data-branch-for="articles"] {
+        order: 4;
       }
     }
 
