@@ -253,8 +253,15 @@ body.kunai {
     overflow-y: auto;
 
     .yata-console-line {
+      word-break: break-all;
+      white-space: pre-wrap;
+
       &:empty:after {
         content: " "; // force LF
+      }
+
+      span {
+        // white-space: normal;
       }
     }
 
@@ -262,16 +269,10 @@ body.kunai {
       margin: 0;
       padding: 0;
       line-height: 1.5;
-
-      white-space: pre;
     }
 
     p {
       display: block;
-    }
-
-    span {
-      display: inline-block;
     }
 
     .ansi-bold {
