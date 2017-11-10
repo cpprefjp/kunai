@@ -44,7 +44,7 @@ small {
 a {
   color: $cl-link;
 
-  &:link, &:visited {
+  &:link {
     text-decoration: none;
   }
 
