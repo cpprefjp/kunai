@@ -6,19 +6,7 @@ div[itemtype="http://schema.org/Article"] {
   margin: 0;
   padding: 0;
 
-  // flex-basis: 42rem;
-  flex-basis: 300px;
-
-  width: initial;
-  left: unset;
-  right: unset;
-
-  float: none;
-  flex-grow: 1;
-  width: initial;
-  left: unset;
-
-  padding: 0;
+  flex-basis: auto;
 
   line-height: 1.5;
 
@@ -168,12 +156,15 @@ div[itemtype="http://schema.org/Article"] {
       justify-content: flex-start;
       align-items: baseline;
 
-      // FIXME: FLOAT
-      width: 100%;
-      flex-wrap: wrap;
-
       margin: 0;
       padding: .3rem 0 .1rem 0;
+
+      // float workaround :(
+      width: 100%;
+      box-sizing: border-box;
+      padding-right: 2em;
+
+      flex-wrap: wrap;
 
       color: #333;
       text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.1);
@@ -207,18 +198,22 @@ div[itemtype="http://schema.org/Article"] {
       }
     }
 
-
     h1 {
-      font-size: 2.5rem;
+      font-size: 2rem;
     }
 
     > h1:first-child {
       margin-top: 0px;
     }
     h2 {
+      font-size: 1.8rem;
       border-left: solid 8px skyblue;
       padding-left: 5px;
       border-bottom: solid 2px skyblue;
+    }
+
+    h3 {
+      font-size: 1.6rem;
     }
 
     div[itemprop="articleBody"] {
@@ -240,59 +235,18 @@ div[itemtype="http://schema.org/Article"] {
     }
   }
 
-  .content-header {
-    display: flex;
-    flex-direction: row;
-
-    @media (max-width: 768px) {
-      flex-direction: column;
-    }
-
-    padding: 0 1em 0 0;
-    margin-bottom: 5px;
-    background: #f5f5f5;
-    border-radius: 0;
-    align-items: center;
-    justify-content: space-between;
-
-    box-shadow: 0 -4px 12px 0 rgba(20, 20, 20, 0.6);
-
-    float: none;
-
-    ol.breadcrumb {
-      display: inline-flex;
-      align-items: baseline;
-      margin-bottom: 0;
-
-      margin: 0;
-      padding: .75rem 1rem;
-
-      background: none;
-      border-radius: 0;
-
-      list-style: none;
-
-      text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.1);
-
-      @media (max-width: 768px) {
-        width: 100%;
+  @media (max-width: 414px) {
+    .content-body {
+      h1 {
+        font-size: 1.8rem;
       }
 
-      > .active {
-        color: #777;
+      h2 {
+        font-size: 1.6rem;
       }
 
-      > li {
-        + li:before {
-          content: '/';
-          color: #ccc;
-          padding: 0 0 0 .3rem;
-          font-size: 1rem;
-        }
-
-        &:first-child {
-          font-size: 1.2rem;
-        }
+      h3 {
+        font-size: 1.4rem;
       }
     }
   }

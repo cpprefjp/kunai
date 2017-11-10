@@ -33,20 +33,7 @@ $cl-tree-border: #999;
 #sidebar, .kunai-sidebar.legacy, main div[itemtype="http://schema.org/Article"] + div {
   background: #fbfbfb;
   position: relative;
-  z-index: 1;
   padding: 0;
-  margin: 0;
-
-  width: 20rem;
-  min-height: 8rem;
-
-  right: unset;
-
-  @media (max-width: 768px) {
-    width: 100vw;
-  }
-
-  border-right: 1px solid color($cl-shuri alpha(0.2));
 }
 
 main[role="main"] .tree:not(.v2) {
@@ -58,9 +45,13 @@ main[role="main"] .tree:not(.v2) {
   display: flex;
   cursor: pointer;
   align-self: flex-end;
-  padding: .2em .2em;
+  padding: .2em .5em;
 
   font-weight: normal;
+
+  position: absolute;
+  top: .15em;
+  right: .5em;
 
   .notice {
     margin-right: .3em;
@@ -662,6 +653,9 @@ main[role="main"] .kunai-sidebar.force-legacy {
 
     border-bottom: 3px dashed rgba(120, 120, 220, 0.6);
 
+    min-height: 40rem;
+    max-height: 90vh;
+
     > .kunai-branch {
       > ul.branch {
         margin-bottom: .5em;
@@ -680,6 +674,7 @@ main[role="main"] .kunai-sidebar.force-legacy {
     > ul.articles {
       > li.article {
         display: flex;
+        flex-direction: row;
         align-items: center;
 
         > a {

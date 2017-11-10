@@ -22,21 +22,3 @@ main[role="main"] {
   }
 } // main
 
-
-#navbar-collapse {
-  ul.nav {
-    li {
-      a:before {
-        margin-right: .2em;
-      }
-    }
-
-    li:nth-child(1) {
-      a:before {
-        @include fa-patch;
-        @extend .fa-github;
-      }
-    }
-  }
-}
-

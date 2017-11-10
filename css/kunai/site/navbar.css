@@ -6,11 +6,9 @@ nav[role="navigation"] {
   background: $bg;
 
   position: relative;
-  height: $nav-height;
   display: flex;
 
   margin: 0;
-  padding: 0;
 
   font-size: 1.2rem;
 
@@ -29,22 +27,19 @@ nav[role="navigation"] {
   .container-fluid {
     margin: 0;
     padding: 0;
+    width: 100%;
 
-    display: flex;
-    flex-basis: 100%;
+    position: relative;
   }
 
-  @media (min-width: 768px) {
-    .container-fluid .navbar-brand {
-      margin: 0 0 0 2rem;
-    }
-  }
   .navbar-brand {
     margin: 0;
     padding: 0;
     float: none;
     display: flex;
     // flex-grow: 1;
+
+    line-height: 1;
 
     > .title-wrapper {
       display: flex;
@@ -62,42 +57,43 @@ nav[role="navigation"] {
         background-size: contain;
         background-repeat: no-repeat;
       }
-      > .title {
-      }
     }
   }
 
+  $toggle-size: 2.5rem;
   .navbar-header {
     display: flex;
     position: relative;
-    z-index: 3;
-    flex-basis: 100%;
+    // flex-basis: 100%;
     margin: 0;
     background: $bg;
 
     align-items: center;
+
+    &:after {
+      content: '';
+      display: block;
+      width: calc($toggle-size + 1rem);
+      visibility: hidden;
+    }
   }
 
   .navbar-toggle {
-    display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
 
     padding: 0;
-    margin: 0 .5rem 0 .5rem;
+    margin: 0;
+    // margin: 0 .5rem 0 .5rem;
     height: 2.2rem;
-    width: 2.5rem;
+    width: $toggle-size;
 
     background: none;
 
     // border: 1px solid #AAA;
     border: none;
     border-radius: 6px;
-
-    @media (min-width: 768px) {
-      display: none;
-    }
 
     &:hover, &:focus {
       background-color: initial;
@@ -112,43 +108,6 @@ nav[role="navigation"] {
       width: 1.5rem;
       height: 2px;
       background: #AAA;
-    }
-  }
-
-  #navbar-collapse {
-    position: absolute;
-    top: $nav-height;
-    left: 0;
-    z-index: 2;
-    width: 100%;
-    margin: 0;
-    padding: 0;
-
-    border: none;
-    background: $bg;
-
-    box-shadow: 0 1px 4px 0 #AAA;
-
-    ul.nav {
-      display: flex;
-      flex-direction: column;
-
-      margin: 0;
-      font-size: 1.2rem;
-      list-style: none;
-
-      > li {
-        flex-basis: 100%;
-
-        > a {
-          margin: 0;
-          padding: .5rem 1rem;
-        }
-      }
-    }
-
-    &.collapse {
-      display: none !important; // :(
     }
   }
 }

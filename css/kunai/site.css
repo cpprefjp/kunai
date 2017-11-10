@@ -1,5 +1,8 @@
 @import './site/body.css';
+@import './site/layout.css';
+@import './site/nav.css';
 @import './site/navbar.css';
 @import './site/sidebar.css';
 @import './site/article.css';
+@import './site/goog.css';
 

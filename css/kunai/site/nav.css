@@ -1,0 +1,62 @@
+main div[itemtype="http://schema.org/Article"] {
+  .content-header {
+    display: flex;
+    flex-direction: row;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+    }
+
+    background: #f5f5f5;
+    border-radius: 0;
+    align-items: center;
+    justify-content: space-between;
+
+    box-shadow: 0 -4px 12px 0 rgba(20, 20, 20, 0.6);
+
+    .breadcrumb {
+      padding: 0;
+
+      background: none;
+      border-radius: 0;
+
+      list-style: none;
+
+      text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.1);
+
+      > .active {
+        color: #777;
+      }
+
+      > li {
+        &:not(:last-child):after {
+          content: '/';
+          color: #ccc;
+          padding: 0 .25rem;
+          font-size: 1rem;
+        }
+
+        &:first-child {
+          font-size: 1.2rem;
+        }
+      }
+    }
+
+    .crsearch {
+      font-size: .9rem;
+
+      input[type="text"] {
+        font-family: monospace;
+        font-size: .9rem;
+        color: #232323;
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    .content-header {
+      padding: .25rem .25rem;
+    }
+  }
+}
+
