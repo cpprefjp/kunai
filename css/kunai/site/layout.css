@@ -156,6 +156,7 @@ main {
   div[itemtype="http://schema.org/Article"] + div {
     flex-basis: 20rem;
     flex-shrink: 0;
+    flex-grow: 0;
     min-height: 8rem;
 
     border-right: 1px solid color($cl-shuri alpha(0.2));
@@ -170,6 +171,9 @@ main {
     z-index: $content-z;
     overflow: hidden;
     // overflow-y: scroll;
+
+    flex-shrink: 1;
+    flex-grow: 1;
   }
 }
 
