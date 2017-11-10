@@ -19,6 +19,10 @@ main div[itemtype="http://schema.org/Article"] {
     overflow-x: auto;
     overflow-y: scroll;
 
+    &:not(.enabled) {
+      display: none;
+    }
+
     .gsc-control-wrapper-cse > .gsc-results-wrapper-visible {
       &:before {
         content: 'Googleカスタム検索';
