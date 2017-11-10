@@ -132,7 +132,6 @@ class Meta {
 
   process(tokens) {
     this.is_first_list = true
-    this.is_inside_example = false
     this.single_bufs = []
 
     const old_level = this.log.opts.data.ctx.level
@@ -148,23 +147,17 @@ class Meta {
     }
   }
 
+  static isSampleCode(lang, buf) {
+    return lang === 'cpp' && buf.split(/\n+/).some((line) => line.trim().match(/^#include/))
+  }
+
   process_single(token) {
     this.log.debug(`processing token <${token.get('type')}>`, token)
 
     switch (token.get('type')) {
       case 'heading': {
         this.heading_depth = token.depth
-        const heading = token.get('text').trim()
-        if (heading.match(/実装例/)) {
-          this.is_inside_example = false
-          break
-        }
-
-        if (heading.match(/例|Example|Sample|サンプル/i)) {
-          this.is_inside_example = true
-        } else {
-          this.is_inside_example = false
-        }
+        this.heading = token.get('text').trim()
         break
       }
 
@@ -206,19 +199,20 @@ class Meta {
       }
 
       case 'code': {
+        const lang = token.get('lang')
+        const buf = token.get('text')
+
+        this.log.info(`found a code section (#${this.last_key})`)
+
+        if (!Meta.isSampleCode(lang, buf)) {
+          this.log.warn(`unsupported code snippet (lang: '${lang || '(empty)'}')`, buf)
+          if (lang) ++this.last_key
+          break
+        }
+
         try {
-          const lang = token.get('lang')
-          const code = token.get('text')
-
-          this.log.info(`found a code section (#${this.last_key})`)
-
-          if (!this.is_inside_example) {
-            this.log.info('got a code outside the example section, skipping...', lang, code)
-            break
-          }
-
           if (lang === 'cpp') {
-            this.log.info(`got C++ code (#${this.last_key})`, code)
+            this.log.info(`got C++ code (#${this.last_key})`, buf)
 
             const headers = [this.andareMetaInfo.get('header')].filter(Boolean)
             const id = new Code.ID('CPP', this.last_key)
@@ -226,7 +220,7 @@ class Meta {
               new Code.CPP(
                 this.log,
                 id,
-                code,
+                buf,
                 {
                   headers: headers,
                 },
@@ -235,7 +229,7 @@ class Meta {
             this.onCodeFound(id)
 
           } else {
-            this.log.warn(`got code for unknown language '${lang}', skipping...`, code)
+            this.log.warn(`got code for unknown language '${lang}', skipping...`, buf)
           }
 
         } finally {
