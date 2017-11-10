@@ -72,6 +72,8 @@ div[itemtype="http://schema.org/Article"] {
     flex-direction: column;
     align-items: flex-end;
 
+    font-family: sans-serif;
+
     // br {
       // display: none;
     // }
