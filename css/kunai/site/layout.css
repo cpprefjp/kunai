@@ -127,6 +127,8 @@ main {
       align-items: baseline;
       justify-content: flex-start;
 
+      align-self: flex-start;
+
       box-sizing: border-box;
 
       margin: 0;

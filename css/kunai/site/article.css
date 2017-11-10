@@ -12,11 +12,6 @@ div[itemtype="http://schema.org/Article"] {
 
   position: relative;
 
-  @media (max-width: 768px) {
-    width: 100%;
-    flex-basis: 100%;
-  }
-
   > .row {
     &:nth-child(2) {
       order: 1;
