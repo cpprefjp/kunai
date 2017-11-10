@@ -44,6 +44,17 @@ module.exports = env => (Merge.multiple(common(env), {
           'browser',
         ],
       }),
+      new HtmlWebpackPlugin({
+        title: '[kunai-testing-2]',
+        hash: true,
+        filename: 'kunai-testing-2.html',
+        template: '../html/kunai-testing-2.hbs',
+        chunks: [
+          'kunai-vendor',
+          'kunai',
+          'browser',
+        ],
+      }),
       // new HtmlWebpackIncludeAssetsPlugin({
         // assets: [
           // 'css/font-awesome.css',
