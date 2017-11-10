@@ -1,0 +1,247 @@
+@import '../variables.css';
+
+$main-z: 1;
+$content-z: calc($main-z + 1);
+$content-header-z: calc($content-z + 1);
+$side-z: calc($content-header-z + 1);
+$navbar-expand-z: calc($side-z + 1);
+
+
+nav[role="navigation"] {
+  display: flex;
+  // min-height: 3rem;
+  // max-height: 8vh;
+
+  padding: 0 .8rem;
+
+  box-sizing: border-box;
+
+  height: $navbar-height;
+
+  > .container-fluid {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .navbar-toggle {
+    display: none;
+  }
+}
+
+#navbar-collapse {
+  position: absolute;
+  top: $navbar-height;
+  left: 0;
+
+  z-index: $navbar-expand-z;
+
+  width: 100vw;
+  min-height: 6rem;
+
+  background: #EFEFEF;
+  box-shadow: 0 1px 4px 0 #AAA;
+
+  ul.nav {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+
+    box-sizing: border-box;
+    margin: 0;
+    padding: .5rem 1rem;
+    font-size: 1.2rem;
+
+    font-family: sans-serif;
+
+    > li {
+      box-sizing: border-box;
+      padding: .25rem 0;
+
+      &:nth-child(1) {
+        // goog
+        order: 999;
+      }
+
+      &:nth-child(2) {
+        a {
+          display: flex;
+          flex-direction: row;
+          align-items: baseline;
+        }
+      }
+    }
+  }
+
+  &.collapse {
+    display: none;
+  }
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+
+  z-index: $main-z;
+
+  width: 100%;
+  margin: 0;
+  padding: 0;
+
+  > .container-fluid > .row:first-child {
+    display: flex;
+    flex-direction: row-reverse;
+
+    margin: 0;
+    padding: 0;
+
+    width: 100%;
+  }
+
+  div[itemtype="http://schema.org/Article"],
+  div[itemtype="http://schema.org/Article"] + div {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  div[itemtype="http://schema.org/Article"] .content-header {
+    display: flex;
+    flex-direction: row;
+    // flex-wrap: wrap;
+    justify-content: space-between;
+
+    position: relative;
+    margin: 0;
+    padding: .5rem .5rem;
+    box-sizing: border-box;
+    z-index: $content-header-z;
+
+    ol.breadcrumb {
+      display: inline-flex;
+      flex-wrap: wrap;
+      flex-grow: 1;
+      align-items: baseline;
+      justify-content: flex-start;
+
+      box-sizing: border-box;
+
+      margin: 0;
+      padding: 0;
+
+      > li {
+        display: inline-flex;
+        align-items: baseline;
+        word-break: break-all;
+
+        &:last-child {
+          place-self: flex-end;
+        }
+      }
+    }
+
+    .crsearch {
+      flex-basis: 22rem;
+      min-width: 18rem;
+      max-width: 40%;
+      flex-shrink: 0;
+      margin: 0 .5rem;
+    }
+  }
+
+  /* sidebar legacy selector: TODO: FIXME */
+  div[itemtype="http://schema.org/Article"] + div {
+    flex-basis: 20rem;
+    flex-shrink: 0;
+    min-height: 8rem;
+
+    border-right: 1px solid color($cl-shuri alpha(0.2));
+    box-shadow: -12px 0 12px 6px rgba(0, 0, 0, 0.8);
+
+    z-index: $side-z;
+
+    overflow: hidden;
+  }
+
+  div[itemtype="http://schema.org/Article"] {
+    z-index: $content-z;
+    // overflow-y: scroll;
+  }
+}
+
+@media (max-width: 768px) {
+  nav[role="navigation"] {
+    padding: 0;
+    min-height: 2.4rem;
+
+    .navbar-header {
+      justify-content: space-between;
+    }
+
+    .navbar-brand {
+      margin: 0 0 0 2rem;
+    }
+
+    .navbar-toggle {
+      display: flex;
+    }
+  }
+
+  main {
+    > .container-fluid > .row:first-child {
+      flex-direction: column;
+    }
+
+    div[itemtype="http://schema.org/Article"] .content-header {
+      flex-direction: column;
+      flex-shrink: 0;
+      align-items: stretch;
+
+      ol.breadcrumb, .crsearch {
+        flex-shrink: 0;
+      }
+
+      .crsearch {
+        flex-basis: auto;
+        min-width: 92%;
+        max-width: 94vw;
+        margin: .5rem 0 0 0;
+      }
+    }
+
+    div[itemtype="http://schema.org/Article"] + div {
+      // flex-basis: 100vw;
+      flex-basis: unset;
+
+      border: none;
+
+      box-shadow: 0px 9px 16px 2px rgba(0, 0, 0, 0.8);
+    }
+  }
+}
+
+// narrow-than-iPhone-ANY-Plus
+@media (max-width: 414px) {
+  nav[role="navigation"] {
+    .navbar-header {
+      // flex magic :)
+      &:after {
+        content: '';
+      }
+
+      .navbar-brand .title-wrapper {
+        &:after {
+          content: 'cpprefjp';
+        }
+
+        > .title {
+          display: none;
+        }
+      }
+    }
+  }
+}
+

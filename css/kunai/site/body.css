@@ -11,6 +11,8 @@ html, html.cpprefjp, html.boostjp {
   }
 
   body > footer {
+    overflow: hidden;
+
     text-align: center;
     border-radius: 0;
     border: none;
@@ -23,6 +25,7 @@ html, html.cpprefjp, html.boostjp {
     position: relative;
     z-index: 0;
 
+    color: #676767;
     background: #f8f8f8;
 
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, .1);
@@ -30,16 +33,6 @@ html, html.cpprefjp, html.boostjp {
 
   button {
     outline: none;
-  }
-
-  .google-search {
-    width: 250px;
-    margin-top: 2px;
-  }
-
-  .google-search-result .gsc-control-cse {
-    padding: 0px;
-    border: 0px;
   }
 
   .fa {
@@ -57,48 +50,11 @@ html, html.cpprefjp, html.boostjp {
 
   .row {
     margin: 0;
-  }
+    padding: 0;
+    box-sizing: border-box;
 
-  .crsearch {
-    width: 320px;
-    font-size: .9rem;
-
-    input[type="text"] {
-      font-family: monospace;
-      font-size: .9rem;
-      color: #232323;
-    }
-
-    @media (max-width: 768px) {
-      width: 90vw;
-      margin-bottom: .2rem;
-    }
-  }
-
-  main[role="main"] {
     display: flex;
     flex-direction: column;
-    overflow: hidden;
-
-    > .container-fluid > .row {
-      display: flex;
-      flex-direction: row;
-
-      @media (max-width: 768px) {
-        & {
-          flex-direction: column;
-        }
-      }
-
-      width: 100%;
-      margin: 0;
-
-      @media (min-width: 768px) {
-        & {
-          flex-direction: row-reverse;
-        }
-      }
-    }
   }
 }
 

@@ -1,0 +1,32 @@
+#navbar-collapse {
+  .google-search {
+    font-size: .7rem;
+
+    &:not(.enabled) {
+      display: none;
+    }
+  }
+}
+
+main div[itemtype="http://schema.org/Article"] {
+  .google-search-result {
+    display: flex;
+    flex-direction: column;
+
+    box-sizing: border-box;
+
+    max-height: 60vh;
+    overflow-x: auto;
+    overflow-y: scroll;
+
+    .gsc-control-wrapper-cse > .gsc-results-wrapper-visible {
+      &:before {
+        content: 'Googleカスタム検索';
+        font-size: 1.1rem;
+        color: #888;
+        font-weight: bold;
+      }
+    }
+  }
+}
+

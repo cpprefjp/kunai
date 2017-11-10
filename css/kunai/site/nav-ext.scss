@@ -1,0 +1,15 @@
+@import '../../font-awesome.scss';
+@import '~crsearch/css/fa-patch.scss';
+
+#navbar-collapse {
+  ul.nav {
+    li:nth-child(2) {
+      a:before {
+        @include fa-patch;
+        @extend .fa-github;
+      }
+    }
+  }
+}
+
+
