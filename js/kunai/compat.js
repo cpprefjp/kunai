@@ -14,6 +14,19 @@ class Compat {
     // real...
     $('.treespan').on('click', ::this.onTreeClick)
 
+    {
+      const url = 'https://github.com/cpprefjp/site_generator/issues/47'
+      let footer = $('body > footer')
+      if (footer.length) {
+        this.log.warn(`applying legacy <footer> workaround... (${url})`, footer[0])
+        footer.detach()
+        $('main div[itemtype="http://schema.org/Article"]').append(footer)
+
+      } else {
+        this.log.warn(`legacy <footer> not found. time to remove this workaround? (${url})`)
+      }
+    }
+
     this.log.info('applied.')
   } // constructor
 

@@ -1,4 +1,7 @@
-$navbar-height: 2.8rem;
+$navbar-height: 5vh;
+$main-height: calc(100vh - $navbar-height);
+
+$nav-bg: #f8f8f8;
 
 $cl-shuri: #306E82;
 $cl-theme: #87ceeb;

@@ -7,11 +7,12 @@ body.kunai {
             content: "[kunai-testing]";
 
             position: absolute;
-            top: 2px;
-            left: 40%;
+            top: 10px;
+            right: 10px;
             line-height: 1.5;
             font-size: 14px;
             display: block;
+            width: 10em;
 
             font-weight: bold;
             $c: rgb(240, 36, 54);

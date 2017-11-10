@@ -4,7 +4,39 @@ $main-z: 1;
 $content-z: calc($main-z + 1);
 $content-header-z: calc($content-z + 1);
 $side-z: calc($content-header-z + 1);
-$navbar-expand-z: calc($side-z + 1);
+$navbar-z: calc($side-z + 1);
+$navbar-expand-z: calc($navbar-z + 1);
+
+
+body {
+  overflow: hidden;
+
+  > header {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+
+    height: $navbar-height;
+    background: $nav-bg;
+
+    border: none;
+    border-bottom: 1px solid color($cl-shuri alpha(0.2));
+
+    position: relative;
+    z-index: $navbar-z;
+  }
+
+  main {
+    height: $main-height;
+  }
+
+  > footer {
+    // legacy footer;
+    // see: https://github.com/cpprefjp/site_generator/issues/47
+    display: none;
+  }
+}
 
 
 nav[role="navigation"] {
@@ -13,10 +45,7 @@ nav[role="navigation"] {
   // max-height: 8vh;
 
   padding: 0 .8rem;
-
   box-sizing: border-box;
-
-  height: $navbar-height;
 
   > .container-fluid {
     display: flex;
@@ -30,6 +59,11 @@ nav[role="navigation"] {
 }
 
 #navbar-collapse {
+  display: none;
+
+  flex-direction: column;
+  justify-content: center;
+
   position: absolute;
   top: $navbar-height;
   left: 0;
@@ -37,7 +71,7 @@ nav[role="navigation"] {
   z-index: $navbar-expand-z;
 
   width: 100vw;
-  min-height: 6rem;
+  min-height: 4rem;
 
   background: #EFEFEF;
   box-shadow: 0 1px 4px 0 #AAA;
@@ -46,6 +80,7 @@ nav[role="navigation"] {
     display: flex;
     flex-direction: column;
     list-style: none;
+    flex-shrink: 0;
 
     box-sizing: border-box;
     margin: 0;
@@ -61,6 +96,7 @@ nav[role="navigation"] {
       &:nth-child(1) {
         // goog
         order: 999;
+        padding: 0;
       }
 
       &:nth-child(2) {
@@ -87,6 +123,7 @@ main {
   z-index: $main-z;
 
   width: 100%;
+
   margin: 0;
   padding: 0;
 
@@ -113,6 +150,7 @@ main {
     flex-direction: row;
     // flex-wrap: wrap;
     justify-content: space-between;
+    flex-shrink: 0;
 
     position: relative;
     margin: 0;
@@ -159,27 +197,45 @@ main {
     flex-basis: 20rem;
     flex-shrink: 0;
     flex-grow: 0;
-    min-height: 8rem;
 
+    // min-height: 8rem;
+    height: $main-height;
+    overflow: hidden;
+
+    box-sizing: border-box;
     border-right: 1px solid color($cl-shuri alpha(0.2));
     box-shadow: -12px 0 12px 6px rgba(0, 0, 0, 0.8);
 
     z-index: $side-z;
-
-    overflow: hidden;
   }
 
   div[itemtype="http://schema.org/Article"] {
+    height: $main-height;
+
+    overflow-x: auto;
+    overflow-y: scroll;
+
     z-index: $content-z;
-    overflow: hidden;
-    // overflow-y: scroll;
 
     flex-shrink: 1;
     flex-grow: 1;
+
+    > .row, > footer {
+      flex-shrink: 0;
+    }
   }
 }
 
 @media (max-width: 768px) {
+  body > header {
+    box-shadow: 0px -12px 10px 8px rgba(0, 0, 0, 0.8);
+  }
+
+
+  #navbar-collapse:not(.collapse) {
+    display: flex;
+  }
+
   nav[role="navigation"] {
     padding: 0;
     min-height: 2.4rem;
@@ -198,24 +254,30 @@ main {
   }
 
   main {
+    overflow-y: scroll;
+
     > .container-fluid > .row:first-child {
       flex-direction: column;
     }
 
-    div[itemtype="http://schema.org/Article"] .content-header {
-      flex-direction: column;
-      flex-shrink: 0;
-      align-items: stretch;
+    div[itemtype="http://schema.org/Article"] {
+      overflow: hidden;
+      height: auto;
 
-      ol.breadcrumb, .crsearch {
-        flex-shrink: 0;
-      }
+      .content-header {
+        flex-direction: column;
+        align-items: stretch;
 
-      .crsearch {
-        flex-basis: auto;
-        min-width: 92%;
-        max-width: 94vw;
-        margin: .5rem 0 0 0;
+        ol.breadcrumb, .crsearch {
+          flex-shrink: 0;
+        }
+
+        .crsearch {
+          flex-basis: auto;
+          min-width: 92%;
+          max-width: 94vw;
+          margin: .5rem 0 0 0;
+        }
       }
     }
 
@@ -226,6 +288,7 @@ main {
       border: none;
 
       box-shadow: 0px 9px 16px 2px rgba(0, 0, 0, 0.8);
+      padding: 0 4vw;
     }
   }
 }
@@ -248,6 +311,12 @@ main {
           display: none;
         }
       }
+    }
+  }
+
+  main {
+    div[itemtype="http://schema.org/Article"] + div {
+      padding: 0 2vw;
     }
   }
 }
