@@ -2,18 +2,13 @@
 
 
 nav[role="navigation"] {
-  $bg: #f8f8f8;
-  background: $bg;
+  background: $nav-bg;
 
-  position: relative;
   display: flex;
 
   margin: 0;
 
   font-size: 1.2rem;
-
-  border: none;
-  border-bottom: 1px solid color($cl-shuri alpha(0.2));
 
   a {
     color: #777;
@@ -28,8 +23,6 @@ nav[role="navigation"] {
     margin: 0;
     padding: 0;
     width: 100%;
-
-    position: relative;
   }
 
   .navbar-brand {
@@ -66,7 +59,7 @@ nav[role="navigation"] {
     position: relative;
     // flex-basis: 100%;
     margin: 0;
-    background: $bg;
+    background: $nav-bg;
 
     align-items: center;
 

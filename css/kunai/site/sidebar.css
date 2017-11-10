@@ -33,25 +33,32 @@ $cl-tree-border: #999;
 #sidebar, .kunai-sidebar.legacy, main div[itemtype="http://schema.org/Article"] + div {
   background: #fbfbfb;
   position: relative;
-  padding: 0;
 }
 
 main[role="main"] .tree:not(.v2) {
   @mixin tree $cl-tree-border;
   display: none;
+  flex-shrink: 0;
 }
 
 #forceLegacyWrapper {
   display: flex;
   cursor: pointer;
   align-self: flex-end;
+
+  flex-shrink: 0;
+
   padding: .2em .5em;
 
   font-weight: normal;
 
-  position: absolute;
+  position: relative;
   top: .15em;
   right: .5em;
+
+  > .notice, > input {
+    flex-shrink: 0;
+  }
 
   .notice {
     margin-right: .3em;
@@ -59,12 +66,15 @@ main[role="main"] .tree:not(.v2) {
 }
 
 main[role="main"] .kunai-sidebar.force-legacy {
+  overflow-y: scroll;
+
   #forceLegacyWrapper {
     font-weight: bold;
   }
 
   .tree:not(.v2) {
     display: flex;
+    overflow: visible;
   }
   .tree.v2 {
     display: none;
@@ -142,9 +152,13 @@ main[role="main"] .kunai-sidebar.force-legacy {
 
   display: flex;
 
+  // temporary workaround
+  overflow-y: scroll;
+
   flex-direction: column;
   margin: 0;
   padding: .5rem .8rem .5rem 1rem;
+  box-sizing: border-box;
 
   font-family: sans-serif;
   line-height: 1.5;
@@ -313,6 +327,8 @@ main[role="main"] .kunai-sidebar.force-legacy {
     display: flex;
     flex-direction: column;
 
+    flex-shrink: 0;
+
     list-style: none;
     padding: 0;
     margin: 0;
@@ -327,6 +343,8 @@ main[role="main"] .kunai-sidebar.force-legacy {
     }
 
     > li.top {
+      flex-shrink: 0;
+
       &:not(:last-child) {
         margin-bottom: 1rem;
       }
