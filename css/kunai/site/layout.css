@@ -168,6 +168,7 @@ main {
 
   div[itemtype="http://schema.org/Article"] {
     z-index: $content-z;
+    overflow: hidden;
     // overflow-y: scroll;
   }
 }
