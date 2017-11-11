@@ -3,6 +3,8 @@ import {NetworkError} from './error'
 import {default as Numeral} from 'numeral'
 import {Logger} from 'nagato'
 
+import URL from 'url-parse'
+
 
 class APIError extends NetworkError {
   constructor() {

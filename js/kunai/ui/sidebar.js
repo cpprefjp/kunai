@@ -33,38 +33,24 @@ class Sidebar {
       this.e.addClass('legacy')
     }
 
-    this.initComponents()
+    this.getTreeview = this.initTreeview()
   }
 
   async onDatabase(db) {
     try {
       this.log.info(`onDatabase`, db)
 
-      this.tree = db.getTree(this.kc)
+      this.db = db
 
-      // workaround name
-      for (let t of this.tree) {
-        if (t.root) {
-          const name = t.root.id.join()
-          const real_name = t.category.name
-          if (name !== real_name) {
-            this.log.warn(`got incorrect title '${name}'; expected = '${real_name}'. ignoring...`)
-          }
-        }
-      }
-
-      this.treeView.onData(this.tree)
+      let t = await this.getTreeview
+      await t.onData(db)
 
     } finally {
       this.e.removeClass('loading')
     }
   }
 
-  async initComponents() {
-    await this.initDynamicComponents()
-  }
-
-  async initDynamicComponents() {
+  async initTreeview() {
     let e = null
 
     if (this.legacy) {
@@ -73,7 +59,7 @@ class Sidebar {
       e = $('<div>').addClass('kunai-tree').addClass('v2').appendTo(this.e)
     }
 
-    this.treeView = new Treeview(
+    this.treeview = new Treeview(
       this.log,
       this.kc,
       this.e,
@@ -81,6 +67,7 @@ class Sidebar {
         legacy: this.legacy
       }
     )
+    return this.treeview
   }
 }
 
