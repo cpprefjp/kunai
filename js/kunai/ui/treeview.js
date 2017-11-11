@@ -24,6 +24,8 @@ class DOM {
 
     this.lastBranchID = 0
     this.branchPrevs = new Map
+
+    this.expandElems = new WeakMap
   }
 
   static scrollEps = 8
@@ -82,22 +84,23 @@ class DOM {
     }
   }
 
-  async createContent(e, elem, obj) {
-    // this.log.debug(`createContent '${obj.self.id}'`, e, elem, obj)
+  async createContent(obj) {
+    this.log.debug(`createContent '${obj.self.id}'`, obj)
 
     switch (obj.self.id.type) {
       case IType.header:
-        return await this.createHeaderContent(e, elem, obj)
+        return await this.createHeaderContent(obj)
 
       default:
-        this.log.error('createContent', e, elem, obj)
+        this.log.error('createContent', obj)
         throw new Error(`unhandled index type in createContent`)
     }
   }
 
-  async createHeaderContent(e, elem, h) {
+  async createHeaderContent(h) {
     // this.log.debug(`createHeaderContent (${h.self.id.join()})`, e, elem, h)
     let empty = true
+    let elem = this.expandElems.get(h.self.id)
 
     if (h.classes && h.classes.length) {
       empty = false
@@ -126,10 +129,23 @@ class DOM {
     return true // this.lazyLoaders.get(h.self.id)
   }
 
-  async doExpand(id, e) {
-    // this.log.debug(`doExpand '${id.join()}'`, id, e)
-    await this.lazyLoaders.get(id)(e)
-    $(e.target).closest('li').toggleClass('expanded')
+  async doExpand(id) {
+    // this.log.debug(`doExpand '${id.join()}'`, id)
+    await this.lazyLoaders.get(id)()
+    this.expandElems.get(id).toggleClass('expanded')
+  }
+
+  async scrollAt(id) {
+    this.log.debug(`scrollAt '${id.join()}'`, id)
+
+    const e = this.expandElems.get(id)
+
+    let broot = e.closest('.kunai-branch')
+    // this.log.debug(`branch root`, broot)
+
+    broot.animate({
+      scrollTop: e.offset().top
+    }, 1)
   }
 
   async kunaiBranch(me, branchFor, scrollHandler) {
@@ -226,18 +242,18 @@ class DOM {
   }
 
   async makeExpandable(elem, obj) {
+    // this.log.debug(`makeExpandable '${obj.self.id.join()}'`, elem, obj)
+    this.expandElems.set(obj.self.id, elem)
     this.lazyLoaders.set(
       obj.self.id,
-      async (e) => {
-        return await ::this.createContent(e, elem, obj)
-      }
+      async () => { await this.createContent(obj) }
     )
 
     let bar = $('<div>', {class: 'expandbar'}).appendTo(elem)
 
     bar.append(
-      $('<div>', {class: 'expander'}).on('click', async (e) => {
-        await this.doExpand(obj.self.id, e)
+      $('<div>', {class: 'expander'}).on('click', async () => {
+        await this.doExpand(obj.self.id)
       })
     )
 
@@ -289,37 +305,95 @@ class Treeview {
     }
   }
 
-  async onData(tree) {
-    const runID = JSON.stringify({name: 'onData', timestamp: Date.now()})
-    console.time(runID)
+  async onPageID(ids) {
+    this.page_id = [].concat(ids)
+
+    this.page_idx_id = null
+    const ns_id = ids.shift()
+
+    for (const type of Object.values(IType)) {
+      const rvid = IndexID.composeReverseID(type, ids)
+      if (this.db.reverseID.has(rvid)) {
+        this.page_idx_id = this.db.reverseID.get(rvid)
+      }
+    }
+
+    this.page_idx = null
+
     try {
-      this.dom = new DOM(this.log, this.kc)
-      await this.onDataImpl(tree)
-    } finally {
-      console.timeEnd(runID)
+      if (!this.page_idx_id) {
+        throw new Error(`IndexID for path '${ids.join('/')}' not present in database`)
+      }
+      if (!IndexID.isClassy(this.page_idx_id.type)) {
+        this.log.info(`current page '${this.page_idx_id.join()}' is not classy. nothing to expand`)
+
+      } else {
+        this.log.info(`classy page '${this.page_idx_id.join()}'`)
+
+        for (const ns of this.db.namespaces) {
+          if (ns.namespace[0] !== 'reference') continue
+
+          this.log.debug(`checking Namespace '${ns.pretty_name()}'`, ns)
+          if (ns.indexes.has(this.page_idx_id)) {
+            this.page_idx = ns.indexes.get(this.page_idx_id)
+          }
+        }
+
+        if (!this.page_idx) {
+          throw new Error(`Index for '${this.page_idx_id.join()}' not found in any of the 'reference' namespace`)
+        }
+
+        const h = this.page_idx.in_header
+        this.log.info(`expanding current page header '${h.id.join()}'`, h, this.page_idx)
+
+        // await this.dom.doExpand(h.id)
+        await this.dom.doExpand(h.id)
+        await this.dom.scrollAt(h.id)
+      }
+
+    } catch (e) {
+      this.log.error(`Failed to determine current page for id '${ids.join('/')}'. Sidebar will NOT work properly! (${e})`, ids)
     }
   }
 
-  async onDataImpl(tree) {
-    this.log.debug('data', tree)
+  async onData(db) {
+    this.db = db
+    this.tree = db.getTree(this.kc)
+
+    // workaround name
+    for (let t of this.tree) {
+      if (t.root) {
+        const name = t.root.id.join()
+        const real_name = t.category.name
+        if (name !== real_name) {
+          this.log.warn(`got incorrect title '${name}'; expected = '${real_name}'. ignoring...`)
+        }
+      }
+    }
+
+    this.dom = new DOM(this.log, this.kc)
+    await this.onDataImpl()
+  }
+
+  async onDataImpl() {
+    this.log.debug('data', this.tree)
     let root = $('<ul>', {class: 'root'}).appendTo(this.root)
 
     const cats = this.kc.categories()
 
-    for (const top of tree) {
-      if (top.category.index === cats.get('index').index) {
-        continue
-      }
+    root.append(await Promise.all(
+      this.tree.filter((top) => top.category.index !== cats.get('index').index).map(async (top) => {
+        let e = $('<li>', {class: 'top', 'data-top-id': top.namespace.namespace[0]})
+        e.append(await this.dom.makeTitle(top))
 
-      let e = $('<li>', {class: 'top', 'data-top-id': top.namespace.namespace[0]}).appendTo(root)
-      e.append(await this.dom.makeTitle(top))
-
-      if (top.category.index === cats.get('lang').index) {
-        this.processLangTop(top, e)
-      } else {
-        this.processTop(top, e)
-      }
-    }
+        if (top.category.index === cats.get('lang').index) {
+          this.processLangTop(top, e)
+        } else {
+          this.processTop(top, e)
+        }
+        return e
+      })
+    ))
   }
 
   async processTop(top, e) {

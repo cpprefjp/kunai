@@ -1,6 +1,7 @@
 class Compat {
-  constructor(log) {
+  constructor(log, repo) {
     this.log = log.makeContext('Compat')
+    this.repo = [].concat(repo)
 
     this.log.info('applying...')
 
@@ -26,6 +27,8 @@ class Compat {
         this.log.warn(`legacy <footer> not found. time to remove this workaround? (${url})`)
       }
     }
+
+    // $('#navbar-collapse ul.nav > li:nth-child(2) > a').text(repo.join('/'))
 
     this.log.info('applied.')
   } // constructor

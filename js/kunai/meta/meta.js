@@ -6,6 +6,8 @@ import * as Code from '../code'
 
 import {Logger} from 'nagato'
 
+import URL from 'url-parse'
+
 
 let Marked = require('marked')
 const MarkedOpts = {
@@ -55,6 +57,12 @@ class Meta {
 
     this.log.info(`original_url: ${this.original_url}`, this.original_url)
     this.filename = [...this.original_url.pathname.split('/')].pop()
+
+    {
+      let ids = this.original_url.pathname.split('/').slice(5)
+      ids[ids.length - 1] = ids[ids.length - 1].replace(/\.md$/, '')
+      this.page_id = ids
+    }
 
     this.raw_url = new URL(this.original_url)
     this.raw_url.host = 'raw.githubusercontent.com'

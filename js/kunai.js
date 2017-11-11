@@ -30,6 +30,7 @@ class Kunai {
       }))
     )
 
+
     try {
       this.log.disableBacktrace(true)
       this.log.info(`version ${KUNAI_PACKAGE.version} (https://github.com/cpprefjp/kunai/tree/v${KUNAI_PACKAGE.version})`)
@@ -38,16 +39,13 @@ class Kunai {
       this.log.disableBacktrace(false)
     }
 
-    if (this.opts.compat) {
-      this.compat = new Compat(this.log)
-    }
-
     this.ui = {
       navbar: null,
       sidebar: null,
       content: null,
     }
     this.initUI()
+    this.getSidebar = this.initSidebar()
 
     this.wand = new Wand(this.log)
 
@@ -56,15 +54,21 @@ class Kunai {
 
   async cpprefjp() {
     this.load_impl(['cpprefjp', 'site'])
-    this.crs = await this.initCRSearch(true)
+    this.afterCR = this.initCRSearch(true)
+    this.crs = await this.afterCR
   }
 
   async boostjp() {
     this.load_impl(['boostjp', 'site'])
-    this.crs = await this.initCRSearch(false)
+    this.afterCR = this.initCRSearch(false)
+    this.crs = await this.afterCR
   }
 
-  load_impl(config) {
+  async load_impl(config) {
+    if (this.opts.compat) {
+      this.compat = new Compat(this.log, config)
+    }
+
     const desc = config.join('/')
     this.log.info(`loading (${desc})`)
     $('body').addClass('kunai')
@@ -114,13 +118,18 @@ class Kunai {
     this.ui.content = new UI.Content(l)
   }
 
-  async initCRSearch(isEnabled, onDatabase) {
+  async onDatabase(db) {
+    await this.ui.sidebar.onDatabase(db)
+    await this.ui.sidebar.treeview.onPageID(this.meta.page_id)
+  }
+
+  async initCRSearch(isEnabled) {
     if (!isEnabled) return null
 
-    await this.initSidebar()
+    await this.getSidebar
 
     let crs = new CRSearch({
-      onDatabase: ::this.ui.sidebar.onDatabase,
+      onDatabase: ::this.onDatabase,
     })
     crs.database('https://cpprefjp.github.io/static/crsearch/crsearch.json')
 
