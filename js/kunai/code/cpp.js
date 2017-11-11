@@ -2,6 +2,7 @@ import {ID} from './id'
 
 import {Logger} from 'nagato'
 
+const arrayIncludes = require("core-js/library/fn/array/includes")
 
 class CPP {
   constructor(log, id, buf, hints) {
@@ -27,7 +28,7 @@ class CPP {
 
     if (hints.headers) {
       for (const h of hints.headers) {
-        if (!this.headers.includes(h)) {
+        if (!arrayIncludes(this.headers, h)) {
           this.log.warn(`already found header '${h}' in meta tag, but it was not written in this code snippet`)
           this.prepend_header(h)
           this.headers.push(h)
