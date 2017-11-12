@@ -25,7 +25,7 @@ class DOM {
     this.lastBranchID = 0
     this.branchPrevs = new Map
 
-    this.expandElems = new WeakMap
+    this.indexElems = new WeakMap
     this.topElems = new Map
 
     // this.scrollIsAutoFired = false
@@ -102,7 +102,7 @@ class DOM {
   }
 
   async createContent(obj) {
-    this.log.debug(`createContent '${obj.self.id}'`, obj)
+    this.log.info(`createContent '${obj.self.id}'`, obj)
 
     switch (obj.self.id.type) {
       case IType.header:
@@ -117,7 +117,7 @@ class DOM {
   async createHeaderContent(h) {
     // this.log.debug(`createHeaderContent (${h.self.id.join()})`, e, elem, h)
     let empty = true
-    let elem = this.expandElems.get(h.self.id)
+    let elem = this.indexElems.get(h.self.id)
 
     if (h.classes && h.classes.length) {
       empty = false
@@ -150,7 +150,7 @@ class DOM {
     // this.log.debug(`doExpand '${id.join()}'`, id)
 
     await this.lazyLoaders.get(id)()
-    let elem = this.expandElems.get(id)
+    let elem = this.indexElems.get(id)
     // let content_wrapper = elem.closest('.content-wrapper')
     // let content = content_wrapper.children('.content')
 
@@ -188,9 +188,9 @@ class DOM {
   }
 
   async scrollAt(id) {
-    this.log.debug(`scrollAt '${id.join()}'`, id)
+    this.log.info(`scrollAt '${id.join()}'`, id)
 
-    const e = this.expandElems.get(id)
+    const e = this.indexElems.get(id)
     const broot = e.closest('.kunai-branch')
     const croot = broot.closest('.content')
     let wrapper = croot.closest('.content-wrapper')
@@ -199,7 +199,7 @@ class DOM {
     // this.log.debug(`pos`, broot.position().top, croot.position().top, e.position().top, e.children('.expandbar').position().top)
 
     wrapper.animate({
-      scrollTop: e.position().top + 4,
+      scrollTop: Math.max(e.position().top - 24, 0),
     }, 1)
   }
 
@@ -233,14 +233,20 @@ class DOM {
   }
 
   async makeArticle(idx) {
-    return $('<li>', {class: 'article'}).append(
+    let li = $('<li>', {class: 'article'}).append(
       $('<a>', {href: idx.url()}).text(idx.id.join())
     )
+    this.indexElems.set(idx.id, li)
+    return li
   }
 
   async makeMember(m) {
-    const a = $('<a>').attr('href', m.url()).html(await m.join_html(DOM.crOptions))
-    let li = $('<li>', {class: 'member classy'}).append(a)
+    let li = $('<li>', {class: 'member classy'})
+      .append(
+        $('<a>', {href: m.url()})
+          .html(await m.join_html(DOM.crOptions))
+      )
+    this.indexElems.set(m.id, li)
 
     if (this.kc.getPriorityForIndex(m).index !== this.kc.prioSpecials.get('__functions__').index) {
       li.addClass('special')
@@ -250,6 +256,8 @@ class DOM {
 
   async makeClass(c) {
     let li = $('<li>', {class: 'class classy'})
+    this.indexElems.set(c.self.id, li)
+
     $('<a>', {class: 'self'}).attr('href', c.self.url()).html(
       await c.self.join_html(DOM.crClassOptions)
     ).appendTo(li)
@@ -271,6 +279,7 @@ class DOM {
 
   async makeOther(o) {
     let li = $('<li>', {class: `other ${o.id.type}`})
+    this.indexElems.set(o.id, li)
 
     if (IndexID.isClassy(o.id.type)) {
       li.addClass('classy')
@@ -298,7 +307,7 @@ class DOM {
 
   async makeExpandable(elem, obj) {
     // this.log.debug(`makeExpandable '${obj.self.id.join()}'`, elem, obj)
-    this.expandElems.set(obj.self.id, elem)
+    this.indexElems.set(obj.self.id, elem)
     this.lazyLoaders.set(
       obj.self.id,
       async () => { await this.createContent(obj) }
@@ -361,50 +370,37 @@ class Treeview {
   }
 
   async onPageID(ids) {
-    this.page_id = [].concat(ids)
-
-    this.page_idx_id = null
-    const ns_id = ids.shift()
-
-    for (const type of Object.values(IType)) {
-      const rvid = IndexID.composeReverseID(type, ids)
-      if (this.db.reverseID.has(rvid)) {
-        this.page_idx_id = this.db.reverseID.get(rvid)
-      }
-    }
-
-    this.page_idx = null
-
     try {
-      if (!this.page_idx_id) {
-        throw new Error(`IndexID for path '${ids.join('/')}' not present in database`)
+      this.page_idx = this.db.all_fullpath_pages.get(ids.join('/'))
+
+      if (!this.page_idx) {
+        throw new Error(`Index for path '${ids.join('/')}' not present in database`)
       }
-      if (!IndexID.isClassy(this.page_idx_id.type)) {
-        this.log.info(`current page '${this.page_idx_id.join()}' is not classy. nothing to expand`)
+
+      await this.dom.doStackExpand(this.page_idx.ns.namespace[0])
+
+      if (!IndexID.isClassy(this.page_idx.id.type)) {
+        if (this.page_idx.id.type === IType.header) {
+          await this.dom.doExpand(this.page_idx.id)
+
+        } else {
+          this.log.info(`current page '${this.page_idx.id.join()}' is not classy. nothing left to expand`)
+        }
 
       } else {
-        this.log.info(`classy page '${this.page_idx_id.join()}'`)
-
-        for (const ns of this.db.namespaces) {
-          if (ns.namespace[0] !== 'reference') continue
-
-          this.log.debug(`checking Namespace '${ns.pretty_name()}'`, ns)
-          if (ns.indexes.has(this.page_idx_id)) {
-            this.page_idx = ns.indexes.get(this.page_idx_id)
-          }
-        }
-
-        if (!this.page_idx) {
-          throw new Error(`Index for '${this.page_idx_id.join()}' not found in any of the 'reference' namespace`)
-        }
+        this.log.info(`classy page '${this.page_idx.id.join()}'`)
 
         const h = this.page_idx.in_header
         this.log.info(`expanding current page header '${h.id.join()}'`, h, this.page_idx)
 
-        await this.dom.doStackExpand(this.page_idx.ns.namespace[0])
         await this.dom.doExpand(h.id)
-        await this.dom.scrollAt(h.id)
       }
+
+      // highlight self
+      this.dom.indexElems.get(this.page_idx.id).addClass('current-page')
+
+      // finally, always scroll to self
+      await this.dom.scrollAt(this.page_idx.id)
 
     } catch (e) {
       this.log.error(`Failed to determine current page for id '${ids.join('/')}'. Sidebar will NOT work properly! (${e})`, ids)

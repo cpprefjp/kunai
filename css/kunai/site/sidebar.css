@@ -469,6 +469,12 @@ main[role="main"] .kunai-sidebar.force-legacy {
     max-width: 100%;
   }
 
+  ul > li.current-page {
+    font-weight: bold;
+    border: 1px dashed #DDD;
+    background-color: #FEFEFE;
+  }
+
   ul.articles {
     > li.article {
       direction: ltr;
