@@ -27,32 +27,49 @@ class DOM {
 
     this.expandElems = new WeakMap
     this.topElems = new Map
+
+    // this.scrollIsAutoFired = false
   }
 
   static scrollEps = 8
 
   async handleScroll(e) {
-    let elem = $(e.target)
-    const bID = elem.attr('data-branch-id')
-    const branch = elem.children('.branch')
-    const st = elem.scrollTop()
-    const btop = branch.position().top
-    // this.log.debug(`handleScroll #${bID} (top = ${st}px, branch = ${btop}px)`, e, elem, branch)
+    // if (this.scrollIsAutoFired) {
+      // this.log.debug(`handleScroll(auto)`, e)
+      // this.scrollIsAutoFired = false
+      // return false
+    // }
 
-    let topChild = null
-    let topDelta = 0
+    let content_wrapper = $(e.target)
+    const content = content_wrapper.children('.content')
+
+    const st = content_wrapper.scrollTop()
+    const cOfs = content.position().top
+
+    const k_branch = content.children('.kunai-branch[data-branch-for="headers"]')
+    const bID = k_branch.attr('data-branch-id')
+    const branch = k_branch.children('.branch')
+    // this.log.debug(`handleScroll #${bID} (top = ${st}px, cOfs = ${cOfs}px)`, e, content_wrapper, content, k_branch, branch)
+
+    let closestChild = null
+    let closestDelta = 0
+
+    // find a child item with least deltaY to current scrollTop
     for (const child_ of branch.children('li')) {
       const child = $(child_)
-      const delta = btop - child.position().top
+      const cTop = child.position().top
+      const delta = st - cTop
 
-      if (!topChild) {
-        topDelta = delta
-        topChild = child
+      // this.log.debug(`checking '${child.find('.cr-index .title').get(0).innerText.trim()}' | cTop: ${cTop}, delta: ${delta} (closestDelta: ${closestDelta})`, child_)
+
+      if (!closestChild) {
+        closestDelta = delta
+        closestChild = child
       } else {
-        // this.log.debug(`${delta} < ${topDelta} < ${btop}`)
-        if (delta > btop) {
-          topDelta = delta
-          topChild = child
+        // if (cTop + (st + cOfs) < st) {
+        if (cTop < st) {
+          closestDelta = cTop
+          closestChild = child
         } else {
           break
         }
@@ -62,26 +79,25 @@ class DOM {
     {
       let last = this.branchPrevs.get(bID)
       if (last) {
+        // this.log.debug(`preview target change --> '${closestChild.find('.cr-index > .title > .keys')[0].innerText.trim()}'`, closestChild[0])
         last.removeClass('preview')
       }
     }
 
-    // this.log.debug(`current branch = '${topChild.find('.cr-index > .title > .keys')[0].innerText.trim()}'`, topChild)
+    this.branchPrevs.set(bID, closestChild)
+    closestChild.addClass('preview')
+    // throw [closestChild, closestDelta]
 
-    this.branchPrevs.set(bID, topChild)
-    topChild.addClass('preview')
-    // throw [topChild, topDelta]
-
-    if (topChild.hasClass('expanded')) {
-      let bar = $(topChild.children('.expandbar')[0])
+    if (closestChild.hasClass('expanded')) {
+      let bar = $(closestChild.children('.expandbar')[0])
       bar.css({top: `${(st)}px`})
       // throw true
     }
 
     if (st < DOM.scrollEps) {
-      elem.removeClass('scrolling')
+      content_wrapper.removeClass('scrolling')
     } else {
-      elem.addClass('scrolling')
+      content_wrapper.addClass('scrolling')
     }
   }
 
@@ -134,7 +150,29 @@ class DOM {
     // this.log.debug(`doExpand '${id.join()}'`, id)
 
     await this.lazyLoaders.get(id)()
-    this.expandElems.get(id).toggleClass('expanded')
+    let elem = this.expandElems.get(id)
+    // let content_wrapper = elem.closest('.content-wrapper')
+    // let content = content_wrapper.children('.content')
+
+    // const wasExpanded = elem.hasClass('expanded')
+    // const oldSt = content_wrapper.scrollTop()
+    // const oldOfs = content.position().top
+    // const oldTop = elem.position().top
+
+    // this.log.debug(`(oldSt: ${oldSt}, oldOfs: ${oldOfs}, oldTop: ${oldTop})`)
+
+    elem.toggleClass('expanded')
+
+    // if (wasExpanded) {
+      // const newSt = content_wrapper.scrollTop()
+      // const newOfs = content.position().top
+      // const newTop = elem.position().top
+      // this.log.debug(`(newSt: ${newSt}, newOfs: ${newOfs}, newTop: ${newTop})`)
+      // this.scrollIsAutoFired = true
+      // content_wrapper.animate({
+        // scrollTop: oldTop,
+      // }, 1)
+    // }
   }
 
   async doStackExpand(topID) {
@@ -158,10 +196,10 @@ class DOM {
     let wrapper = croot.closest('.content-wrapper')
     // this.log.debug(`wrapper`, wrapper)
 
-    this.log.debug(`pos`, broot.position().top, croot.position().top, e.position().top, e.children('.expandbar').position().top)
+    // this.log.debug(`pos`, broot.position().top, croot.position().top, e.position().top, e.children('.expandbar').position().top)
 
     wrapper.animate({
-      scrollTop: croot.position().top + e.children('.expandbar').position().top,
+      scrollTop: e.position().top + 4,
     }, 1)
   }
 
@@ -437,6 +475,10 @@ class Treeview {
           stack.addClass('empty')
         }
 
+        if (top.category.index === this.kc.categories().get('reference').index) {
+          content_wrapper.on('scroll', ::this.dom.handleScroll)
+        }
+
         return stack
       })
     ))
@@ -462,12 +504,7 @@ class Treeview {
         return await this.dom.makeHeader(h)
       })))
 
-      e.append(await this.dom.kunaiBranch(
-        self,
-        'headers',
-        top.category.index === this.kc.categories().get('reference').index ?
-          ::this.dom.handleScroll : null
-      ))
+      e.append(await this.dom.kunaiBranch(self, 'headers'))
     }
     return !is_empty
   }
