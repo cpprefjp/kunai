@@ -379,21 +379,21 @@ class Treeview {
 
       await this.dom.doStackExpand(this.page_idx.ns.namespace[0])
 
-      if (!IndexID.isClassy(this.page_idx.id.type)) {
+      if (IndexID.isClassy(this.page_idx.id.type) || this.page_idx.in_header) {
+        this.log.info(`maybe classy page '${this.page_idx.id.join()}'`)
+
+        const h = this.page_idx.in_header
+        this.log.info(`expanding current page header '${h.id.join()}'`, h, this.page_idx)
+
+        await this.dom.doExpand(h.id)
+
+      } else {
         if (this.page_idx.id.type === IType.header) {
           await this.dom.doExpand(this.page_idx.id)
 
         } else {
           this.log.info(`current page '${this.page_idx.id.join()}' is not classy. nothing left to expand`)
         }
-
-      } else {
-        this.log.info(`classy page '${this.page_idx.id.join()}'`)
-
-        const h = this.page_idx.in_header
-        this.log.info(`expanding current page header '${h.id.join()}'`, h, this.page_idx)
-
-        await this.dom.doExpand(h.id)
       }
 
       // highlight self
