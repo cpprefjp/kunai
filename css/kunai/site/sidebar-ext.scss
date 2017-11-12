@@ -86,53 +86,37 @@
       }
     }
 
-    li.top {
-      > a.title {
-        &:before {
-          @include fa-patch;
-
-          margin-right: .15em;
-          color: darker;
-        }
+    ul.root > li.top {
+      > .heading > a.title:before {
+        @include fa-patch;
       }
 
-      &[data-top-id="implementation"] > a.title:before {
+      &[data-top-id="implementation"] > .heading > a.title:before {
         @extend .fa-cogs;
       }
-      &[data-top-id="implementation-status"] > a.title:before {
+      &[data-top-id="implementation-status"] > .heading > a.title:before {
         @extend .fa-calendar-check-o;
       }
-      &[data-top-id="mailing-lists"] > a.title:before {
+      &[data-top-id="mailing-lists"] > .heading > a.title:before {
         @extend .fa-inbox;
       }
-      &[data-top-id="third_party_library"] > a.title:before {
+      &[data-top-id="third_party_library"] > .heading > a.title:before {
         @extend .fa-university;
       }
-      &[data-top-id="working_style"] > a.title:before {
+      &[data-top-id="working_style"] > .heading > a.title:before {
         @extend .fa-pencil-square-o;
       }
-      &[data-top-id="editors_doc"] > a.title:before {
+      &[data-top-id="editors_doc"] > .heading > a.title:before {
         @extend .fa-text-height;
       }
-      &[data-top-id="article"] > a.title:before {
+      &[data-top-id="article"] > .heading > a.title:before {
         @extend .fa-book;
       }
-      &[data-top-id="lang"] > a.title:before {
+      &[data-top-id="lang"] > .heading > a.title:before {
         @extend .fa-superscript;
       }
-      &[data-top-id="reference"] {
-        > a.title:before {
-          @extend .fa-tags;
-        }
-
-        // .articles {
-          // > .article {
-            // > a:before {
-              // @include fa-patch;
-              // @extend .fa-paragraph;
-            // }
-          // }
-        // }
+      &[data-top-id="reference"] > .heading > a.title:before {
+        @extend .fa-tags;
       }
     }
   }
@@ -145,6 +129,30 @@
 
       > .title > ul.badges {
         @include cr-badge-auto(".badge");
+      }
+    }
+  }
+}
+
+.kunai-sidebar {
+  ul.stackable {
+    > li.stack {
+      > .heading > .expander {
+        &:before {
+          @include fa-patch;
+        }
+      }
+
+      &.expanded {
+        > .heading > .expander:before {
+          @extend .fa-compress;
+        }
+      }
+
+      &:not(.expanded) {
+        > .heading > .expander:before {
+          @extend .fa-expand;
+        }
       }
     }
   }

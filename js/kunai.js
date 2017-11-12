@@ -45,23 +45,19 @@ class Kunai {
       content: null,
     }
     this.initUI()
-    this.getSidebar = this.initSidebar()
 
     this.wand = new Wand(this.log)
-
     this.yatas = new Map
   }
 
   async cpprefjp() {
     this.load_impl(['cpprefjp', 'site'])
-    this.afterCR = this.initCRSearch(true)
-    this.crs = await this.afterCR
+    this.crs = this.initCRSearch(true)
   }
 
   async boostjp() {
     this.load_impl(['boostjp', 'site'])
-    this.afterCR = this.initCRSearch(false)
-    this.crs = await this.afterCR
+    this.crs = this.initCRSearch(false)
   }
 
   async load_impl(config) {
@@ -119,6 +115,7 @@ class Kunai {
   }
 
   async onDatabase(db) {
+    // this.log.debug(`onDatabase`, db)
     await this.ui.sidebar.onDatabase(db)
     await this.ui.sidebar.treeview.onPageID(this.meta.page_id)
   }
@@ -126,10 +123,10 @@ class Kunai {
   async initCRSearch(isEnabled) {
     if (!isEnabled) return null
 
-    await this.getSidebar
+    await this.initSidebar()
 
     let crs = new CRSearch({
-      onDatabase: ::this.onDatabase,
+      onDatabase: this.onDatabase.bind(this),
     })
     crs.database('https://cpprefjp.github.io/static/crsearch/crsearch.json')
 

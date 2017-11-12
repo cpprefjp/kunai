@@ -26,6 +26,7 @@ class DOM {
     this.branchPrevs = new Map
 
     this.expandElems = new WeakMap
+    this.topElems = new Map
   }
 
   static scrollEps = 8
@@ -131,20 +132,36 @@ class DOM {
 
   async doExpand(id) {
     // this.log.debug(`doExpand '${id.join()}'`, id)
+
     await this.lazyLoaders.get(id)()
     this.expandElems.get(id).toggleClass('expanded')
+  }
+
+  async doStackExpand(topID) {
+    // this.log.debug(`doStackExpand '${topID}'`, topID)
+
+    for (let [id, e] of this.topElems) {
+      if (id === topID) {
+        e.toggleClass('expanded')
+      } else {
+        e.removeClass('expanded')
+      }
+    }
   }
 
   async scrollAt(id) {
     this.log.debug(`scrollAt '${id.join()}'`, id)
 
     const e = this.expandElems.get(id)
+    const broot = e.closest('.kunai-branch')
+    const croot = broot.closest('.content')
+    let wrapper = croot.closest('.content-wrapper')
+    // this.log.debug(`wrapper`, wrapper)
 
-    let broot = e.closest('.kunai-branch')
-    // this.log.debug(`branch root`, broot)
+    this.log.debug(`pos`, broot.position().top, croot.position().top, e.position().top, e.children('.expandbar').position().top)
 
-    broot.animate({
-      scrollTop: e.offset().top
+    wrapper.animate({
+      scrollTop: croot.position().top + e.children('.expandbar').position().top,
     }, 1)
   }
 
@@ -168,12 +185,12 @@ class DOM {
       $('<a>', {
         class: 'title',
         href: top.root.url(),
-        title: top.category.name
+        title: top.category.name,
       }).text(top.category.name) :
 
       $('<a>', {
         class: 'title',
-        title: '存在しないページ'
+        title: top.category.name,
       }).text(top.category.name)
   }
 
@@ -346,7 +363,7 @@ class Treeview {
         const h = this.page_idx.in_header
         this.log.info(`expanding current page header '${h.id.join()}'`, h, this.page_idx)
 
-        // await this.dom.doExpand(h.id)
+        await this.dom.doStackExpand(this.page_idx.ns.namespace[0])
         await this.dom.doExpand(h.id)
         await this.dom.scrollAt(h.id)
       }
@@ -377,27 +394,60 @@ class Treeview {
 
   async onDataImpl() {
     this.log.debug('data', this.tree)
-    let root = $('<ul>', {class: 'root'}).appendTo(this.root)
+    let root = $('<ul>', {class: 'root stackable'}).appendTo(this.root)
 
     const cats = this.kc.categories()
 
     root.append(await Promise.all(
       this.tree.filter((top) => top.category.index !== cats.get('index').index).map(async (top) => {
-        let e = $('<li>', {class: 'top', 'data-top-id': top.namespace.namespace[0]})
-        e.append(await this.dom.makeTitle(top))
+        const topID = top.namespace.namespace[0]
+        let stack = $('<li>', {
+          class: 'top stack',
+          'data-top-id': topID,
+        })
 
+        this.dom.topElems.set(topID, stack)
+
+        stack.append(
+          $('<div>', {class: 'heading'})
+            .append(
+              $('<div>', {class: 'expander'}).on(
+                'click', async () =>  { this.dom.doStackExpand(topID) }
+              )
+            )
+            .append(await this.dom.makeTitle(top))
+        )
+
+        let content_wrapper =
+          $('<div>', {class: 'content-wrapper'})
+          .appendTo(stack)
+
+        let content =
+          $('<div>', {class: 'content'})
+          .appendTo(content_wrapper)
+
+        let is_not_empty = false
         if (top.category.index === cats.get('lang').index) {
-          this.processLangTop(top, e)
+          is_not_empty = await this.processLangTop(top, content)
         } else {
-          this.processTop(top, e)
+          is_not_empty = await this.processTop(top, content)
         }
-        return e
+
+        if (!is_not_empty) {
+          stack.addClass('empty')
+        }
+
+        return stack
       })
     ))
   }
 
   async processTop(top, e) {
+    let is_empty = true
+
     if (top.articles && top.articles.length) {
+      is_empty = false
+
       let self = $('<ul>', {class: 'articles'}).append(await Promise.all(top.articles.map(async (ar) => {
         return await this.dom.makeArticle(ar)
       })))
@@ -406,6 +456,8 @@ class Treeview {
     }
 
     if (top.headers && top.headers.length) {
+      is_empty = false
+
       let self = $('<ul>', {class: 'headers'}).append(await Promise.all(top.headers.map(async (h) => {
         return await this.dom.makeHeader(h)
       })))
@@ -417,6 +469,7 @@ class Treeview {
           ::this.dom.handleScroll : null
       ))
     }
+    return !is_empty
   }
 
   async processLangTop(top, e) {
@@ -436,9 +489,10 @@ class Treeview {
 
     let langs = $('<ul>', {class: 'langs'}).appendTo(e)
 
-    for (const [id, t] of ltops) {
-      langs.append(await this.dom.makeLang(t))
-    }
+    langs.append(await Promise.all(ltops.map(async ([id, t]) => {
+      return await this.dom.makeLang(t)
+    })))
+    return true
   }
 }
 
