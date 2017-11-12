@@ -152,22 +152,18 @@ main[role="main"] .kunai-sidebar.force-legacy {
 
   display: flex;
 
-  // temporary workaround
-  overflow-y: scroll;
-
   flex-direction: column;
   margin: 0;
-  padding: .5rem .8rem .5rem 1rem;
+  padding: .5rem .1rem .5rem .25rem;
   box-sizing: border-box;
 
   font-family: sans-serif;
   line-height: 1.5;
 
+  height: 100%;
 
   .kunai-branch {
-    overflow-x: hidden;
-    overflow-y: auto;
-    max-height: 28rem;
+    overflow: hidden;
 
     margin: .2rem 0 0 0;
     padding: 0;
@@ -176,8 +172,6 @@ main[role="main"] .kunai-sidebar.force-legacy {
 
     $c: rgba(20, 20, 20, 0.1);
     box-shadow: 0px 6px 10px -6px $c inset, 0px -6px 10px -6px $c inset;
-
-    direction: rtl;
 
     > .preview {
       display: flex;
@@ -225,7 +219,6 @@ main[role="main"] .kunai-sidebar.force-legacy {
     }
 
     > ul.branch {
-      direction: ltr;
       display: flex;
       flex-direction: column;
 
@@ -233,14 +226,16 @@ main[role="main"] .kunai-sidebar.force-legacy {
 
       list-style: none;
       margin: 0;
-      padding: 0 0 0 .2rem;
+      padding: 0;
 
       > li {
         display: flex;
         flex-direction: column;
         align-items: stretch;
         font-size: .9rem;
-        margin: .1em 0;
+
+        box-sizing: border-box;
+        padding: .1em 0;
 
         &:before {
           flex-basis: 1.2em;
@@ -323,6 +318,95 @@ main[role="main"] .kunai-sidebar.force-legacy {
     }
   }
 
+  ul.stackable {
+    display: flex;
+    flex-direction: column;
+
+    height: 100%;
+
+    > li.stack {
+      display: flex;
+      flex-direction: column;
+      align-content: flex-start;
+      box-sizing: border-box;
+
+      flex-shrink: 0;
+
+      border-top: 1px solid transparent;
+      border-bottom: 1px solid transparent;
+
+      > .heading {
+        display: flex;
+        flex-direction: row;
+        flex-shrink: 0;
+      }
+
+      &.expanded:not(.empty) {
+        flex-grow: 1;
+        flex-shrink: 1;
+
+        $b: #DDD;
+
+        &:not(:first-child) {
+          border-top-color: $b;
+        }
+
+        &:not(:last-child) {
+          border-bottom-color: $b;
+        }
+
+        > .content-wrapper {
+          overflow-y: scroll;
+        }
+      }
+
+      &:not(.expanded) {
+        > .content-wrapper {
+          display: none;
+        }
+      }
+
+      &.empty > .heading > .expander:before {
+        visibility: hidden;
+      }
+
+      > .heading > .expander {
+        display: inline-flex;
+        align-items: center;
+        padding: .1em .3em .1em .1em;
+
+        &:before {
+          color: #444;
+          transform: rotate(-45deg);
+          cursor: pointer;
+
+          display: block;
+          line-height: 1;
+        }
+      }
+
+      > .heading > a.title {
+        user-select: none;
+        word-break: keep-all;
+
+        padding: .25em 0;
+        box-sizing: border-box;
+      }
+
+      > .content-wrapper {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+
+        > .content {
+          display: flex;
+          flex-direction: column;
+          flex-shrink: 0;
+        }
+      }
+    }
+  }
+
   > ul.root {
     display: flex;
     flex-direction: column;
@@ -343,15 +427,17 @@ main[role="main"] .kunai-sidebar.force-legacy {
     }
 
     > li.top {
-      flex-shrink: 0;
-
-      &:not(:last-child) {
-        margin-bottom: 1rem;
-      }
-
-      > a.title {
+      > .heading > a.title {
         font-size: 1.1em;
         text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+
+        display: inline-flex;
+        flex-direction: row-reverse;
+        align-items: baseline;
+
+        &:before {
+          margin-left: .2em;
+        }
 
         &:not(:last-child):after {
           @mixin big-hr;
@@ -361,7 +447,7 @@ main[role="main"] .kunai-sidebar.force-legacy {
         &:not([href]) {
           color: color($cl-text tint(50%));
           text-decoration: none;
-          cursor: help;
+          // cursor: help;
           border-bottom: 1px solid transparent;
 
           /*
@@ -439,7 +525,7 @@ main[role="main"] .kunai-sidebar.force-legacy {
       // min-height: 4.6em;
 
       &:not(:first-child) {
-        margin-top: 1em;
+        padding-top: 1em;
       }
 
       .cr-index > .title {
@@ -481,8 +567,6 @@ main[role="main"] .kunai-sidebar.force-legacy {
       flex-direction: column;
 
       > .kunai-branch {
-        max-height: 16rem;
-        overflow-y: scroll;
       }
 
       &:not(:first-child):before {
@@ -665,15 +749,6 @@ main[role="main"] .kunai-sidebar.force-legacy {
   }
 
   &[data-top-id="reference"] {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 2em;
-
-    border-bottom: 3px dashed rgba(120, 120, 220, 0.6);
-
-    min-height: 40rem;
-    max-height: 90vh;
-
     > .kunai-branch {
       > ul.branch {
         margin-bottom: .5em;

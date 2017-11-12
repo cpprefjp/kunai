@@ -33,7 +33,7 @@ class Sidebar {
       this.e.addClass('legacy')
     }
 
-    this.getTreeview = this.initTreeview()
+    this.treeview = this.initTreeview()
   }
 
   async onDatabase(db) {
@@ -42,15 +42,14 @@ class Sidebar {
 
       this.db = db
 
-      let t = await this.getTreeview
-      await t.onData(db)
+      await this.treeview.onData(db)
 
     } finally {
       this.e.removeClass('loading')
     }
   }
 
-  async initTreeview() {
+  initTreeview() {
     let e = null
 
     if (this.legacy) {
@@ -59,7 +58,7 @@ class Sidebar {
       e = $('<div>').addClass('kunai-tree').addClass('v2').appendTo(this.e)
     }
 
-    this.treeview = new Treeview(
+    return new Treeview(
       this.log,
       this.kc,
       this.e,
@@ -67,7 +66,6 @@ class Sidebar {
         legacy: this.legacy
       }
     )
-    return this.treeview
   }
 }
 
