@@ -268,7 +268,7 @@ class Meta {
   }
 
   setDOM(key, parent_key, path) {
-    this.log.info(`fetching '${Symbol.keyFor(key)}'... [parent: ${parent_key ? `'${Symbol.keyFor(parent_key)}'` : '(none)'}]`)
+    this.log.info(`fetching '${key}'... [parent: ${parent_key ? `'${parent_key}'` : '(none)'}]`)
     const e = parent_key ? this.dom.get(parent_key).find(path) : $(path)
 
     if (!e) {

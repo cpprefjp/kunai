@@ -10,9 +10,9 @@ import {default as AN} from 'anser'
 
 
 const ToolID = {
-  play: Symbol.for('play'),
-  compile: Symbol.for('compile'),
-  theme: Symbol.for('theme'),
+  play: 'play',
+  compile: 'compile',
+  theme: 'theme',
 }
 
 class RefreshTimerInfo {

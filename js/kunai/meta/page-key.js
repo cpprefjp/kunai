@@ -1,8 +1,8 @@
 const PageKey = {
-  main: Symbol.for('main'),
-  article: Symbol.for('article'),
-  articleBody: Symbol.for('articleBody'),
-  codes: Symbol.for('codes'),
+  main: 'main',
+  article: 'article',
+  articleBody: 'articleBody',
+  codes: 'codes',
 }
 
 export {PageKey}

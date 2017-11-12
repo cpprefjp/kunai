@@ -1,6 +1,6 @@
 class ContentType {
-  static UNKNOWN = Symbol('unknown')
-  static MARKDOWN = Symbol('markdown')
+  static UNKNOWN = 'unknown'
+  static MARKDOWN = 'markdown'
 
   static parse(url) {
     const ext = url.pathname.match(/(?:\.[^.]+)+$/)

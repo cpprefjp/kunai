@@ -215,7 +215,7 @@ class DOM {
   }
 
   async makeOther(o) {
-    let li = $('<li>', {class: `other ${Symbol.keyFor(o.id.type)}`})
+    let li = $('<li>', {class: `other ${o.id.type}`})
 
     if (IndexID.isClassy(o.id.type)) {
       li.addClass('classy')

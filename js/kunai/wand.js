@@ -13,8 +13,8 @@ class APIError extends NetworkError {
 }
 
 const Method = {
-  get: Symbol.for('GET'),
-  post: Symbol.for('POST'),
+  get: 'GET',
+  post: 'POST',
 }
 
 
@@ -32,7 +32,7 @@ class API {
   }
 
   static request(id, method, url, opts, data, onSuccess, onFailure) {
-    const reqid = JSON.stringify({method: Symbol.keyFor(method), url: String(url), id: id})
+    const reqid = JSON.stringify({method: method, url: String(url), id: id})
     // console.time(reqid)
     // const stopTimer = () => {
       // console.timeEnd(reqid)
