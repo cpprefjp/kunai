@@ -85,6 +85,7 @@ main[role="main"] .kunai-sidebar.force-legacy {
   font-size: 1rem;
   display: flex;
   flex-direction: column;
+  height: 100%;
 
   a {
     &:link, &:visited {
@@ -151,6 +152,7 @@ main[role="main"] .kunai-sidebar.force-legacy {
   $cl-list-hover: color(#f0f0fd alpha(.9));
 
   display: flex;
+  height: 100%;
 
   flex-direction: column;
   margin: 0;
@@ -160,7 +162,7 @@ main[role="main"] .kunai-sidebar.force-legacy {
   font-family: sans-serif;
   line-height: 1.5;
 
-  height: 100%;
+  overflow: hidden;
 
   .kunai-branch {
     overflow: hidden;
@@ -275,8 +277,6 @@ main[role="main"] .kunai-sidebar.force-legacy {
     display: flex;
     flex-direction: column;
 
-    height: 100%;
-
     > li.stack {
       display: flex;
       flex-direction: column;
@@ -284,6 +284,7 @@ main[role="main"] .kunai-sidebar.force-legacy {
       box-sizing: border-box;
 
       flex-shrink: 0;
+      flex-grow: 0;
 
       border-top: 1px solid transparent;
       border-bottom: 1px solid transparent;
@@ -295,10 +296,9 @@ main[role="main"] .kunai-sidebar.force-legacy {
       }
 
       &.expanded:not(.empty) {
-        flex-grow: 1;
-        flex-shrink: 1;
-
         $b: #DDD;
+        overflow: hidden;
+        flex-shrink: 1;
 
         &:not(:first-child) {
           border-top-color: $b;
@@ -349,7 +349,7 @@ main[role="main"] .kunai-sidebar.force-legacy {
       > .content-wrapper {
         display: flex;
         flex-direction: column;
-        flex-grow: 1;
+        // flex-grow: 1;
 
         > .content {
           display: flex;
@@ -396,6 +396,8 @@ main[role="main"] .kunai-sidebar.force-legacy {
   > ul.root {
     display: flex;
     flex-direction: column;
+    height: 100%;
+    overflow: hidden;
 
     flex-shrink: 0;
 
