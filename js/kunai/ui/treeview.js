@@ -350,16 +350,6 @@ class Treeview {
     this.root = $('<div>', {class: 'tree v2'}).appendTo(this.e)
     this.opts = Object.assign({}, opts)
     this.legacy = this.opts.legacy
-    this.forceLegacy = false
-
-    {
-      let aaa = $('<label>', {id: 'forceLegacyWrapper'}).append($('<div>', {class: 'notice'}).text('Legacy sidebar')).prependTo(this.e)
-      this.forceLegacyCheck = $('<input>', {id: 'forceLegacy', type: 'checkbox'}).appendTo(aaa)
-    }
-
-    this.forceLegacyCheck.change((e) => {
-      this.e.toggleClass('force-legacy')
-    })
 
     this.log.debug('initialzing...')
 
