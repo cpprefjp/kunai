@@ -31,76 +31,6 @@ class DOM {
     // this.scrollIsAutoFired = false
   }
 
-  static scrollEps = 8
-
-  async handleScroll(e) {
-    // if (this.scrollIsAutoFired) {
-      // this.log.debug(`handleScroll(auto)`, e)
-      // this.scrollIsAutoFired = false
-      // return false
-    // }
-
-    let content_wrapper = $(e.target)
-    const content = content_wrapper.children('.content')
-
-    const st = content_wrapper.scrollTop()
-    const cOfs = content.position().top
-
-    const k_branch = content.children('.kunai-branch[data-branch-for="headers"]')
-    const bID = k_branch.attr('data-branch-id')
-    const branch = k_branch.children('.branch')
-    // this.log.debug(`handleScroll #${bID} (top = ${st}px, cOfs = ${cOfs}px)`, e, content_wrapper, content, k_branch, branch)
-
-    let closestChild = null
-    let closestDelta = 0
-
-    // find a child item with least deltaY to current scrollTop
-    for (const child_ of branch.children('li')) {
-      const child = $(child_)
-      const cTop = child.position().top
-      const delta = st - cTop
-
-      // this.log.debug(`checking '${child.find('.cr-index .title').get(0).innerText.trim()}' | cTop: ${cTop}, delta: ${delta} (closestDelta: ${closestDelta})`, child_)
-
-      if (!closestChild) {
-        closestDelta = delta
-        closestChild = child
-      } else {
-        // if (cTop + (st + cOfs) < st) {
-        if (cTop < st) {
-          closestDelta = cTop
-          closestChild = child
-        } else {
-          break
-        }
-      }
-    }
-
-    {
-      let last = this.branchPrevs.get(bID)
-      if (last) {
-        // this.log.debug(`preview target change --> '${closestChild.find('.cr-index > .title > .keys')[0].innerText.trim()}'`, closestChild[0])
-        last.removeClass('preview')
-      }
-    }
-
-    this.branchPrevs.set(bID, closestChild)
-    closestChild.addClass('preview')
-    // throw [closestChild, closestDelta]
-
-    if (closestChild.hasClass('expanded')) {
-      let bar = $(closestChild.children('.expandbar')[0])
-      bar.css({top: `${(st)}px`})
-      // throw true
-    }
-
-    if (st < DOM.scrollEps) {
-      content_wrapper.removeClass('scrolling')
-    } else {
-      content_wrapper.addClass('scrolling')
-    }
-  }
-
   async createContent(obj) {
     this.log.info(`createContent '${obj.self.id}'`, obj)
 
@@ -459,10 +389,6 @@ class Treeview {
 
         if (!is_not_empty) {
           stack.addClass('empty')
-        }
-
-        if (top.category.index === this.kc.categories().get('reference').index) {
-          content_wrapper.on('scroll', ::this.dom.handleScroll)
         }
 
         return stack

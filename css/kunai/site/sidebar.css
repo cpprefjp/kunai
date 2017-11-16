@@ -103,6 +103,10 @@ main[role="main"] .kunai-sidebar.force-legacy {
     }
   }
 
+  ul, li {
+    box-sizing: border-box;
+  }
+
   .cr-index {
     display: flex;
     flex-basis: 100%;
@@ -165,8 +169,6 @@ main[role="main"] .kunai-sidebar.force-legacy {
   overflow: hidden;
 
   .kunai-branch {
-    overflow: hidden;
-
     margin: .2rem 0 0 0;
     padding: 0;
 
@@ -205,6 +207,8 @@ main[role="main"] .kunai-sidebar.force-legacy {
 
         > .expandbar {
           display: inline-flex;
+          position: sticky;
+          top: -1px;
         }
 
 
@@ -249,9 +253,11 @@ main[role="main"] .kunai-sidebar.force-legacy {
         }
 
         &.expanded {
-          > .expandbar > .expander {
-            &:before {
-              transform: rotate(45deg);
+          > .expandbar {
+            > .expander {
+              &:before {
+                transform: rotate(45deg);
+              }
             }
           }
         }
@@ -358,37 +364,6 @@ main[role="main"] .kunai-sidebar.force-legacy {
 
           position: relative;
         }
-
-        &.scrolling {
-          > .content > .kunai-branch > ul.branch {
-            // margin-top: 4em;
-
-            > li.preview.expanded {
-              > .expandbar {
-                position: absolute;
-                left: 0;
-                width: 100%;
-
-                // box-shadow: 0 2px 20px -2px rgba(20, 20, 20, 0.3);
-                // background-color: #FBFBFB;
-
-                background-color: rgba(220, 220, 240, 0.5);
-
-                > a {
-                  background: rgba(250, 250, 255, 1);
-                  font-weight: bold;
-                }
-
-                .cr-index {
-                  ul.badges {
-                    display: none;
-                  }
-                }
-              }
-            }
-          }
-        }
-
       }
     }
   }
@@ -534,6 +509,22 @@ main[role="main"] .kunai-sidebar.force-legacy {
 
         > .expandbar {
           margin-bottom: .5em;
+
+          // box-shadow: 0 2px 20px -2px rgba(20, 20, 20, 0.3);
+          // background-color: #FBFBFB;
+
+          background-color: rgba(220, 220, 240, 0.5);
+
+          > a {
+            background: rgba(250, 250, 255, 1);
+            font-weight: bold;
+          }
+
+          .cr-index {
+            ul.badges {
+              display: none;
+            }
+          }
         }
       }
 
