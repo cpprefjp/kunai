@@ -218,6 +218,8 @@ div[itemtype="http://schema.org/Article"] {
     div[itemprop="articleBody"] {
       .codehilite > pre, & > pre {
         overflow-x: auto;
+        width: 100%;
+        box-sizing: border-box;
 
         color: #444;
         font-size: .9rem;
