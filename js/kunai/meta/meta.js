@@ -7,13 +7,8 @@ import * as Code from '../code'
 import {Logger} from 'nagato'
 
 import URL from 'url-parse'
+import * as CM from 'commonmark'
 
-
-let Marked = require('marked')
-const MarkedOpts = {
-  gfm: true,
-  tables: true,
-}
 
 class Meta {
   static PageKey = PageKey
@@ -119,15 +114,11 @@ class Meta {
 
   parse_impl(content_type, data) {
     if (content_type === Net.ContentType.MARKDOWN) {
-      let lexer = new Marked.Lexer(MarkedOpts)
-      this.log.debug('lexer', lexer)
+      let reader = new CM.Parser({})
+      const parsed = reader.parse(data)
+      this.log.debug('parsed', parsed)
 
-      this.tokens = lexer.lex(data).map(e => {
-        return new Map(Object.entries(e))
-      })
-      this.log.debug(`markdown (${this.tokens.length} tokens)`, this.tokens)
-
-      this.process(this.tokens)
+      this.process(parsed.walker())
     }
   }
 
@@ -138,7 +129,7 @@ class Meta {
     return this.codes.get(id)
   }
 
-  process(tokens) {
+  process(walker) {
     this.is_first_list = true
     this.single_bufs = []
 
@@ -146,8 +137,9 @@ class Meta {
     this.log.opts.data.ctx.level = Logger.Level.info
 
     try {
-      for (const token of tokens) {
-        this.process_single(token)
+      let ev = null
+      while (ev = walker.next()) {
+        this.process_single(ev)
       }
 
     } finally {
@@ -155,17 +147,17 @@ class Meta {
     }
   }
 
-  static isSampleCode(lang, buf) {
-    return lang === 'cpp' && buf.split(/\n+/).some((line) => line.trim().match(/^#include/))
+  static isSampleCode(lang, info) {
+    return info.includes('example')
   }
 
-  process_single(token) {
-    this.log.debug(`processing token <${token.get('type')}>`, token)
+  process_single(ev) {
+    const node = ev.node
+    this.log.debug(`[${ev.entering ? 'enter' : 'leave'}] ${node.type}`, ev)
 
-    switch (token.get('type')) {
+    switch (node.type) {
       case 'heading': {
-        this.heading_depth = token.depth
-        this.heading = token.get('text').trim()
+        this.heading_depth = node.level
         break
       }
 
@@ -201,26 +193,24 @@ class Meta {
 
       case 'text': {
         if (this.is_first_list) {
-          this.single_bufs[this.single_bufs.length - 1] += token.get('text')
+          this.single_bufs[this.single_bufs.length - 1] += node.literal
         }
         break
       }
 
-      case 'code': {
-        const lang = token.get('lang')
-        const buf = token.get('text')
+      case 'code_block': {
+        const [lang, ...info] = node.info.split(/\s+/)
+        this.log.info(`found a code block (#${this.last_key}, lang: '${lang}', info: ${info.length ? `[${info.join(', ')}]` : '(empty)'})`, node)
 
-        this.log.info(`found a code section (#${this.last_key})`)
-
-        if (!Meta.isSampleCode(lang, buf)) {
-          this.log.warn(`unsupported code snippet (lang: '${lang || '(empty)'}')`, buf)
-          if (lang) ++this.last_key
+        if (!Meta.isSampleCode(lang, info)) {
+          this.log.warn(`unsupported code snippet`, node)
+          ++this.last_key
           break
         }
 
         try {
           if (lang === 'cpp') {
-            this.log.info(`got C++ code (#${this.last_key})`, buf)
+            this.log.info(`got C++ code (#${this.last_key})`, node.literal)
 
             const headers = [this.andareMetaInfo.get('header')].filter(Boolean)
             const id = new Code.ID('CPP', this.last_key)
@@ -228,7 +218,7 @@ class Meta {
               new Code.CPP(
                 this.log,
                 id,
-                buf,
+                node.literal,
                 {
                   headers: headers,
                 },
@@ -237,7 +227,7 @@ class Meta {
             this.onCodeFound(id)
 
           } else {
-            this.log.warn(`got code for unknown language '${lang}', skipping...`, buf)
+            this.log.warn(`got code for unknown language '${lang}', skipping...`, node.literal)
           }
 
         } finally {
