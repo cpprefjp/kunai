@@ -69,31 +69,16 @@ class Kunai {
     this.log.info(`loading (${desc})`)
     $('body').addClass('kunai')
     this.meta = new Meta(this.log, config, ::this.onCodeFound)
+
+    $('div[itemprop="articleBody"] > pre, div[itemprop="articleBody"] > .codehilite').addClass('kunai-code')
+
     this.log.info(`loaded (${desc})`)
   }
 
   async onCodeFound(id) {
     // assign surrogate key
     id.serializeInDOM(this.meta.getDOM(Meta.PageKey.codes).get(id.key))
-
-    {
-      let elem = this.meta.getDOM(Meta.PageKey.codes, id)
-      if (!elem.length) {
-        throw new KunaiError(`[BUG] the original DOM element for code ${id} not found`, elem)
-      }
-
-      elem.addClass('kunai-code')
-    }
-
     this.yatas.set(id, new Yata(this.log, this.wand, this.meta.getCode(id)))
-
-    // whitelist
-    {
-      let example = this.meta.getDOM(Meta.PageKey.articleBody).children('h2:contains("例") ~ .yata')
-      if (example.length) {
-        example.removeClass('hidden')
-      }
-    }
   }
 
   async initSidebar() {

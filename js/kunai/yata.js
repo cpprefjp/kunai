@@ -61,7 +61,6 @@ class Yata {
 
     let elem = $(`<div />`)
     elem.addClass('yata')
-    elem.addClass('hidden') // hide by default
     this.code.id.serializeInDOM(elem)
 
     this.log.info(`creating Yata toolbar for code snippet`, elem)
