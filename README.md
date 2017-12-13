@@ -26,9 +26,7 @@ http://localhost:8080/
 ## 設計思想
 
 - C++のことを調べて知って試すフローをcpprefjp上で完結可能にする
-- __cpprefjp/site__ の記事のソース改変ゼロ
-- __cpprefjp/site_generator__ の現行アセットを全て ES2017+ / PostCSS 化
-- JavaScriptが無効になっていてもコンテンツ自体は完全に閲覧できる
+- JavaScriptが無効になっていてもコンテンツ自体は閲覧可能
 
 
 ## コンポーネント
@@ -41,6 +39,10 @@ http://localhost:8080/
 - [x] クイックジャンプ ([crsearch](https://github.com/cpprefjp/crsearch))
 - [x] サイドバー
 
+### Indexer
+
+- [ ] 特徴語の索引機能
+- [ ] タグクラウド
 
 ### Yata
 
