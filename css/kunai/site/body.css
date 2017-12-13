@@ -54,15 +54,3 @@ a {
   }
 }
 
-code {
-  border-radius: 0;
-}
-
-code {
-  color: #000000;
-}
-
-a code {
-  color: #428bca;
-}
-

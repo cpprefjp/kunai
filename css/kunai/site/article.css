@@ -54,6 +54,8 @@ div[itemtype="http://schema.org/Article"] {
   }
 
   code {
+    border-radius: 0;
+    color: #232323;
     font-family: monospace;
     font-size: .9rem;
     background-color: #EFEFEF;
@@ -62,6 +64,10 @@ div[itemtype="http://schema.org/Article"] {
     display: inline-block;
     margin: 0 .25em;
     padding: 0 .25em;
+  }
+
+  a code {
+    color: #428bca;
   }
 
   a:hover code {
