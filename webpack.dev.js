@@ -55,6 +55,17 @@ module.exports = env => (Merge.multiple(common(env), {
           'browser',
         ],
       }),
+      new HtmlWebpackPlugin({
+        title: '[char16_32]',
+        hash: true,
+        filename: 'char16_32.html',
+        template: '../html/char16_32.hbs',
+        chunks: [
+          'kunai-vendor',
+          'kunai',
+          'browser',
+        ],
+      }),
       // new HtmlWebpackIncludeAssetsPlugin({
         // assets: [
           // 'css/font-awesome.css',

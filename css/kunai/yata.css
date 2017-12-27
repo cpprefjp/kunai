@@ -2,7 +2,7 @@
 
 body.kunai {
   div[itemprop="articleBody"] {
-    .yata:not(.hidden) + .codehilite {
+    .yata-toolbar:not(.hidden) + .codehilite {
       pre {
         margin-top: 0;
         border-top-left-radius: 0;
@@ -13,7 +13,7 @@ body.kunai {
     }
   }
 
-  .yata {
+  .yata-toolbar {
     display: flex;
     // background: color($cl-shuri tint(25%));
     background: #a9d4e2;
@@ -207,7 +207,7 @@ body.kunai {
     display: block;
   }
 
-  .yata.enabled + .codehilite {
+  .yata-toolbar.enabled + .codehilite {
     display: none;
   }
 
@@ -302,7 +302,7 @@ body.kunai {
     }
   }
 
-  .yata:not(.enabled) + .kunai-code + .mirror + .CodeMirror + .yata-console {
+  .yata-toolbar:not(.enabled) + .kunai-code + .mirror + .CodeMirror + .yata-console {
     display: none;
   }
 

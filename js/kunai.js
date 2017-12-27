@@ -60,7 +60,7 @@ class Kunai {
     this.crs = this.initCRSearch(false)
   }
 
-  async load_impl(config) {
+  load_impl(config) {
     if (this.opts.compat) {
       this.compat = new Compat(this.log, config)
     }
@@ -68,17 +68,19 @@ class Kunai {
     const desc = config.join('/')
     this.log.info(`loading (${desc})`)
     $('body').addClass('kunai')
-    this.meta = new Meta(this.log, config, ::this.onCodeFound)
 
-    $('div[itemprop="articleBody"] > pre, div[itemprop="articleBody"] > .codehilite').addClass('kunai-code')
+    const mdinfo = JSON.parse($('header').attr('data-kunai-mdinfo'))
+    this.log.info(`data-kunai-mdinfo`, mdinfo)
+
+    this.meta = new Meta(this.log, config, mdinfo, ::this.onCodeFound)
+
+    $('.yata > .codehilite').addClass('kunai-code')
 
     this.log.info(`loaded (${desc})`)
   }
 
-  async onCodeFound(id) {
-    // assign surrogate key
-    id.serializeInDOM(this.meta.getDOM(Meta.PageKey.codes).get(id.key))
-    this.yatas.set(id, new Yata(this.log, this.wand, this.meta.getCode(id)))
+  onCodeFound(meta, id) {
+    this.yatas.set(id, new Yata(this.log, this.wand, meta.getCode(id)))
   }
 
   async initSidebar() {

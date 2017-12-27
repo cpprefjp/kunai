@@ -54,20 +54,19 @@ class Yata {
   }
 
   initElem() {
-    this.orig_code = $(`.kunai-code${this.code.id.makeSelector(true)}`)
+    this.orig_code = $(this.code.id.makeSelector()).children()
     if (!this.orig_code.length) {
       throw new KunaiError(`original code element with id ${this.code.id} not found`)
     }
 
-    let elem = $(`<div />`)
-    elem.addClass('yata')
-    this.code.id.serializeInDOM(elem)
+    let elem = $('<div>')
+    elem.addClass('yata-toolbar')
 
     this.log.info(`creating Yata toolbar for code snippet`, elem)
     let tools_all = $('<div>').addClass('tools-all')
     const tooltip = $('<div class="tooltip-wrapper"><div class="tooltip"></div></div>')
     const tool = $('<li>').addClass('tool')
-    let btn_proto = this.code.id.serializeInDOM($(`<button>`)).prop('disabled', true)
+    let btn_proto = $(`<button>`).prop('disabled', true)
     tooltip.clone().appendTo(btn_proto)
 
 
@@ -136,7 +135,6 @@ class Yata {
 
     this.log.info('creating textarea buffer...')
     this.buf = $('<textarea>').addClass('mirror')
-    this.code.id.serializeInDOM(this.buf)
 
     // the code
     this.buf.text(this.code.buf)
@@ -265,7 +263,7 @@ class Yata {
   }
 
   findRaw() {
-    return $(`.mirror${this.code.id.makeSelector()} + .CodeMirror`)
+    return $(`${this.code.id.makeSelector()} .CodeMirror`)
   }
 
   onCompile(e) {
@@ -337,11 +335,11 @@ class Yata {
 
   onEnable(e) {
     let btn = $(e.srcElement || e.originalTarget || e.target)
-    let yata = btn.closest('.yata')
+    let yata = btn.closest('.yata-toolbar')
 
     // this.log.debug(`onEnable`, e, btn.get(0))
 
-    let orig_code = $(yata.nextAll(`.codehilite${this.code.id.makeSelector()}`))
+    let orig_code = $(yata.nextAll(`${this.code.id.makeSelector()} .codehilite`))
 
     if (yata.hasClass('enabled')) {
       this.log.info(`disabling Yata mode`)
