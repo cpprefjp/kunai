@@ -730,6 +730,7 @@ main[role="main"] .kunai-sidebar.force-legacy {
     .cr-index {
       ul.keys {
         display: inline-block;
+        padding-left: 2px;
         > li.key {
           display: inline-block;
           &:last-child {
