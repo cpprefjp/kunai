@@ -724,6 +724,21 @@ main[role="main"] .kunai-sidebar.force-legacy {
       }
     }
   }
+
+  /* .others の下にある場合、std:: と 関数名を一列で表示する */
+  ul.others > li.other {
+    .cr-index {
+      ul.keys {
+        display: inline-block;
+        > li.key {
+          display: inline-block;
+          &:last-child {
+            padding: 0 0 0 0;
+          }
+        }
+      }
+    }
+  }
 }
 
 .kunai-sidebar > .tree.v2 > ul.root > li.top {
