@@ -118,6 +118,12 @@
       &[data-top-id="reference"] > .heading > a.title:before {
         @extend .fa-tags;
       }
+      &[data-top-id="international-standard"] > .heading > a.title:before {
+        @extend .fa-globe;
+      }
+      &[data-top-id="implementation-compliance"] > .heading > a.title:before {
+        @extend .fa-balance-scale;
+      }
     }
   }
 
