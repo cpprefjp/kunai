@@ -503,9 +503,6 @@ main[role="main"] .kunai-sidebar.force-legacy {
       }
 
       &.expanded {
-        &:before {
-          // @mixin mini-right-hr;
-        }
 
         > .expandbar {
           margin-bottom: .5em;
@@ -647,11 +644,6 @@ main[role="main"] .kunai-sidebar.force-legacy {
             &:last-child {
               flex-basis: 100%;
 
-              // &:before {
-                // position: absolute;
-                // top: 0;
-                // left: 0;
-              // }
             }
 
             &:not(:first-child):not(:last-child) {

@@ -80,10 +80,6 @@ div[itemtype="http://schema.org/Article"] {
 
     font-family: sans-serif;
 
-    // br {
-      // display: none;
-    // }
-
     a {
       &:hover {
         text-decoration: none;
