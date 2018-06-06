@@ -115,7 +115,7 @@ class Kunai {
     let crs = new CRSearch({
       onDatabase: this.onDatabase.bind(this),
     })
-    crs.database('https://cpprefjp.github.io/static/crsearch/crsearch.json')
+    crs.database('/static/crsearch/crsearch.json')
 
     let e = $('.crsearch')
     await crs.searchbox(e)
