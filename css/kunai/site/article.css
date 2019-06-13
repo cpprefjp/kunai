@@ -53,6 +53,10 @@ div[itemtype="http://schema.org/Article"] {
     }
   }
 
+  h4 {
+    font-size: 1.3rem;
+  }
+
   code {
     border-radius: 0;
     font-family: monospace;
