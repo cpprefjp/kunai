@@ -1,16 +1,17 @@
 const common = require('./webpack.common.js');
 const webpack = require('webpack');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const Merge = require('webpack-merge');
 
+
 module.exports = env => (Merge.multiple(common(env), {
   js: {
+    mode: 'production',
     plugins: [
       new CleanWebpackPlugin(
-        ['dist'], { verbose: true, }
+        { verbose: true, }
       ),
-      new webpack.optimize.UglifyJsPlugin(),
       new webpack.DefinePlugin({
         'process.env': {
           'NODE_ENV': JSON.stringify('production')
@@ -19,6 +20,7 @@ module.exports = env => (Merge.multiple(common(env), {
     ],
   },
   css: {
+    mode: 'production',
     plugins: [
       new OptimizeCSSAssetsPlugin({
         canPrint: true,

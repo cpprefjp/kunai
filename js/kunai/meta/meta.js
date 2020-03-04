@@ -4,8 +4,6 @@ import {PageKey} from './page-key'
 import * as Net from '../net'
 import * as Code from '../code'
 
-import {Logger} from 'nagato'
-
 import URL from 'url-parse'
 import * as CM from 'commonmark'
 
@@ -14,7 +12,7 @@ class Meta {
   static PageKey = PageKey
 
   constructor(log, config, mdinfo, onCodeFound) {
-    this.log = log.makeContext(`Meta`, new Logger.Option({icon: {text: '\u{262F}', color: '#AAA'}}))
+    this.log = log.makeContext(`Meta`)
     this.config = config
     this.codes = new Code.Pool(this.log)
 

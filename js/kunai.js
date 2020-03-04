@@ -9,9 +9,16 @@ import {Yata} from './kunai/yata'
 
 import './codemirror-themes'
 
-import * as Nagato from 'nagato'
 import {CRSearch} from 'crsearch'
 
+class DummyLogger {
+  debug() {}
+  info() {}
+  warn() {}
+  error() {}
+  disableBacktrace() {}
+  makeContext() { return this; }
+};
 
 class Kunai {
   static defaultOptions = {
@@ -23,13 +30,7 @@ class Kunai {
     // $('body').addClass('js').removeClass('no-js')
 
     this.opts = Object.assign({}, Kunai.defaultOptions, opts)
-    this.log = new Nagato.Logger(
-      'Kunai',
-      new Nagato.Option(Object.assign({}, this.opts, {
-        icon: {text: '\u{1F5E1}', color: '#2244AA'}
-      }))
-    )
-
+    this.log = new DummyLogger()
 
     try {
       this.log.disableBacktrace(true)
@@ -84,18 +85,12 @@ class Kunai {
   }
 
   async initSidebar() {
-    this.ui.sidebar = new UI.Sidebar(new Nagato.Logger(
-      ['Kunai', 'UI'],
-      this.log.opts
-    ))
+    this.ui.sidebar = new UI.Sidebar(new DummyLogger())
     return this.ui.sidebar
   }
 
   async initUI() {
-    const l = new Nagato.Logger(
-      ['Kunai', 'UI'],
-      this.log.opts
-    )
+    const l = new DummyLogger()
 
     this.ui.navbar = new UI.Navbar(l)
     this.ui.content = new UI.Content(l)

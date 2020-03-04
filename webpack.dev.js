@@ -2,11 +2,12 @@ const path = require('path');
 const common = require('./webpack.common.js');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plugin');
+const HtmlWebpackTagsPlugin = require('html-webpack-tags-plugin');
 const Merge = require('webpack-merge');
 
 module.exports = env => (Merge.multiple(common(env), {
   js: {
+    mode: 'development',
     entry: {
       browser: './browser.js',
     },
@@ -66,16 +67,8 @@ module.exports = env => (Merge.multiple(common(env), {
           'browser',
         ],
       }),
-      // new HtmlWebpackIncludeAssetsPlugin({
-        // assets: [
-          // 'css/font-awesome.css',
-          // 'css/bootstrap.css',
-        // ],
-        // append: false,
-        // hash: true,
-      // }),
-      new HtmlWebpackIncludeAssetsPlugin({
-        assets: [
+      new HtmlWebpackTagsPlugin({
+        tags: [
           'css/kunai-stage-0.css',
           'css/kunai-stage-1.css',
           'css/kunai-stage-2.css',
@@ -83,11 +76,12 @@ module.exports = env => (Merge.multiple(common(env), {
           'css/browser.css',
         ],
         append: true,
-        hash: true,
+        useHash: true,
       }),
     ],
   },
   css: {
+    mode: 'development',
     entry: {
       browser: './browser.css',
     },

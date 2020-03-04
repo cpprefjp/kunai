@@ -1,7 +1,6 @@
 import {NetworkError} from './error'
 
 import {default as Numeral} from 'numeral'
-import {Logger} from 'nagato'
 
 import URL from 'url-parse'
 
@@ -127,7 +126,7 @@ class Wand {
   }
 
   constructor(log, opts = new Map) {
-    this.log = log.makeContext(`Wand`, new Logger.Option({icon: {text: '\u{1F32D}', color: '#CCAA14'}}))
+    this.log = log.makeContext()
     this.opts = new Map([...Wand.defaults, ...opts])
     this.log.info('三へ( へ՞ਊ ՞)へ ﾊｯﾊｯ')
   }

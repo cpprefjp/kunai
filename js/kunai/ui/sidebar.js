@@ -8,7 +8,7 @@ class Sidebar {
     this.log.debug('initialzing...')
 
     this.kc = new KC.Config({
-      'article.md': require('../../../kunai_configs/current/article.md'),
+      'article.md': require('../../../kunai_configs/current/article.md').default,
       'cpp.json': require('../../../kunai_configs/current/cpp.json'),
     })
 

@@ -2,7 +2,7 @@ const path = require('path');
 const URL = require('url');
 
 const webpack = require('webpack');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const PJ = require('./package.json')
 const CRS_PJ = require('crsearch/package.json')
@@ -36,17 +36,17 @@ module.exports = env => ({
       rules: [
         {
           test: /\.css$/,
-          use: ExtractTextPlugin.extract({
-            use: [
-              {
-                loader: 'css-loader',
-                options: {
-                  minimize: true,
-                  sourceMap: false,
-                }
-              },
-            ],
-          }),
+          use: [
+            {
+              loader: MiniCssExtractPlugin.loader,
+            },
+            {
+              loader: 'css-loader',
+              options: {
+                sourceMap: false,
+              }
+            },
+          ],
           include: [
             path.resolve(__dirname, 'js'),
             path.resolve(__dirname, 'node_modules'),
@@ -61,7 +61,6 @@ module.exports = env => ({
           ],
           include: [
             path.resolve(__dirname, 'js'),
-            path.resolve(__dirname, 'node_modules', 'nagato'),
             path.resolve(__dirname, 'node_modules', 'crsearch'),
           ],
         },
@@ -90,94 +89,100 @@ module.exports = env => ({
           bugs_url: CRS_PJ.bugs.url,
         }),
       }),
-      new webpack.optimize.CommonsChunkPlugin({
-        name: 'kunai-vendor',
-        chunks: ['kunai'],
-        minChunks: function(module) {
-          return isExternal(module);
-        },
-      }),
-      new ExtractTextPlugin({
+      new MiniCssExtractPlugin({
         filename: 'css/kunai-stage-1.css',
-        disable: false,
-        allChunks: true,
+        chunkFilename: 'css/kunai-stage-1.css'
       }),
     ],
+    optimization: {
+      splitChunks: {
+        cacheGroups: {
+          vendors: {
+            name: 'kunai-vendor',
+            test: /[\\/]node_modules[\\/]/,
+            chunks: 'initial',
+            enforce: true
+          }
+        }
+      },
+    },
   },
   css: {
     context: path.resolve(__dirname, 'css'),
     entry: {
+      // https://github.com/webpack-contrib/mini-css-extract-plugin/issues/151
+      // この問題のせいで kunai-stage-0.js とかが作られてしまうので
+      // package.json 側でビルド後に削除しておく必要がある
       'kunai-stage-0': './kunai-stage-0.css',
       'kunai-stage-2': './kunai-stage-2.scss',
       'kunai-stage-3': './kunai-stage-3.css',
     },
     output: {
       path: path.resolve(__dirname, 'dist'),
-      filename: 'css/[name].css',
+      //filename: 'css/[name].css',
     },
     module: {
       rules: [
         {
           test: /\.scss$/,
-          use: ExtractTextPlugin.extract({
-            use: [
-              {
-                loader: 'css-loader',
-                options: {
-                  // minimize: true,
-                  importLoaders: 2,
-                },
+          use: [
+            {
+              loader: MiniCssExtractPlugin.loader,
+            },
+            {
+              loader: 'css-loader',
+              options: {
+                importLoaders: 2,
               },
-              {
-                loader: 'postcss-loader',
-                options: {
-                  config: {
-                    ctx: {
-                      env: env,
-                    },
+            },
+            {
+              loader: 'postcss-loader',
+              options: {
+                config: {
+                  ctx: {
+                    env: env,
                   },
                 },
               },
-              {
-                loader: 'sass-loader',
-              },
-            ],
-          }),
+            },
+            {
+              loader: 'sass-loader',
+            },
+          ],
         },
         {
           test: /\.css$/,
-          use: ExtractTextPlugin.extract({
-            // fallback: 'style-loader',
-            use: [
-              {
-                loader: 'css-loader',
-                options: {
-                  // minimize: true,
-                  // sourceMap: true,
-                  importLoaders: 1,
-                }
-              },
-              {
-                loader: 'postcss-loader',
-                options: {
-                  config: {
-                    ctx: {
-                      env: env,
-                      cssnano: {
-                        cssProcessorOptions: {
-                          // http://cssnano.co/optimisations/reduceidents/
-                          reduceIdents: false,
-                        },
+          use: [
+            {
+              loader: MiniCssExtractPlugin.loader,
+            },
+            {
+              loader: 'css-loader',
+              options: {
+                // sourceMap: true,
+                importLoaders: 1,
+              }
+            },
+            {
+              loader: 'postcss-loader',
+              options: {
+                config: {
+                  ctx: {
+                    env: env,
+                    cssnano: {
+                      cssProcessorOptions: {
+                        // http://cssnano.co/optimisations/reduceidents/
+                        reduceIdents: false,
                       },
                     },
                   },
                 },
               },
-              // {
-                // loader: 'sass-loader',
-              // },
-            ],
-          }),
+            },
+            // {
+              // loader: 'sass-loader',
+            // },
+          ],
         },
         {
           test: /\.(ttf|eot|svg|woff(2)?)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
@@ -186,7 +191,7 @@ module.exports = env => ({
               loader: 'file-loader',
               options: {
                 name: '[name].[ext]?[hash]',
-                publicPath: '../',
+                publicPath: '../fonts/',
                 outputPath: 'fonts/',
               },
             },
@@ -195,10 +200,8 @@ module.exports = env => ({
       ],
     },
     plugins: [
-      new ExtractTextPlugin({
+      new MiniCssExtractPlugin({
         filename: 'css/[name].css',
-        disable: false,
-        allChunks: true,
       }),
     ]
   },

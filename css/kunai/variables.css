@@ -24,7 +24,7 @@ $cl-over-gray: rgba(255,255,255,0.75);
 $sh-inv: 0 1px 0 #444;
 
 
-@define-mixin box-reset {
+@mixin box-reset {
   box-sizing: content-box;
 }
 

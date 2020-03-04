@@ -1,4 +1,4 @@
-@define-mixin tree $cl-border {
+@mixin tree $cl-border {
   $tree-grid: 1px solid $cl-border;
   $bg-tree: #fbfbfb;
   $plus-size: 1.6rem;

@@ -2,7 +2,7 @@
 
 $cl-tree-border: #999;
 
-@define-mixin mini-hr-base {
+@mixin mini-hr-base {
   content: "";
   display: block;
   width: 100%;
@@ -11,19 +11,19 @@ $cl-tree-border: #999;
   margin-bottom: .2rem;
 }
 
-@define-mixin mini-hr {
+@mixin mini-hr {
   @mixin mini-hr-base;
   $cl: rgba(210, 220, 240, 0.5);
   background: linear-gradient(to right, transparent, transparent 15%, $cl 30%, $cl 70%, transparent 85%, transparent 100%);
 }
 
-@define-mixin mini-right-hr {
+@mixin mini-right-hr {
   @mixin mini-hr-base;
   $cl: rgba(210, 220, 240, 0.5);
   background: linear-gradient(to right, transparent, transparent 15%, $cl 30%, $cl 70%, $cl 100%);
 }
 
-@define-mixin big-hr {
+@mixin big-hr {
   @mixin mini-hr-base;
   $cl: rgba(210, 220, 240, 0.5);
   background: linear-gradient(to right, transparent, $cl 15%, $cl 85%, transparent 100%);

@@ -1,8 +1,6 @@
 import * as Mirror from './mirror'
 import {KunaiError} from './error'
 
-import {Logger} from 'nagato'
-
 import {default as CodeMirror} from 'codemirror'
 import * as js from 'codemirror/mode/clike/clike'
 
@@ -38,7 +36,7 @@ class Yata {
     this.console = null
     this.cmRefreshTimers = new Map
 
-    this.log = log.makeContext(`Yata ${this.code.id}`, new Logger.Option({icon: {text: '\u{1F426}', color: '#222'}}))
+    this.log = log.makeContext(`Yata ${this.code.id}`)
     this.opts = Object.assign({}, Mirror.DefaultOptions, opts)
 
     this.tools = new Map
