@@ -5,7 +5,7 @@
   "main": "dist/js/kunai.js",
   "module": "js/kunai.js",
   "scripts": {
-    "build": "webpack --config webpack.prod.js -p --env production && rm -f dist/kunai-stage-*.js",
+    "build": "rm -rf dist/ && webpack --config webpack.prod.js -p --env production && rm -f dist/kunai-stage-*.js",
     "dev": "webpack-dev-server --config webpack.dev.js --host 0.0.0.0 --env development",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
