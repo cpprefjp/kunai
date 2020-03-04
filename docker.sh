@@ -27,6 +27,7 @@ DOCKER_RM=${DOCKER_RM---rm}
 case "$1" in
   "build" ) docker build -t kunai:0.0.0-alpine docker ;;
   "install" ) docker run $DOCKER_RM -v `pwd`:/var/src $DOCKER_IT kunai:0.0.0-alpine npm install $NPM_OPTS ;;
+  "dist" ) docker run $DOCKER_RM -v `pwd`:/var/src $DOCKER_IT kunai:0.0.0-alpine npm run build ;;
   "run" )
     if [ $# -lt 2 ]; then
       show_help
