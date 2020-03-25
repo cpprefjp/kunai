@@ -1,6 +1,6 @@
 {
   "name": "kunai",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "cpprefjp / boostjp frontend",
   "main": "dist/js/kunai.js",
   "module": "js/kunai.js",
