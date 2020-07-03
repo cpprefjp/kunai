@@ -1,6 +1,6 @@
 {
   "name": "kunai",
-  "version": "3.0.5",
+  "version": "3.0.6",
   "description": "cpprefjp / boostjp frontend",
   "main": "dist/js/kunai.js",
   "module": "js/kunai.js",
@@ -75,7 +75,7 @@
     "anser": "^1.4.9",
     "codemirror": "^5.55.0",
     "commonmark": "^0.29.1",
-    "crsearch": "^3.0.5",
+    "crsearch": "^3.0.6",
     "font-awesome": "^4.7.0",
     "jquery": "^3.5.1",
     "normalize.css": "^8.0.1",
