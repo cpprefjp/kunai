@@ -36,6 +36,7 @@ class DOM {
 
     switch (obj.self.id.type) {
       case IType.header:
+      case IType.category:
         return await this.createHeaderContent(obj)
 
       default:
@@ -308,7 +309,7 @@ class Treeview {
         await this.dom.doExpand(h.id)
 
       } else {
-        if (this.page_idx.id.type === IType.header) {
+        if (this.page_idx.id.type === IType.header || this.page_idx.id.type === IType.category) {
           await this.dom.doExpand(this.page_idx.id)
 
         } else {
