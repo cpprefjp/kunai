@@ -307,22 +307,21 @@ class Treeview {
         this.log.info(`expanding current page header '${h.id.join()}'`, h, this.page_idx)
 
         await this.dom.doExpand(h.id)
-
       } else {
         if (IType.isHeader(this.page_idx.id.type)) {
           await this.dom.doExpand(this.page_idx.id)
-
         } else {
           this.log.info(`current page '${this.page_idx.id.join()}' is not classy. nothing left to expand`)
         }
       }
 
-      // highlight self
-      this.dom.indexElems.get(this.page_idx.id).addClass('current-page')
+      if (ids.length > 1) {
+        // highlight self
+        this.dom.indexElems.get(this.page_idx.id).addClass('current-page')
 
-      // finally, always scroll to self
-      await this.dom.scrollAt(this.page_idx.id)
-
+        // finally, always scroll to self
+        await this.dom.scrollAt(this.page_idx.id)
+      }
     } catch (e) {
       this.log.error(`Failed to determine current page for id '${ids.join('/')}'. Sidebar will NOT work properly! (${e})`, ids)
     }
