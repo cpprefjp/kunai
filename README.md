@@ -23,6 +23,23 @@ npm run dev
 http://localhost:8080/
 
 
+## デバッグ
+- コンソールログを有効にする
+
+[`js/kunai.js`](js/kunai.js)で、`DummyLogger`の代わりに`DefaultLogger`を使用する
+
+```js
+//this.log = new DefaultLogger()
+this.log = new DummyLogger()
+```
+
+↓
+
+```js
+this.log = new DefaultLogger()
+//this.log = new DummyLogger()
+```
+
 ## 設計思想
 
 - C++のことを調べて知って試すフローをcpprefjp上で完結可能にする

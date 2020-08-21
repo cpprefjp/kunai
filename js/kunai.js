@@ -11,6 +11,15 @@ import './codemirror-themes'
 
 import {CRSearch} from 'crsearch'
 
+class DefaultLogger {
+  debug() { console.debug(arguments) }
+  info() { console.info(arguments) }
+  warn() { console.warn(arguments) }
+  error() { console.error(arguments) }
+  disableBacktrace() {}
+  makeContext() { return this; }
+};
+
 class DummyLogger {
   debug() {}
   info() {}
@@ -30,6 +39,7 @@ class Kunai {
     // $('body').addClass('js').removeClass('no-js')
 
     this.opts = Object.assign({}, Kunai.defaultOptions, opts)
+    //this.log = new DefaultLogger()
     this.log = new DummyLogger()
 
     try {
@@ -85,15 +95,13 @@ class Kunai {
   }
 
   async initSidebar() {
-    this.ui.sidebar = new UI.Sidebar(new DummyLogger())
+    this.ui.sidebar = new UI.Sidebar(this.log)
     return this.ui.sidebar
   }
 
   async initUI() {
-    const l = new DummyLogger()
-
-    this.ui.navbar = new UI.Navbar(l)
-    this.ui.content = new UI.Content(l)
+    this.ui.navbar = new UI.Navbar(this.log)
+    this.ui.content = new UI.Content(this.log)
   }
 
   async onDatabase(db) {
