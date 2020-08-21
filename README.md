@@ -24,20 +24,20 @@ http://localhost:8080/
 
 
 ## デバッグ
-- コンソールログを有効にする
+情報ログを有効にする
 
-[`js/kunai.js`](js/kunai.js)で、`DummyLogger`の代わりに`DefaultLogger`を使用する
+[`js/kunai.js`](js/kunai.js)で、`ErrorLogger`の代わりに`DefaultLogger`を使用する
 
 ```js
 //this.log = new DefaultLogger()
-this.log = new DummyLogger()
+this.log = new ErrorLogger()
 ```
 
 ↓
 
 ```js
 this.log = new DefaultLogger()
-//this.log = new DummyLogger()
+//this.log = new ErrorLogger()
 ```
 
 ## 設計思想

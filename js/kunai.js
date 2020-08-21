@@ -12,21 +12,27 @@ import './codemirror-themes'
 import {CRSearch} from 'crsearch'
 
 class DefaultLogger {
-  debug() { console.debug(arguments) }
-  info() { console.info(arguments) }
-  warn() { console.warn(arguments) }
-  error() { console.error(arguments) }
-  disableBacktrace() {}
-  makeContext() { return this; }
+  constructor(context = "kunai_top") {
+    this.context = context;
+  }
+
+  debug() { console.debug(`[${this.context}]`, ...arguments); }
+  info() { console.info(`[${this.context}]`, ...arguments); }
+  warn() { console.warn(`[${this.context}]`, ...arguments); }
+  error() { console.error(`[${this.context}]`, ...arguments); }
+  makeContext(context) { return new DefaultLogger(context); }
 };
 
-class DummyLogger {
+class ErrorLogger {
+  constructor(context = "kunai_top") {
+    this.context = context;
+  }
+
   debug() {}
   info() {}
   warn() {}
-  error() {}
-  disableBacktrace() {}
-  makeContext() { return this; }
+  error() { console.error(`[${this.context}]`, ...arguments); }
+  makeContext(context) { return new ErrorLogger(context); }
 };
 
 class Kunai {
@@ -40,15 +46,10 @@ class Kunai {
 
     this.opts = Object.assign({}, Kunai.defaultOptions, opts)
     //this.log = new DefaultLogger()
-    this.log = new DummyLogger()
+    this.log = new ErrorLogger()
 
-    try {
-      this.log.disableBacktrace(true)
-      this.log.info(`version ${KUNAI_PACKAGE.version} (https://github.com/cpprefjp/kunai/tree/v${KUNAI_PACKAGE.version})`)
-      this.log.info(`please report frontend bugs to: ${KUNAI_PACKAGE.bugs_url}`)
-    } finally {
-      this.log.disableBacktrace(false)
-    }
+    console.log(`version ${KUNAI_PACKAGE.version} (https://github.com/cpprefjp/kunai/tree/v${KUNAI_PACKAGE.version})`)
+    console.log(`please report frontend bugs to: ${KUNAI_PACKAGE.bugs_url}`)
 
     this.ui = {
       navbar: null,

@@ -5,7 +5,7 @@ import {KC} from 'crsearch'
 class Sidebar {
   constructor(log) {
     this.log = log.makeContext('Sidebar')
-    this.log.debug('initialzing...')
+    this.log.info('initialzing...')
 
     this.kc = new KC.Config({
       'article.md': require('../../../kunai_configs/current/article.md').default,

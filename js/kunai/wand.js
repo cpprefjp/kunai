@@ -126,7 +126,7 @@ class Wand {
   }
 
   constructor(log, opts = new Map) {
-    this.log = log.makeContext()
+    this.log = log.makeContext('Wand')
     this.opts = new Map([...Wand.defaults, ...opts])
     this.log.info('三へ( へ՞ਊ ՞)へ ﾊｯﾊｯ')
   }
