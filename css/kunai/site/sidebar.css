@@ -272,7 +272,7 @@ main[role="main"] .kunai-sidebar.force-legacy {
           background: rgba(251, 251, 251, 0.91);
         }
 
-        &:not(.top):not(.headers):not(.header):not(.lang):not(.classes):not(.members):not(.class):not(.article):hover {
+        &:not(.top):not(.headers):not(.header):not(.category):not(.lang):not(.classes):not(.members):not(.class):not(.article):hover {
           background-color: $cl-list-hover;
         }
       }
@@ -486,7 +486,7 @@ main[role="main"] .kunai-sidebar.force-legacy {
     display: flex;
     flex-direction: column;
 
-    > li.header {
+    > li.header > li.category {
       display: flex;
       // position: relative;
 

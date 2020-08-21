@@ -309,7 +309,7 @@ class Treeview {
         await this.dom.doExpand(h.id)
 
       } else {
-        if (this.page_idx.id.type === IType.header || this.page_idx.id.type === IType.category) {
+        if (IType.isHeader(this.page_idx.id.type)) {
           await this.dom.doExpand(this.page_idx.id)
 
         } else {
