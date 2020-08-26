@@ -2,6 +2,17 @@
 
 ## master
 
+## 3.0.7 (2020-08-26)
+
+- IType.categoryをハンドリングできていないところを修正
+    - @faithandbrave
+- コンソールログを出力できるようにする
+    - @faithandbrave
+- reference, langなど階層の根本でのサイドバーツリー関係のエラーを修正
+    - @faithandbrave
+- crsearch 更新
+    - @melpon
+
 ## 3.0.6 (2020-07-03)
 
 - deps 更新
