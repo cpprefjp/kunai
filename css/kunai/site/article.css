@@ -238,6 +238,28 @@ div[itemtype="http://schema.org/Article"] {
           border: none;
         }
       }
+
+      dfn {
+        font-weight: bold;
+      }
+      a.cpprefjp-defined-word {
+        text-decoration: underline dotted 2px #08F;
+        text-underline-offset: 1px;
+        color: inherit;
+      }
+      a.cpprefjp-defined-word:link:hover {
+        background-color: #DDD;
+      }
+      a.cpprefjp-defined-word[data-desc] {
+        position: relative;
+      }
+      a.cpprefjp-defined-word[data-desc]:hover:after {
+        text-decoration: none!important; font-weight: normal!important; font-style: normal!important;
+        position: absolute; left: 2em; left: min(2em, 100%); top: 110%; width: max-content; max-width: 40em; z-index: 1000000;
+        border: 1px solid black; padding: 0.1em 0.4em;
+        background-color: white; color: black; text-decoration: none; font-size: 0.85rem;
+        content: attr(data-desc);
+      }
     }
   }
 
