@@ -116,10 +116,58 @@ class Kunai {
 
     await this.initSidebar()
 
+    // Dynamically set the base_url
+    const dynamic_base_url = (() => {
+      // Determine the location of the website base
+      const current_script = document.currentScript || document.querySelector('script[src*="static/kunai/js/kunai.js"]')
+      if (current_script) {
+        // Try to determine the base_url based on the location of this script
+        // ({base_url}/static/kunai/js/kunai.js).
+        const url_kunai = current_script.getAttribute("src")
+        const url = url_kunai.replace(/\bstatic\/kunai\/js\/kunai\.js([?#].*)?$/, "")
+        if (url != url_kunai) return url == "" ? "/" : url
+      }
+      // Fallback case assuming that the website is hosted at the top level
+      return "/"
+    })()
+
+    const database_url = (() => {
+      // Determine the location of the database file "crsearch.json".
+      const current_script = document.currentScript || document.querySelector('script[src*="kunai/js/kunai.js"]')
+      if (current_script) {
+        // Try to download crsearch.json from the project website for local
+        // HTML files.  When a HTML in a local file system is directly opened
+        // in a Web browser, "static/crsearch/crsearch.json" cannot be read
+        // through XHR due to the CORS (cross-origin resource sharing) policy
+        // for the local files.  We instead try to download "crsearch.json"
+        // from the project website, which is assumed to be stored in <meta
+        // name="twietter:url" content="..." /> or in <meta property="og:url"
+        // content="..." />.
+        if (/^file:\/\//.test(current_script.src)) {
+          const meta = document.querySelector('meta[name="twitter:url"]') || document.querySelector('meta[property="og:url"]')
+          if (meta && meta.content) {
+            const m = meta.content.toString().match(/^https?:\/\/[^/]*\//)
+            if (m) return m[0] + "static/crsearch/crsearch.json"
+          }
+        }
+
+        // Try to determine the position of crsearch.json
+        // ({base_url}/static/crsearch/crsearch.json) based on the location of
+        // this script ({base_url}/static/kunai/js/kunai.js).
+        const url_kunai = current_script.getAttribute("src")
+        const url = url_kunai.replace(/\bkunai\/js\/kunai\.js([?#].*)?$/, "crsearch/crsearch.json")
+        if (url != url_kunai) return url
+      }
+
+      // Fallback case assuming that the website is hosted at the top level
+      return "/static/crsearch/crsearch.json"
+    })();
+
     let crs = new CRSearch({
       onDatabase: this.onDatabase.bind(this),
+      base_url: dynamic_base_url
     })
-    crs.database('/static/crsearch/crsearch.json')
+    crs.database(database_url)
 
     let e = $('.crsearch')
     await crs.searchbox(e)
