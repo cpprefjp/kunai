@@ -144,6 +144,10 @@ class Kunai {
         // name="twietter:url" content="..." /> or in <meta property="og:url"
         // content="..." />.
         if (/^file:\/\//.test(current_script.src)) {
+          const url_kunai = current_script.getAttribute("src");
+          const url = url_kunai.replace(/\bkunai\/js\/kunai\.js([?#].*)?$/, "crsearch/crsearch.js");
+          if (url != url_kunai) return url;
+
           const meta = document.querySelector('meta[name="twitter:url"]') || document.querySelector('meta[property="og:url"]');
           if (meta && meta.content) {
             const m = meta.content.toString().match(/^https?:\/\/[^/]*\//);
