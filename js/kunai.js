@@ -135,15 +135,22 @@ class Kunai {
       // Determine the location of the database file "crsearch.json".
       const current_script = document.currentScript || document.querySelector('script[src*="kunai/js/kunai.js"]')
       if (current_script) {
-        // Try to download crsearch.json from the project website for local
-        // HTML files.  When a HTML in a local file system is directly opened
-        // in a Web browser, "static/crsearch/crsearch.json" cannot be read
-        // through XHR due to the CORS (cross-origin resource sharing) policy
-        // for the local files.  We instead try to download "crsearch.json"
-        // from the project website, which is assumed to be stored in <meta
-        // name="twietter:url" content="..." /> or in <meta property="og:url"
-        // content="..." />.
+        // A special care is needed for local HTML files (file://...).  When a
+        // HTML in a local file system is directly opened in a Web browser,
+        // "static/crsearch/crsearch.json" cannot be read using XHR due to the
+        // CORS (cross-origin resource sharing) policy for the local files.
         if (/^file:\/\//.test(current_script.src)) {
+          const url_kunai = current_script.getAttribute("src")
+
+          // When the current script file (kunai.js) is located in an expected
+          // path in the tree, we try to load the local database file
+          // "crsearch/crsearch.js" in JSONP format.
+          const url = url_kunai.replace(/\bkunai\/js\/kunai\.js([?#].*)?$/, "crsearch/crsearch.js")
+          if (url != url_kunai) return url
+
+          // Try to download "crsearch.json" from the project website, which is
+          // assumed to be stored in <meta name="twietter:url" content="..." />
+          // or in <meta property="og:url" content="..." />.
           const meta = document.querySelector('meta[name="twitter:url"]') || document.querySelector('meta[property="og:url"]')
           if (meta && meta.content) {
             const m = meta.content.toString().match(/^https?:\/\/[^/]*\//)
