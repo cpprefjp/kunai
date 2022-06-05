@@ -107,6 +107,7 @@ class Kunai {
 
   async onDatabase(db) {
     // this.log.debug(`onDatabase`, db)
+    UI.Badge.onDatabase(db)
     await this.ui.sidebar.onDatabase(db)
     await this.ui.sidebar.treeview.onPageID(this.meta.page_id)
   }
