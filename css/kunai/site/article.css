@@ -250,15 +250,8 @@ div[itemtype="http://schema.org/Article"] {
       a.cpprefjp-defined-word:link:hover {
         background-color: #DDD;
       }
-      a.cpprefjp-defined-word[data-desc] {
-        position: relative;
-      }
-      a.cpprefjp-defined-word[data-desc]:hover:after {
-        text-decoration: none!important; font-weight: normal!important; font-style: normal!important;
-        position: absolute; left: 2em; left: min(2em, 100%); top: 110%; width: max-content; max-width: 40em; z-index: 1000000;
-        border: 1px solid black; padding: 0.1em 0.4em;
-        background-color: white; color: black; text-decoration: none; font-size: 0.85rem;
-        content: attr(data-desc);
+      a.cpprefjp-defined-word[data-desc]:not(:link) {
+        cursor: context-menu;
       }
     }
   }
@@ -318,3 +311,21 @@ div[itemtype="http://schema.org/Article"] {
   }
 }
 
+/* Note: The tooltip element will be directly added to the top level of <body> */
+#cpprefjp-dfn-tooltip {
+  text-decoration: none!important; font-weight: normal!important; font-style: normal!important;
+  width: max-content; max-width: 40em;
+  border: 1px solid black; padding: 0.2rem 0.4rem; margin: 0;
+  background-color: white; color: black; text-decoration: none; font-size: 0.9rem;
+  position: fixed; box-shadow: 2px 2px 2px 0 rgba(128, 128, 128, 0.6);
+  cursor: default;
+  opacity: 0; z-index: -1;
+  transition: opacity .3s linear .5s, z-index 0s linear .8s;
+}
+#cpprefjp-dfn-tooltip:before {
+  content: attr(data-desc);
+}
+#cpprefjp-dfn-tooltip.cpprefjp-dfn-tooltip-revealed {
+  opacity: 1; z-index: 1000000;
+  transition: opacity .3s linear 0s, z-index 0s linear 0s;
+}
