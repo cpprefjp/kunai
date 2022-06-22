@@ -317,8 +317,8 @@ class Treeview {
 
       if (ids.length > 1) {
         if (this.page_idx.id.type === 'article' && this.page_idx.id.indexes.length > 1) {
-          const lang = $(`[data-lang-id="C++${this.page_idx.cpp_version}"]`)
-          const article = [...lang.find('li')].find(li => $(li).first().text() === this.page_idx.name)
+          const selector = `[data-lang-id="C++${this.page_idx.cpp_version}"] li.article`
+          const article = [...$(selector)].find(li => li.innerText === this.page_idx.name)
           this.dom.indexElems.set(this.page_idx.id, $(article))
         }
         
