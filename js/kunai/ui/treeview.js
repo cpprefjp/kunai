@@ -316,6 +316,12 @@ class Treeview {
       }
 
       if (ids.length > 1) {
+        if (this.page_idx.id.type === 'article' && this.page_idx.id.indexes.length > 1) {
+          const selector = `[data-lang-id="C++${this.page_idx.cpp_version}"] li.article`
+          const article = [...$(selector)].find(li => li.innerText === this.page_idx.name)
+          this.dom.indexElems.set(this.page_idx.id, $(article))
+        }
+        
         // highlight self
         this.dom.indexElems.get(this.page_idx.id).addClass('current-page')
 
