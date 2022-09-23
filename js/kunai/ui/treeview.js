@@ -37,6 +37,7 @@ class DOM {
     switch (obj.self.id.type) {
       case IType.header:
       case IType.category:
+      case IType.module:
         return await this.createHeaderContent(obj)
 
       default:

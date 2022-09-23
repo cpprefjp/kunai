@@ -118,6 +118,9 @@
       &[data-top-id="reference"] > .heading > a.title:before {
         @extend .fa-tags;
       }
+      &[data-top-id="module"] > .heading > a.title:before {
+        @extend .fa-folder;
+      }
       &[data-top-id="international-standard"] > .heading > a.title:before {
         @extend .fa-globe;
       }

@@ -272,7 +272,7 @@ main[role="main"] .kunai-sidebar.force-legacy {
           background: rgba(251, 251, 251, 0.91);
         }
 
-        &:not(.top):not(.headers):not(.header):not(.category):not(.lang):not(.classes):not(.members):not(.class):not(.article):hover {
+        &:not(.top):not(.headers):not(.header):not(.category):not(.module):not(.lang):not(.classes):not(.members):not(.class):not(.article):hover {
           background-color: $cl-list-hover;
         }
       }
@@ -486,7 +486,7 @@ main[role="main"] .kunai-sidebar.force-legacy {
     display: flex;
     flex-direction: column;
 
-    > li.header > li.category {
+    > li.header > li.category > li.module {
       display: flex;
       // position: relative;
 
@@ -735,13 +735,13 @@ main[role="main"] .kunai-sidebar.force-legacy {
 }
 
 .kunai-sidebar > .tree.v2 > ul.root > li.top {
-  &[data-top-id="reference"], &[data-top-id="article"], &[data-top-id="editors_doc"] {
+  &[data-top-id="reference"], &[data-top-id="module"], &[data-top-id="article"], &[data-top-id="editors_doc"] {
     .kunai-branch {
       box-shadow: none;
     }
   }
 
-  &[data-top-id="reference"] {
+  &[data-top-id="reference"], &[data-top-id="module"] {
     > .kunai-branch {
       > ul.branch {
         margin-bottom: .5em;
