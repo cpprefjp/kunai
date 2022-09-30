@@ -13,12 +13,15 @@ const sanitize = (badges) => {
     let cppv = null
     let named_version = null
     for (const c of b_classes) {
-      const cppm = c.match(/^cpp(\d[\da-zA-Z])(.*)$/)
-      if (!cppm) {
+      if (/^(?:future|archive)$/.test(c)) {
           named_version = c
+          b.attr('data-named-version', c)
           classes.push('named-version-spec')
           continue
       }
+
+      const cppm = c.match(/^cpp(\d[\da-zA-Z])(.*)$/)
+      if (!cppm) continue;
 
       b.attr('data-cpp-version', cppm[1])
       if (cppm[1].length) {
