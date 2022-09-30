@@ -11,9 +11,14 @@ const sanitize = (badges) => {
 
     let deprecated_or_removed = false
     let cppv = null
+    let named_version = null
     for (const c of b_classes) {
       const cppm = c.match(/^cpp(\d[\da-zA-Z])(.*)$/)
-      if (!cppm) continue
+      if (!cppm) {
+          named_version = c
+          classes.push('named-version-spec')
+          continue
+      }
 
       b.attr('data-cpp-version', cppm[1])
       if (cppm[1].length) {
@@ -35,7 +40,9 @@ const sanitize = (badges) => {
 
     b.addClass(classes.join(' '))
 
-    const lang_path = cppv ? `/lang/cpp${cppv}` : `/lang`
+    const lang_path = cppv ? `/lang/cpp${cppv}` :
+                      named_version ? `/lang/${named_version}` :
+                      `/lang`
 
     b.empty().append(
       $('<a>', {href: `${lang_path}.html`})
