@@ -249,6 +249,21 @@ div[itemtype="http://schema.org/Article"] {
       .scrollable::-webkit-scrollbar {
         display: none;
       }
+
+      dfn {
+        font-weight: bold;
+      }
+      a.cpprefjp-defined-word {
+        text-decoration: underline dotted 2px #08F;
+        text-underline-offset: 1px;
+        color: inherit;
+      }
+      a.cpprefjp-defined-word:link:hover {
+        background-color: #DDD;
+      }
+      a.cpprefjp-defined-word[data-desc]:not(:link) {
+        cursor: context-menu;
+      }
     }
   }
 
@@ -306,4 +321,3 @@ div[itemtype="http://schema.org/Article"] {
     }
   }
 }
-
