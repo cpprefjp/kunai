@@ -7,6 +7,7 @@ function show_help() {
   echo "$0 install"
   echo "$0 run dev"
   echo "$0 run build"
+  echo "$0 audit-fix"
   echo "$0 ci"
 }
 
@@ -29,6 +30,7 @@ case "$1" in
   "build" ) docker build -t kunai:0.0.0-alpine docker ;;
   "install" ) docker run $DOCKER_RM -v `pwd`:/var/src $DOCKER_IT kunai:0.0.0-alpine npm install $NPM_OPTS ;;
   "dist" ) docker run $DOCKER_RM -v `pwd`:/var/src $DOCKER_IT kunai:0.0.0-alpine npm run build ;;
+  "audit-fix" ) docker run $DOCKER_RM -v `pwd`:/var/src $DOCKER_IT kunai:0.0.0-alpine npm audit fix ;;
   "run" )
     if [ $# -lt 2 ]; then
       show_help
