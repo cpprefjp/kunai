@@ -7,6 +7,7 @@ function show_help() {
   echo "$0 install"
   echo "$0 run dev"
   echo "$0 run build"
+  echo "$0 ci"
 }
 
 if [ $# -lt 1 ]; then
@@ -34,6 +35,7 @@ case "$1" in
       exit 1
     fi
     docker run $DOCKER_RM -v `pwd`:/var/src -p 8080:8080 $DOCKER_IT kunai:0.0.0-alpine npm run $2 ;;
+  "ci" ) docker run $DOCKER_RM -v `pwd`:/var/src $DOCKER_IT kunai:0.0.0-alpine npm ci ;;
   * )
     show_help
     exit 1 ;;
