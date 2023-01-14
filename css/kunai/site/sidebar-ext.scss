@@ -109,6 +109,9 @@
       &[data-top-id="start_editing"] > .heading > a.title:before {
         @extend .fa-text-height;
       }
+      &[data-top-id="edit_policy"] > .heading > a.title:before {
+        @extend .fa-pencil;
+      }
       &[data-top-id="article"] > .heading > a.title:before {
         @extend .fa-book;
       }

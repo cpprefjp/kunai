@@ -735,7 +735,7 @@ main[role="main"] .kunai-sidebar.force-legacy {
 }
 
 .kunai-sidebar > .tree.v2 > ul.root > li.top {
-  &[data-top-id="reference"], &[data-top-id="module"], &[data-top-id="article"], &[data-top-id="start_editing"] {
+  &[data-top-id="reference"], &[data-top-id="module"], &[data-top-id="article"], &[data-top-id="start_editing"], &[data-top-id="edit_policy"] {
     .kunai-branch {
       box-shadow: none;
     }
