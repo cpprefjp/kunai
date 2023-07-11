@@ -67,6 +67,7 @@ div[itemtype="http://schema.org/Article"] {
     display: inline-block;
     margin: 0 .25em;
     padding: 0 .25em;
+    white-space: pre;
   }
 
   a code {
