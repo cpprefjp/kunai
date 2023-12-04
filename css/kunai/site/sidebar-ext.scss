@@ -75,9 +75,8 @@
               &:last-child {
                 &:before {
                   @include fa-patch;
-                  @extend .fa-caret-right;
 
-                  color: transparent;
+                  content: "";
                 }
               }
             }
