@@ -1,3 +1,13 @@
+let base_url = null
+const unresolved_links = []
+
+const onDatabase = (db) => {
+  base_url = db.base_url.toString()
+  for (let a_elem of unresolved_links)
+    a_elem.attr('href', base_url.replace(/\/$/, '') + a_elem.attr('href'))
+  unresolved_links.length = 0
+}
+
 const sanitize = (badges) => {
   let i = 0
 
@@ -46,15 +56,18 @@ const sanitize = (badges) => {
     const lang_path = cppv ? `/lang/cpp${cppv}` :
                       named_version ? `/lang/${named_version}` :
                       `/lang`
+    const a_elem = $('<a>', {href: `${lang_path}.html`})
+      .append($('<i>'))
+      // .append($('<span>').text(clean_txt))
+      .appendTo(b.empty())
 
-    b.empty().append(
-      $('<a>', {href: `${lang_path}.html`})
-        .append($('<i>'))
-        // .append($('<span>').text(clean_txt))
-    )
+    if (base_url)
+      a_elem.attr('href', base_url.replace(/\/$/, '') + a_elem.attr('href'))
+    else
+      unresolved_links.push(a_elem)
   }
   return i
 }
 
-export {sanitize}
+export {onDatabase, sanitize}
 
