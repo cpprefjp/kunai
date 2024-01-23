@@ -78,6 +78,11 @@ div[itemtype="http://schema.org/Article"] {
     text-decoration: underline;
   }
 
+  :not(pre)>code {
+    display: inline-table;
+    white-space: pre-wrap;
+  }
+
   .edit-button {
     display: flex;
     flex-direction: column;
