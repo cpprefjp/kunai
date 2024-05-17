@@ -132,6 +132,18 @@ class Kunai {
       return "/"
     })()
 
+    // Determine the project website URL, which is assumed to be stored in
+    // <meta name="twietter:url" content="..." /> or in <meta property="og:url"
+    // content="..." />.
+    const online_base_url = (() => {
+      const meta = document.querySelector('meta[name="twitter:url"]') || document.querySelector('meta[property="og:url"]')
+      if (meta && meta.content) {
+        const m = meta.content.toString().match(/^https?:\/\/[^/]*\//)
+        if (m) return m[0]
+      }
+      return null
+    })()
+
     const database_url = (() => {
       // Determine the location of the database file "crsearch.json".
       const current_script = document.currentScript || document.querySelector('script[src*="kunai/js/kunai.js"]')
@@ -149,14 +161,9 @@ class Kunai {
           const url = url_kunai.replace(/\bkunai\/js\/kunai\.js([?#].*)?$/, "crsearch/crsearch.js")
           if (url != url_kunai) return url
 
-          // Try to download "crsearch.json" from the project website, which is
-          // assumed to be stored in <meta name="twietter:url" content="..." />
-          // or in <meta property="og:url" content="..." />.
-          const meta = document.querySelector('meta[name="twitter:url"]') || document.querySelector('meta[property="og:url"]')
-          if (meta && meta.content) {
-            const m = meta.content.toString().match(/^https?:\/\/[^/]*\//)
-            if (m) return m[0] + "static/crsearch/crsearch.json"
-          }
+          // Try to download "crsearch.json" from the project website.
+          if (online_base_url)
+            return online_base_url + "static/crsearch/crsearch.json"
         }
 
         // Try to determine the position of crsearch.json
@@ -173,7 +180,8 @@ class Kunai {
 
     let crs = new CRSearch({
       onDatabase: this.onDatabase.bind(this),
-      base_url: dynamic_base_url
+      base_url: dynamic_base_url,
+      online_base_url: online_base_url
     })
     crs.database(database_url)
 
