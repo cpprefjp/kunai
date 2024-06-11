@@ -283,7 +283,7 @@ class Treeview {
     this.opts = Object.assign({}, opts)
     this.legacy = this.opts.legacy
 
-    this.log.debug('initialzing...')
+    this.log.debug('initializing...')
 
     if (this.legacy) {
       const c = Badge.sanitize(this.e.find('.cpp-sidebar'))

@@ -12,7 +12,7 @@ const _hitElementRects = (elem, x, y) => {
 class Content {
   constructor(log) {
     this.log = log.makeContext('Content')
-    this.log.debug('initialzing...')
+    this.log.debug('initializing...')
 
     this.log.debug(`found ${Badge.sanitize($('main[role="main"] div[itemtype="http://schema.org/Article"] .content-body span.cpp'))} badges`)
 
