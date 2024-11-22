@@ -106,3 +106,15 @@ nav[role="navigation"] {
   }
 }
 
+
+@media print {
+  nav[role="navigation"] {
+    .navbar-brand {
+      > .title-wrapper {
+        &:before {
+          overflow: visible;
+        }
+      }
+    }
+  }
+}

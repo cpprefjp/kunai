@@ -775,3 +775,26 @@ main[role="main"] .kunai-sidebar.force-legacy {
   }
 }
 
+@media print {
+  .kunai-sidebar > .tree.v2 {
+    overflow: visible;
+
+    ul.stackable {
+      > li.stack {
+        &.expanded:not(.empty) {
+          overflow: visible;
+        }
+      }
+    }
+
+    > ul.root {
+      overflow: visible;
+    }
+
+    ul.members {
+      > li.member {
+        overflow: visible;
+      }
+    }
+  }
+}
