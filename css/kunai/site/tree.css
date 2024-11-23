@@ -187,3 +187,13 @@
   }
 }
 
+@media print {
+  @mixin tree $cl-border {
+    a {
+      overflow: visible;
+    }
+    ul {
+      overflow: visible;
+    }
+  }
+}

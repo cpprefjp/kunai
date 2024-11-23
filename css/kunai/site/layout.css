@@ -38,7 +38,6 @@ body {
   }
 }
 
-
 nav[role="navigation"] {
   display: flex;
   // min-height: 3rem;
@@ -318,6 +317,21 @@ main {
   main {
     div[itemtype="http://schema.org/Article"] + div {
       padding: 0 2vw;
+    }
+  }
+}
+
+@media print {
+  body {
+    overflow: visible;
+  }
+
+  main {
+    overflow: visible;
+
+    div[itemtype="http://schema.org/Article"],
+    div[itemtype="http://schema.org/Article"] + div {
+      overflow: visible;
     }
   }
 }
