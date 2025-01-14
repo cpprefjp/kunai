@@ -25,7 +25,9 @@ module.exports = env => (Merge.multiple(common(env), {
     },
     devtool: 'inline-source-map',
     devServer: {
-      static: path.join(__dirname, 'example'),
+      publicPath: '/',
+      contentBase: path.join(__dirname, 'example'),
+      watchContentBase: true,
     },
     plugins: [
       new webpack.DefinePlugin({

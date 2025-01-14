@@ -119,6 +119,8 @@ module.exports = env => ({
     },
     output: {
       path: path.resolve(__dirname, 'dist'),
+      publicPath: "",
+      //filename: 'css/[name].css',
     },
     module: {
       rules: [
@@ -165,13 +167,19 @@ module.exports = env => ({
               options: {
                 postcssOptions: {
                   mode: env,
-                  cssnano: {
-                    cssProcessorOptions: {
-                      // http://cssnano.co/optimisations/reduceidents/
-                      reduceIdents: false,
+                },
+                /*
+                config: {
+                  ctx: {
+                    cssnano: {
+                      cssProcessorOptions: {
+                        // http://cssnano.co/optimisations/reduceidents/
+                        reduceIdents: false,
+                      },
                     },
                   },
                 },
+                */
               },
             },
             // {
@@ -181,9 +189,16 @@ module.exports = env => ({
         },
         {
           test: /\.(ttf|eot|svg|woff(2)?)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-          // Embedding font to avoid path issue of assets and public path
-          // type: 'asset/resource',
-          type: 'asset/inline',
+          use: [
+            {
+              loader: 'file-loader',
+              options: {
+                name: '[name].[ext]?[hash]',
+                publicPath: '../fonts/',
+                outputPath: 'fonts/',
+              },
+            },
+          ],
         },
       ],
     },
