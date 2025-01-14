@@ -119,7 +119,6 @@ module.exports = env => ({
     },
     output: {
       path: path.resolve(__dirname, 'dist'),
-      publicPath: "",
       //filename: 'css/[name].css',
     },
     module: {
@@ -139,8 +138,10 @@ module.exports = env => ({
             {
               loader: 'postcss-loader',
               options: {
-                postcssOptions: {
-                  mode: env,
+                config: {
+                  ctx: {
+                    env: env,
+                  },
                 },
               },
             },
@@ -165,12 +166,9 @@ module.exports = env => ({
             {
               loader: 'postcss-loader',
               options: {
-                postcssOptions: {
-                  mode: env,
-                },
-                /*
                 config: {
                   ctx: {
+                    env: env,
                     cssnano: {
                       cssProcessorOptions: {
                         // http://cssnano.co/optimisations/reduceidents/
@@ -179,7 +177,6 @@ module.exports = env => ({
                     },
                   },
                 },
-                */
               },
             },
             // {
