@@ -12,6 +12,8 @@ div[itemtype="http://schema.org/Article"] {
 
   position: relative;
 
+  outline: none;
+
   > .row {
     &:nth-child(2) {
       order: -12;

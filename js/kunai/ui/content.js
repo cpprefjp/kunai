@@ -19,6 +19,9 @@ class Content {
     // 横幅を超える画像を横スクロール可能にするためにスクロール用のdivで囲む
     $('div[itemprop="articleBody"]').find('img').wrap('<div class="scrollable">')
 
+    // ページ推移後にキーボードで画面スクロールするためにフォーカスを当てる
+    $('main[role="main"] div[itemtype="http://schema.org/Article"]').trigger('focus')
+
     this.setupTooltip()
   }
 
