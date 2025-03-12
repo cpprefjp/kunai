@@ -117,8 +117,8 @@ class API {
 class Wand {
   static defaults = new Map([
     ['compiler', 'clang-head'],
-    ['options', ['warning', 'c++2a', 'cpp-pedantic-errors']],
-    ['compiler-option-raw', ['-Wall', '-Wextra', /*'-Werror'*/]],
+    ['options', ['warning', 'cpp-pedantic-errors']],
+    ['compiler-option-raw', ['-std=c++2c', '-Wall', '-Wextra', /*'-Werror'*/]],
   ])
 
   static elapsed(msec) {
