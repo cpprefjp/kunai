@@ -21,7 +21,7 @@ body {
     background: $nav-bg;
 
     border: none;
-    border-bottom: 1px solid color($cl-shuri alpha(0.2));
+    border-bottom: 1px solid rgb(from $cl-shuri r g b / 0.2);
 
     position: relative;
     z-index: $navbar-z;
@@ -203,7 +203,7 @@ main {
     overflow: hidden;
 
     box-sizing: border-box;
-    border-right: 1px solid color($cl-shuri alpha(0.2));
+    border-right: 1px solid rgb(from $cl-shuri r g b / 0.2);
     box-shadow: -12px 0 12px 6px rgba(0, 0, 0, 0.8);
 
     z-index: $side-z;

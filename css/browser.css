@@ -16,8 +16,8 @@ body.kunai {
 
             font-weight: bold;
             $c: rgb(240, 36, 54);
-            background: color($c alpha(0.2));
-            border: 3px dashed color($c alpha(0.6));
+            background: rgb(from $c r g b / 0.2);
+            border: 3px dashed rgb(from $c r g b / 0.6);
             box-sizing: border-box;
             color: rgba(20, 20, 20, 0.6);
             padding: .2em .4em;

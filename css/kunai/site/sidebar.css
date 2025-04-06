@@ -152,8 +152,8 @@ main[role="main"] .kunai-sidebar.force-legacy {
 .kunai-sidebar > .tree.v2 {
   $cl-text: #222;
   $cl-back: #fbfbfb;
-  $cl-link: color(#2a6496 tint(15%) saturation(+ 10%));
-  $cl-list-hover: color(#f0f0fd alpha(.9));
+  $cl-link: hsl(from color-mix(in srgb, #2a6496, white 15%) h calc(s + 10%) l);
+  $cl-list-hover: rgb(from #f0f0fd r g b / .9);
 
   display: flex;
   height: 100%;
@@ -247,7 +247,7 @@ main[role="main"] .kunai-sidebar.force-legacy {
             content: "";
             display: block;
             height: 2px;
-            border-bottom: 1px solid color($c alpha(0.7));
+            border-bottom: 1px solid rgb(from $c r g b / 0.7);
             flex-basis: 100%;
           }
         }
@@ -265,7 +265,7 @@ main[role="main"] .kunai-sidebar.force-legacy {
         > .expandbar > a {
           flex-basis: auto;
           margin-bottom: 0;
-          color: color($cl-link saturation(-20%));
+          color: hsl(from $cl-link h calc(s - 20%) l);
         }
 
         &:first-child, &:last-child {
@@ -408,7 +408,7 @@ main[role="main"] .kunai-sidebar.force-legacy {
 
 
         &:not([href]) {
-          color: color($cl-text tint(50%));
+          color: color-mix(in srgb, $cl-text, white 50%);
           text-decoration: none;
           // cursor: help;
           border-bottom: 1px solid transparent;
@@ -530,7 +530,7 @@ main[role="main"] .kunai-sidebar.force-legacy {
         // background-color: rgba(100, 100, 100, .03);
         font-size: .9em;
 
-        $c-b: 1px solid color($cl-link saturation(-5%) tint(65%) alpha(0.4));
+        $c-b: 1px solid rgb(from color-mix(in srgb, hsl(from $cl-link h calc(s - 5%) l), white 65%) r g b / 0.4);
         border-left: $c-b;
         border-bottom: $c-b;
         border-radius: 4px;
@@ -598,7 +598,7 @@ main[role="main"] .kunai-sidebar.force-legacy {
       > .self {
         $c: #87ceeb;
         border-left: 4px solid $c;
-        border-bottom: 1px dashed color($c alpha(0.7));
+        border-bottom: 1px dashed rgb(from $c r g b / 0.7);
         margin-bottom: .5em;
         // box-shadow: 0 3px 13px -6px rgba(20, 20, 20, 0.2);
 

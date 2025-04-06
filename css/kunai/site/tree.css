@@ -168,7 +168,7 @@
               border-bottom-width: 2px;
             }
             .treespan {
-              background: color(#fddfb3 tint(10%));
+              background: color-mix(in srgb, #fddfb3, white 10%);
               border: 1px solid #faa937;
               color: #000;
             }
