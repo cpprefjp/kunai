@@ -15,7 +15,7 @@ body.kunai {
 
   .yata-toolbar {
     display: flex;
-    // background: color($cl-shuri tint(25%));
+    // background: color-mix(in srgb, $cl-shuri, white 25%);
     background: #a9d4e2;
     border-radius: 2px 2px 0 0;
 
