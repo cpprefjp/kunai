@@ -117,7 +117,7 @@ main {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  -webkit-overflow-scrolling: touch;
+  /* -webkit-overflow-scrolling: touch; iOS Safariで問題を起こすため削除 */
   position: relative;
 
   z-index: $main-z;
