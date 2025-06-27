@@ -205,28 +205,49 @@ class Yata {
     // 何も表示されない
     // †最大の闇†
 
-    let id = this.cmRefreshTimers.size
-    while (true) {
-      ++id
-      if (!this.cmRefreshTimers.has(id)) {
+    let id = 0
+    // より安全なID生成方法に変更
+    for (let i = 0; i <= this.cmRefreshTimers.size + 1; i++) {
+      if (!this.cmRefreshTimers.has(i)) {
+        id = i
         break
       }
     }
+    
     let info = new RefreshTimerInfo(id)
     this.log.debug(`autoRefresh engaged (id: #${id})`)
     this.cmRefreshTimers.set(id, info)
 
-    this.cmRefreshTimers.get(id).realID = setInterval((e) => {
+    const timerId = setInterval(() => {
+      // infoがまだ存在するか確認
+      if (!this.cmRefreshTimers.has(id)) {
+        clearInterval(timerId)
+        return
+      }
+      
       ++info.count
-      this.cm.refresh()
+      
+      // CodeMirrorインスタンスが有効か確認
+      if (this.cm && typeof this.cm.refresh === 'function') {
+        try {
+          this.cm.refresh()
+        } catch (e) {
+          this.log.error(`Failed to refresh CodeMirror: ${e}`)
+          clearInterval(timerId)
+          this.cmRefreshTimers.delete(id)
+          return
+        }
+      }
 
       if (info.count > 10) {
+        this.log.debug(`removing autoRefresh timer (id: #${id}, realID: #${timerId})`)
+        clearInterval(timerId)
         this.cmRefreshTimers.delete(id)
-
-        this.log.debug(`removing autoRefresh timer (id: #${id}, realID: #${info.realID})`)
-        clearInterval(info.realID)
       }
     }, 200)
+    
+    // タイマーIDを保存
+    info.realID = timerId
   }
 
   onResize(e) {
