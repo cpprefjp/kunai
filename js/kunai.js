@@ -152,18 +152,23 @@ class Kunai {
         // HTML in a local file system is directly opened in a Web browser,
         // "static/crsearch/crsearch.json" cannot be read using XHR due to the
         // CORS (cross-origin resource sharing) policy for the local files.
-        if (/^file:\/\//.test(current_script.src)) {
-          const url_kunai = current_script.getAttribute("src")
+        try {
+          if (/^file:\/\//.test(current_script.src)) {
+            const url_kunai = current_script.getAttribute("src")
 
-          // When the current script file (kunai.js) is located in an expected
-          // path in the tree, we try to load the local database file
-          // "crsearch/crsearch.js" in JSONP format.
-          const url = url_kunai.replace(/\bkunai\/js\/kunai\.js([?#].*)?$/, "crsearch/crsearch.js")
-          if (url != url_kunai) return url
+            // When the current script file (kunai.js) is located in an expected
+            // path in the tree, we try to load the local database file
+            // "crsearch/crsearch.js" in JSONP format.
+            const url = url_kunai.replace(/\bkunai\/js\/kunai\.js([?#].*)?$/, "crsearch/crsearch.js")
+            if (url != url_kunai) return url
 
-          // Try to download "crsearch.json" from the project website.
-          if (online_base_url)
-            return online_base_url + "static/crsearch/crsearch.json"
+            // Try to download "crsearch.json" from the project website.
+            if (online_base_url)
+              return online_base_url + "static/crsearch/crsearch.json"
+          }
+        } catch (e) {
+          this.log.warn('Failed to handle file:// protocol:', e)
+          // フォールバックとして通常のURLを使用
         }
 
         // Try to determine the position of crsearch.json
