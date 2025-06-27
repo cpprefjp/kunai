@@ -207,8 +207,9 @@ main[role="main"] .kunai-sidebar.force-legacy {
 
         > .expandbar {
           display: inline-flex;
-          position: sticky;
-          top: -1px;
+          /* position: sticky; iOS Safariで問題を起こすため変更 */
+          position: relative;
+          /* top: -1px; */
         }
 
 
