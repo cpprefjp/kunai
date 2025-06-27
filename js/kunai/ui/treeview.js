@@ -54,17 +54,39 @@ class DOM {
     if (h.classes && h.classes.length) {
       empty = false
       let classes = $('<ul>', {class: 'classes'}).appendTo(elem)
-      classes.append(await Promise.all(h.classes.map(async (c) => {
-        return await this.makeClass(c)
-      })))
+      // バッチ処理で段階的に要素を追加
+      const classBatchSize = 10
+      for (let i = 0; i < h.classes.length; i += classBatchSize) {
+        const batch = h.classes.slice(i, i + classBatchSize)
+        const batchElements = await Promise.all(batch.map(async (c) => {
+          return await this.makeClass(c)
+        }))
+        classes.append(batchElements)
+        
+        // iOS Safariに処理時間を与える
+        if (i + classBatchSize < h.classes.length) {
+          await new Promise(resolve => setTimeout(resolve, 0))
+        }
+      }
     }
 
     if (h.others && h.others.length) {
       empty = false
       let others = $('<ul>', {class: 'others'}).appendTo(elem)
-      others.append(await Promise.all(h.others.map(async (o) => {
-        return await this.makeOther(o)
-      })))
+      // バッチ処理で段階的に要素を追加
+      const otherBatchSize = 10
+      for (let i = 0; i < h.others.length; i += otherBatchSize) {
+        const batch = h.others.slice(i, i + otherBatchSize)
+        const batchElements = await Promise.all(batch.map(async (o) => {
+          return await this.makeOther(o)
+        }))
+        others.append(batchElements)
+        
+        // iOS Safariに処理時間を与える
+        if (i + otherBatchSize < h.others.length) {
+          await new Promise(resolve => setTimeout(resolve, 0))
+        }
+      }
     }
 
     if (empty) {
@@ -359,48 +381,63 @@ class Treeview {
 
     const cats = this.kc.categories()
 
-    root.append(await Promise.all(
-      this.tree.filter((top) => top.category.index !== cats.get('index').index).map(async (top) => {
-        const topID = top.namespace.namespace[0]
-        let stack = $('<li>', {
-          class: 'top stack',
-          'data-top-id': topID,
-        })
+    // バッチ処理で段階的にDOM要素を生成
+    const filteredTops = this.tree.filter((top) => top.category.index !== cats.get('index').index)
+    const batchSize = 5 // 一度に処理する要素数
+    
+    for (let i = 0; i < filteredTops.length; i += batchSize) {
+      const batch = filteredTops.slice(i, i + batchSize)
+      const batchElements = await Promise.all(
+        batch.map(async (top) => {
+          const topID = top.namespace.namespace[0]
+          let stack = $('<li>', {
+            class: 'top stack',
+            'data-top-id': topID,
+          })
 
-        this.dom.topElems.set(topID, stack)
+          this.dom.topElems.set(topID, stack)
 
-        stack.append(
-          $('<div>', {class: 'heading'})
-            .append(
-              $('<div>', {class: 'expander'}).on(
-                'click', async () =>  { this.dom.doStackExpand(topID) }
+          stack.append(
+            $('<div>', {class: 'heading'})
+              .append(
+                $('<div>', {class: 'expander'}).on(
+                  'click', async () =>  { this.dom.doStackExpand(topID) }
+                )
               )
-            )
-            .append(await this.dom.makeTitle(top))
-        )
+              .append(await this.dom.makeTitle(top))
+          )
 
-        let content_wrapper =
-          $('<div>', {class: 'content-wrapper'})
-          .appendTo(stack)
+          let content_wrapper =
+            $('<div>', {class: 'content-wrapper'})
+            .appendTo(stack)
 
-        let content =
-          $('<div>', {class: 'content'})
-          .appendTo(content_wrapper)
+          let content =
+            $('<div>', {class: 'content'})
+            .appendTo(content_wrapper)
 
-        let is_not_empty = false
-        if (top.category.index === cats.get('lang').index) {
-          is_not_empty = await this.processLangTop(top, content)
-        } else {
-          is_not_empty = await this.processTop(top, content)
-        }
+          let is_not_empty = false
+          if (top.category.index === cats.get('lang').index) {
+            is_not_empty = await this.processLangTop(top, content)
+          } else {
+            is_not_empty = await this.processTop(top, content)
+          }
 
-        if (!is_not_empty) {
-          stack.addClass('empty')
-        }
+          if (!is_not_empty) {
+            stack.addClass('empty')
+          }
 
-        return stack
-      })
-    ))
+          return stack
+        })
+      )
+      
+      // バッチごとにDOMに追加
+      root.append(batchElements)
+      
+      // iOS Safariに処理時間を与える
+      if (i + batchSize < filteredTops.length) {
+        await new Promise(resolve => setTimeout(resolve, 0))
+      }
+    }
   }
 
   async processTop(top, e) {
@@ -409,9 +446,21 @@ class Treeview {
     if (top.articles && top.articles.length) {
       is_empty = false
 
-      let self = $('<ul>', {class: 'articles'}).append(await Promise.all(top.articles.map(async (ar) => {
-        return await this.dom.makeArticle(ar)
-      })))
+      let self = $('<ul>', {class: 'articles'})
+      // バッチ処理で段階的に要素を追加
+      const articleBatchSize = 10
+      for (let i = 0; i < top.articles.length; i += articleBatchSize) {
+        const batch = top.articles.slice(i, i + articleBatchSize)
+        const batchElements = await Promise.all(batch.map(async (ar) => {
+          return await this.dom.makeArticle(ar)
+        }))
+        self.append(batchElements)
+        
+        // iOS Safariに処理時間を与える
+        if (i + articleBatchSize < top.articles.length) {
+          await new Promise(resolve => setTimeout(resolve, 0))
+        }
+      }
 
       e.append(await this.dom.kunaiBranch(self, 'articles'))
     }
