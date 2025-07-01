@@ -49,7 +49,7 @@ class DOM {
   async createHeaderContent(h) {
     // this.log.debug(`createHeaderContent (${h.self.id.join()})`, e, elem, h)
     let empty = true
-    let elem = this.indexElems.get(h.self.id)
+    let elem = this.indexElems.get(h.self)
 
     if (h.classes && h.classes.length) {
       empty = false
@@ -92,19 +92,19 @@ class DOM {
     if (empty) {
       elem.addClass('empty')
     }
-    this.lazyLoaders.set(h.self.id, async () => await this.getHeader(h))
+    this.lazyLoaders.set(h.self, async () => await this.getHeader(h))
   }
 
   async getHeader(h) {
     // this.log.debug(`getHeader (${h.self.id.join()})`, h)
-    return true // this.lazyLoaders.get(h.self.id)
+    return true // this.lazyLoaders.get(h.self)
   }
 
-  async doExpand(id) {
+  async doExpand(idx) {
     // this.log.debug(`doExpand '${id.join()}'`, id)
 
-    await this.lazyLoaders.get(id)()
-    let elem = this.indexElems.get(id)
+    await this.lazyLoaders.get(idx)()
+    let elem = this.indexElems.get(idx)
     // let content_wrapper = elem.closest('.content-wrapper')
     // let content = content_wrapper.children('.content')
 
@@ -141,10 +141,10 @@ class DOM {
     }
   }
 
-  async scrollAt(id) {
-    this.log.info(`scrollAt '${id.join()}'`, id)
+  async scrollAt(idx) {
+    this.log.info(`scrollAt '${idx.id.join()}'`, idx.id)
 
-    const e = this.indexElems.get(id)
+    const e = this.indexElems.get(idx)
     const broot = e.closest('.kunai-branch')
     const croot = broot.closest('.content')
     let wrapper = croot.closest('.content-wrapper')
@@ -190,7 +190,7 @@ class DOM {
     let li = $('<li>', {class: 'article'}).append(
       $('<a>', {href: idx.url()}).text(idx.id.join())
     )
-    this.indexElems.set(idx.id, li)
+    this.indexElems.set(idx, li)
     return li
   }
 
@@ -200,7 +200,7 @@ class DOM {
         $('<a>', {href: m.url()})
           .html(await m.join_html(DOM.crOptions))
       )
-    this.indexElems.set(m.id, li)
+    this.indexElems.set(m, li)
 
     if (this.kc.getPriorityForIndex(m).index !== this.kc.prioSpecials.get('__functions__').index) {
       li.addClass('special')
@@ -210,7 +210,7 @@ class DOM {
 
   async makeClass(c) {
     let li = $('<li>', {class: 'class classy'})
-    this.indexElems.set(c.self.id, li)
+    this.indexElems.set(c.self, li)
 
     $('<a>', {class: 'self'}).attr('href', c.self.url()).html(
       await c.self.join_html(DOM.crClassOptions)
@@ -233,7 +233,7 @@ class DOM {
 
   async makeOther(o) {
     let li = $('<li>', {class: `other ${o.id.type}`})
-    this.indexElems.set(o.id, li)
+    this.indexElems.set(o, li)
 
     if (IndexID.isClassy(o.id.type)) {
       li.addClass('classy')
@@ -261,9 +261,9 @@ class DOM {
 
   async makeExpandable(elem, obj) {
     // this.log.debug(`makeExpandable '${obj.self.id.join()}'`, elem, obj)
-    this.indexElems.set(obj.self.id, elem)
+    this.indexElems.set(obj.self, elem)
     this.lazyLoaders.set(
-      obj.self.id,
+      obj.self,
       async () => { await this.createContent(obj) }
     )
 
@@ -271,7 +271,7 @@ class DOM {
 
     bar.append(
       $('<div>', {class: 'expander'}).on('click', async () => {
-        await this.doExpand(obj.self.id)
+        await this.doExpand(obj.self)
       })
     )
 
@@ -329,27 +329,21 @@ class Treeview {
         const h = this.page_idx.in_header
         this.log.info(`expanding current page header '${h.id.join()}'`, h, this.page_idx)
 
-        await this.dom.doExpand(h.id)
+        await this.dom.doExpand(h)
       } else {
         if (IType.isHeader(this.page_idx.id.type)) {
-          await this.dom.doExpand(this.page_idx.id)
+          await this.dom.doExpand(this.page_idx)
         } else {
           this.log.info(`current page '${this.page_idx.id.join()}' is not classy. nothing left to expand`)
         }
       }
 
       if (ids.length > 1) {
-        if (this.page_idx.id.type === 'article' && this.page_idx.id.indexes.length > 1) {
-          const selector = `[data-lang-id="C++${this.page_idx.cpp_version}"] li.article`
-          const article = [...$(selector)].find(li => li.innerText === this.page_idx.name)
-          this.dom.indexElems.set(this.page_idx.id, $(article))
-        }
-        
         // highlight self
-        this.dom.indexElems.get(this.page_idx.id).addClass('current-page')
+        this.dom.indexElems.get(this.page_idx).addClass('current-page')
 
         // finally, always scroll to self
-        await this.dom.scrollAt(this.page_idx.id)
+        await this.dom.scrollAt(this.page_idx)
       }
     } catch (e) {
       this.log.error(`Failed to determine current page for id '${ids.join('/')}'. Sidebar will NOT work properly! (${e})`, ids)
