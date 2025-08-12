@@ -47,7 +47,20 @@ module.exports = ({file, options, env}) => {
         require('postcss-mixins')({}),
         require('postcss-nesting')({}),
         require('postcss-nested')({}),
-        require('cssnano')(options.env === 'production' ? Object.assign({}, options.cssnano || {}, {autoprefixer: false}) : false),
+        require('cssnano')({
+          preset: ['default', {
+            // 複雑な最適化を無効化
+            calc: false,
+            zindex: false,
+            mergeRules: false,
+            minifyGradients: false,
+            // セレクタの深さを制限
+            minifySelectors: false,
+            // 既存設定を維持
+            autoprefixer: false,
+            reduceIdents: false
+          }]
+        }),
         require('postcss-color-function')({}),
         require('postcss-calc')({
           warnWhenCannotResolve: true,
