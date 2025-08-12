@@ -275,8 +275,23 @@ main[role="main"] .kunai-sidebar.force-legacy {
           background: rgba(251, 251, 251, 0.91);
         }
 
-        &:not(.top):not(.headers):not(.header):not(.category):not(.module):not(.lang):not(.classes):not(.members):not(.class):not(.article):hover {
+        /* 複数のクラス除外によるホバー効果 */
+        &:hover {
           background-color: $cl-list-hover;
+        }
+        
+        /* 特定のクラスを持つ要素からホバー効果を除外 */
+        &.top:hover,
+        &.headers:hover,
+        &.header:hover,
+        &.category:hover,
+        &.module:hover,
+        &.lang:hover,
+        &.classes:hover,
+        &.members:hover,
+        &.class:hover,
+        &.article:hover {
+          background-color: inherit;
         }
       }
     }

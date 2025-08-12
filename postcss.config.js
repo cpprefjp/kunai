@@ -45,7 +45,9 @@ module.exports = ({file, options, env}) => {
         }),
         require('autoprefixer')({}),
         require('postcss-mixins')({}),
-        require('postcss-nesting')({}),
+        // iOS Safariのクラッシュ対策：postcss-nestingを無効化し、postcss-nestedのみ使用。
+        // :is()のネストが深くなる問題への対処。
+        // require('postcss-nesting')({}),
         require('postcss-nested')({}),
         require('cssnano')({
           preset: ['default', {
