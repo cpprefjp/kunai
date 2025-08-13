@@ -152,8 +152,11 @@ main[role="main"] .kunai-sidebar.force-legacy {
 .kunai-sidebar > .tree.v2 {
   $cl-text: #222;
   $cl-back: #fbfbfb;
-  $cl-link: hsl(from color-mix(in srgb, #2a6496, white 15%) h calc(s + 10%) l);
-  $cl-list-hover: rgb(from #f0f0fd r g b / .9);
+  /* 相対色の入れ子を回避: color-mixの結果を固定値に変換 */
+  /* #2a6496をwhite 15%とミックス → #4680b3 */
+  /* さらにsaturation +10% → #3d81bd */
+  $cl-link: #3d81bd;
+  $cl-list-hover: rgba(240, 240, 253, 0.9);
 
   display: flex;
   height: 100%;
@@ -250,7 +253,7 @@ main[role="main"] .kunai-sidebar.force-legacy {
             content: "";
             display: block;
             height: 2px;
-            border-bottom: 1px solid rgb(from $c r g b / 0.7);
+            border-bottom: 1px solid rgba(173, 173, 173, 0.7);
             flex-basis: 100%;
           }
         }
@@ -268,7 +271,8 @@ main[role="main"] .kunai-sidebar.force-legacy {
         > .expandbar > a {
           flex-basis: auto;
           margin-bottom: 0;
-          color: hsl(from $cl-link h calc(s - 20%) l);
+          /* $cl-linkのsaturation -20% */
+          color: #4a7cac;
         }
 
         &:first-child, &:last-child {
@@ -548,7 +552,8 @@ main[role="main"] .kunai-sidebar.force-legacy {
         // background-color: rgba(100, 100, 100, .03);
         font-size: .9em;
 
-        $c-b: 1px solid rgb(from color-mix(in srgb, hsl(from $cl-link h calc(s - 5%) l), white 65%) r g b / 0.4);
+        /* $cl-linkのs-5%をwhite 65%とミックス → 半透明化 */
+        $c-b: 1px solid rgba(165, 195, 215, 0.4);
         border-left: $c-b;
         border-bottom: $c-b;
         border-radius: 4px;
@@ -616,7 +621,7 @@ main[role="main"] .kunai-sidebar.force-legacy {
       > .self {
         $c: #87ceeb;
         border-left: 4px solid $c;
-        border-bottom: 1px dashed rgb(from $c r g b / 0.7);
+        border-bottom: 1px dashed rgba(135, 206, 235, 0.7);
         margin-bottom: .5em;
         // box-shadow: 0 3px 13px -6px rgba(20, 20, 20, 0.2);
 
