@@ -262,7 +262,7 @@ main[role="main"] .kunai-sidebar.force-legacy {
           > .expandbar {
             > .expander {
               &:before {
-                transform: rotate(45deg);
+                transform: rotate(90deg);
               }
             }
           }
