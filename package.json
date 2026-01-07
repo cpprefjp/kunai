@@ -74,7 +74,7 @@
     "anser": "^1.4.9",
     "codemirror": "^5.55.0",
     "commonmark": "^0.29.1",
-    "crsearch": "cpprefjp/crsearch#ecbdea6d8a27e3a0b3a31571f4e6b8c6a230a5cc",
+    "crsearch": "cpprefjp/crsearch#cce4f38cf8e8e6710ab8d3a6e8cb308cd6e6ac13",
     "font-awesome": "^4.7.0",
     "jquery": "^3.5.1",
     "normalize.css": "^8.0.1",
