@@ -181,6 +181,10 @@ div[itemtype="http://schema.org/Article"] {
       color: #333;
       text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.1);
 
+      &.exposition-only {
+        font-style: italic;
+      }
+
       span {
         display: block;
 

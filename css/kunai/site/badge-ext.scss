@@ -17,6 +17,25 @@ main[role="main"] {
 
       span.cpp {
         @include cr-badge;
+
+        &.exposition-only {
+          border-color: #666;
+          color: #666;
+          font-style: italic;
+
+          i {
+            display: none;
+          }
+
+          &::before {
+            @include fa-patch;
+            content: "\f24a"; // fa-sticky-note-o
+          }
+
+          &::after {
+            content: "説明専用";
+          }
+        }
       }
     }
   }
