@@ -140,6 +140,29 @@
 
       > .title > ul.badges {
         @include cr-badge-auto(".badge");
+
+        > li.badge[data-original-attr="exposition-only"] {
+          border-color: #666;
+          color: #666;
+          font-style: italic;
+
+          a {
+            color: #666;
+
+            i {
+              display: none;
+            }
+
+            &::before {
+              @include fa-patch;
+              content: "\f24a"; // fa-sticky-note-o
+            }
+          }
+        }
+
+        &.simple > li.badge[data-original-attr="exposition-only"] a::after {
+          display: block;
+        }
       }
     }
   }
