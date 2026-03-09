@@ -744,7 +744,8 @@ main[role="main"] .kunai-sidebar.force-legacy {
   ul.others > li.other {
     .cr-index {
       ul.keys {
-        display: inline-block;
+        display: inline-flex;
+        flex-direction: row;
         padding-left: 2px;
         > li.key {
           display: inline-block;
