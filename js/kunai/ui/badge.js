@@ -30,6 +30,10 @@ const sanitize = (badges) => {
           continue
       }
 
+      if (c === 'exposition-only') {
+        classes.push('exposition-only-spec')
+      }
+
       const cppm = c.match(/^cpp(\d[\da-zA-Z])(.*)$/)
       if (!cppm) continue;
 
