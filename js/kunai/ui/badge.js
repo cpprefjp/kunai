@@ -22,6 +22,7 @@ const sanitize = (badges) => {
     let deprecated_or_removed = false
     let cppv = null
     let named_version = null
+    let exposition_only = false
     for (const c of b_classes) {
       if (/^(?:future|archive)$/.test(c)) {
           named_version = c
@@ -31,6 +32,7 @@ const sanitize = (badges) => {
       }
 
       if (c === 'exposition-only') {
+        exposition_only = true
         classes.push('exposition-only-spec')
       }
 
@@ -59,6 +61,7 @@ const sanitize = (badges) => {
 
     const lang_path = cppv ? `/lang/cpp${cppv}` :
                       named_version ? `/lang/${named_version}` :
+                      exposition_only ? '/reference/exposition-only' :
                       `/lang`
     const a_elem = $('<a>', {href: `${lang_path}.html`})
       .append($('<i>'))
