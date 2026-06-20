@@ -31,3 +31,7 @@ jobs:
 
       - run: npm ci
       - run: npm run build --if-present
+
+      - run: ./docker.sh build
+      - run: ./docker.sh install
+      - run: ./docker.sh dist
