@@ -774,7 +774,7 @@ main[role="main"] .kunai-sidebar.force-legacy {
       &[data-branch-for="headers"] {
         order: 3;
         margin-bottom: 2em;
-        max-height: 70vh;
+        max-height: 70dvh;
       }
       &[data-branch-for="articles"] {
         order: 4;

@@ -1,5 +1,5 @@
-$navbar-height: 5vh;
-$main-height: calc(100vh - $navbar-height);
+$navbar-height: 5dvh;
+$main-height: calc(100dvh - $navbar-height);
 
 $nav-bg: #f8f8f8;
 

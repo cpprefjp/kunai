@@ -15,7 +15,7 @@ main div[itemtype="http://schema.org/Article"] {
 
     box-sizing: border-box;
 
-    max-height: 60vh;
+    max-height: 60dvh;
     overflow-x: auto;
     overflow-y: scroll;
 
