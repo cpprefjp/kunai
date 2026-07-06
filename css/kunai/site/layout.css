@@ -41,7 +41,7 @@ body {
 nav[role="navigation"] {
   display: flex;
   // min-height: 3rem;
-  // max-height: 8vh;
+  // max-height: 8dvh;
 
   padding: 0 .8rem;
   box-sizing: border-box;
@@ -69,7 +69,7 @@ nav[role="navigation"] {
 
   z-index: $navbar-expand-z;
 
-  width: 100vw;
+  width: 100dvw;
   min-height: 4rem;
 
   background: #EFEFEF;
@@ -275,20 +275,20 @@ main {
         .crsearch {
           flex-basis: auto;
           min-width: 92%;
-          max-width: 94vw;
+          max-width: 94dvw;
           margin: .5rem 0 0 0;
         }
       }
     }
 
     div[itemtype="http://schema.org/Article"] + div {
-      // flex-basis: 100vw;
+      // flex-basis: 100dvw;
       flex-basis: unset;
 
       border: none;
 
       /* box-shadow: 0px 9px 16px 2px rgba(0, 0, 0, 0.8); GPUメモリ削減のため無効化 */
-      padding: 0 4vw;
+      padding: 0 4dvw;
     }
   }
 }
@@ -316,7 +316,7 @@ main {
 
   main {
     div[itemtype="http://schema.org/Article"] + div {
-      padding: 0 2vw;
+      padding: 0 2dvw;
     }
   }
 }
