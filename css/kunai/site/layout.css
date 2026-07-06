@@ -227,8 +227,22 @@ main {
 }
 
 @media (max-width: 768px) {
+  /*
+   * スマホでは「ビューポート固定シェル + 内側スクロール」をやめ、
+   * ドキュメント(html/body)自身をスクローラにする。これによりブラウザの
+   * 引っ張って更新 (pull-to-refresh) が発火するようになる。
+   * see: https://github.com/cpprefjp/kunai/issues/58
+   */
+  body {
+    overflow: visible;
+  }
+
   body > header {
     /* box-shadow: 0px -12px 10px 8px rgba(0, 0, 0, 0.8); GPUメモリ削減のため無効化 */
+
+    /* ドキュメントスクロール時もナビバーを追従表示する */
+    position: sticky;
+    top: 0;
   }
 
 
@@ -253,8 +267,13 @@ main {
     }
   }
 
-  main {
-    overflow-y: scroll;
+  /* 内側スクローラをやめ、内容の高さぶんだけ伸ばす (スクロールは body 側で行う)。
+     ベースの `body main { height: … }`(詳細度 0,0,2)に勝つよう body main で指定し、
+     overflow は両軸まとめて visible にする (片軸だけだと計算値が auto に化けて
+     スクロールコンテナのまま残るため)。 */
+  body main {
+    overflow: visible;
+    height: auto;
 
     > .container-fluid > .row:first-child {
       flex-direction: column;
@@ -284,6 +303,9 @@ main {
     div[itemtype="http://schema.org/Article"] + div {
       // flex-basis: 100dvw;
       flex-basis: unset;
+
+      /* 縦積み時は 95dvh 固定 (デスクトップ用) を解除し内容の高さに合わせる */
+      height: auto;
 
       border: none;
 
