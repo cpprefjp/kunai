@@ -304,8 +304,12 @@ main {
       // flex-basis: 100dvw;
       flex-basis: unset;
 
-      /* 縦積み時は 95dvh 固定 (デスクトップ用) を解除し内容の高さに合わせる */
-      height: auto;
+      /* 高さはベースの 95dvh のままにして際限なく伸びるのを防ぎつつ、パネル内を
+         縦スクロール可能にしてナビゲーションツリー全体へアクセスできるようにする。
+         (height: auto にするとツリーが全展開して際限なく伸びてしまう)
+         see: https://github.com/cpprefjp/kunai/pull/182 のレビュー指摘 */
+      height: $main-height;
+      overflow-y: auto;
 
       border: none;
 
