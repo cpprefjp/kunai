@@ -63,7 +63,6 @@ module.exports = ({file, options, env}) => {
             reduceIdents: false
           }]
         }),
-        require('postcss-color-function')({}),
         require('postcss-calc')({
           warnWhenCannotResolve: true,
           // mediaQueries: true,
