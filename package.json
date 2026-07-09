@@ -49,8 +49,6 @@
     "mousetrap": "^1.6.5",
     "postcss-advanced-variables": "^5.0.0",
     "postcss-calc": "^10.1.0",
-    "postcss-color-function": "^4.0.1",
-    "postcss-comment": "^2.0.0",
     "postcss-custom-properties": "^14.0.4",
     "postcss-import": "^16.1.0",
     "postcss-loader": "^8.1.1",
