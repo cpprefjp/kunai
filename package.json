@@ -55,7 +55,6 @@
     "postcss-mixins": "^11.0.3",
     "postcss-nested": "^7.0.2",
     "postcss-nesting": "^13.0.1",
-    "postcss-sassy-mixins": "^2.1.0",
     "postcss-scss": "^4.0.9",
     "raw-loader": "^4.0.1",
     "sass": "^1.26.9",
