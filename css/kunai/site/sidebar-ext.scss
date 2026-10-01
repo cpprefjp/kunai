@@ -117,6 +117,12 @@
       &[data-top-id="lang"] > .heading > a.title:before {
         @extend .fa-superscript;
       }
+      &[data-top-id="guide"] > .heading > a.title:before {
+        @extend .fa-compass;
+      }
+      &[data-top-id="requirements"] > .heading > a.title:before {
+        @extend .fa-check-square-o;
+      }
       &[data-top-id="reference"] > .heading > a.title:before {
         @extend .fa-tags;
       }
